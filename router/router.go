@@ -13,6 +13,7 @@ func InitRouter() *gin.Engine {
 	api := router.Group("v1")
 	api.Use(middleware.Auth())
 	{
+		api.GET("/delete", app.ApiDeleteQueue)
 		api.GET("/index", app.ApiIndex)
 		api.GET("/question", app.ApiQuestion)
 		api.GET("/answer_list", app.ApiAnswerList)

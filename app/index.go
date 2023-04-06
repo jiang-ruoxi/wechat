@@ -137,3 +137,10 @@ func ApiUser(c *gin.Context) {
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
+
+func ApiDeleteQueue(c *gin.Context) {
+	categoryId, _ := strconv.Atoi(c.Query("category_id"))
+	var service service.BaiKeService
+	service.DeleteQueue(categoryId)
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}

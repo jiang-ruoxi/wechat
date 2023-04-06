@@ -258,3 +258,13 @@ func (bs *BaiKeService) IsCheckCount(categoryId int) {
 		bs.PushDataToQueue(categoryId)
 	}
 }
+
+//DeleteQueue 删除指定的队列
+func (bs *BaiKeService) DeleteQueue(categoryId int) {
+	//队列名称
+	queue := common.DEFAULT_QUEUE
+	if categoryId > 0 {
+		queue = fmt.Sprintf(common.QUEUE, categoryId)
+	}
+	redis.RedisClient.Del(context.Background(), queue).Result()
+}
