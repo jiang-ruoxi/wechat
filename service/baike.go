@@ -1,0 +1,196 @@
+package service
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"strconv"
+	"wechat/common"
+	"wechat/model"
+	"wechat/pkg/mysql"
+	"wechat/pkg/redis"
+	"wechat/utils"
+)
+
+type BaiKeService struct {
+}
+
+//PushDataToQueue 将对应栏目中的数据push到队列中
+func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
+	// 创建db
+	var baiKeList []model.BaiKe
+	db := mysql.DB.Model(&model.BaiKe{}).Debug()
+
+	db = db.Select("id").Where("category_id = ?", categoryId).Find(&baiKeList)
+
+	questionIds := make([]int, 0)
+	for _, item := range baiKeList {
+		questionIds = append(questionIds, item.Id)
+	}
+
+	//队列名称
+	queue := fmt.Sprintf(common.QUEUE, categoryId)
+
+	pipe := redis.RedisClient.Pipeline()
+	for _, item := range questionIds {
+		pipe.RPush(context.Background(), queue, item)
+	}
+	if _, err := pipe.Exec(context.Background()); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//GetLPopData 从对应栏目中的队列中lpop数据
+func (bs *BaiKeService) GetLPopData(categoryId int) map[string]interface{} {
+	//队列名称
+	queue := fmt.Sprintf(common.QUEUE, categoryId)
+	questionId, err := redis.RedisClient.LPop(context.Background(), queue).Result()
+	if err != nil {
+		log.Fatal("从队列中获取数据失败")
+	}
+	// 创建db
+	var baiKe model.BaiKe
+	db := mysql.DB.Model(&model.BaiKe{}).Debug()
+	db = db.Where("id = ?", questionId).Find(&baiKe)
+
+	fmt.Printf("baike: %#v \n", baiKe)
+	return map[string]interface{}{
+		"id":          baiKe.Id,
+		"category_id": baiKe.CategoryId,
+		"question":    baiKe.Question,
+		"option_a":    baiKe.OptionA,
+		"option_b":    baiKe.OptionB,
+		"option_c":    baiKe.OptionC,
+		"option_d":    baiKe.OptionD,
+		"answer":      baiKe.Answer,
+		"analytic":    baiKe.Analytic,
+	}
+}
+
+//GetAnswerList 获取答题记录
+func (bs *BaiKeService) GetAnswerList(page, pageSize int) (list []map[string]interface{}, total int64, err error) {
+	limit := pageSize
+	offset := pageSize * (page - 1)
+	openId := "oqXuP4nEcrQdreKXPK7PpTQVXrbM"
+	// 创建db
+	var answerList []model.Answer
+	db := mysql.DB.Model(&model.Answer{}).Debug()
+	db = db.Where("open_id = ?", openId)
+	err = db.Count(&total).Error
+	db = db.Order("add_time desc")
+	db = db.Limit(limit).Offset(offset).Find(&answerList)
+
+	//获取问题列表与栏目列表key=>value格式
+	questionIds := make([]string, 0)
+	for _, item := range answerList {
+		questionIds = append(questionIds, strconv.Itoa(item.QuestionId))
+	}
+	questionList := bs.GetQuestionKeyValue(questionIds)
+
+	categoryIds := make([]string, 0)
+	for _, item := range answerList {
+		categoryIds = append(categoryIds, strconv.Itoa(item.Id))
+	}
+	categoryList := bs.GetCategoryKeyValue(categoryIds)
+
+	data := make([]map[string]interface{}, 0)
+
+	for _, item := range answerList {
+		answerTime, _ := strconv.ParseInt(item.AddTime, 10, 64)
+		d := map[string]interface{}{
+			"id":           item.Id,
+			"open_id":      item.OpenId,
+			"category":     categoryList[item.CategoryId],
+			"question":     questionList[item.QuestionId],
+			"is_select":    item.IsSelect,
+			"right_select": item.RightSelect,
+			"answer_time":  utils.FormatDateFromUnix(answerTime),
+		}
+		data = append(data, d)
+	}
+
+	return data, total, err
+}
+
+//GetLikeList 获取答题记录
+func (bs *BaiKeService) GetLikeList(page, pageSize int) (list []map[string]interface{}, total int64, err error) {
+	limit := pageSize
+	offset := pageSize * (page - 1)
+	openId := "oqXuP4nEcrQdreKXPK7PpTQVXrbM"
+	// 创建db
+	var likeList []model.Like
+	db := mysql.DB.Model(&model.Like{}).Debug()
+	db = db.Where("open_id = ?", openId)
+	err = db.Count(&total).Error
+	db = db.Order("add_time desc")
+	db = db.Limit(limit).Offset(offset).Find(&likeList)
+
+	//获取问题列表与栏目列表key=>value格式
+	questionIds := make([]string, 0)
+	for _, item := range likeList {
+		questionIds = append(questionIds, strconv.Itoa(item.QuestionId))
+	}
+	questionList := bs.GetQuestionKeyValue(questionIds)
+	answerList := bs.GetAnswerKeyValue(questionIds)
+
+	categoryIds := make([]string, 0)
+	for _, item := range likeList {
+		categoryIds = append(categoryIds, strconv.Itoa(item.Id))
+	}
+	categoryList := bs.GetCategoryKeyValue(categoryIds)
+
+	data := make([]map[string]interface{}, 0)
+
+	for _, item := range likeList {
+		answerTime, _ := strconv.ParseInt(item.AddTime, 10, 64)
+		d := map[string]interface{}{
+			"id":          item.Id,
+			"open_id":     item.OpenId,
+			"category":    categoryList[item.CategoryId],
+			"question":    questionList[item.QuestionId],
+			"answer":      answerList[item.QuestionId],
+			"answer_time": utils.FormatDateFromUnix(answerTime),
+		}
+		data = append(data, d)
+	}
+
+	return data, total, err
+}
+
+//GetQuestionKeyValue 获取指定的问题
+func (bs *BaiKeService) GetQuestionKeyValue(questionIds []string) map[int]string {
+	var questionList []model.BaiKe
+	db1 := mysql.DB.Model(&model.BaiKe{}).Debug()
+	db1 = db1.Where("id in (?)", questionIds).Find(&questionList)
+	question := make(map[int]string)
+	for _, item := range questionList {
+		question[item.Id] = item.Question
+	}
+	return question
+}
+
+//GetAnswerKeyValue 获取指定的问题的答案
+func (bs *BaiKeService) GetAnswerKeyValue(questionIds []string) map[int]string {
+	var questionList []model.BaiKe
+	db1 := mysql.DB.Model(&model.BaiKe{}).Debug()
+	db1 = db1.Where("id in (?)", questionIds).Find(&questionList)
+	question := make(map[int]string)
+	for _, item := range questionList {
+		question[item.Id] = item.Answer
+	}
+	return question
+}
+
+//GetCategoryKeyValue 获取指定的栏目名称
+func (bs *BaiKeService) GetCategoryKeyValue(categoryIds []string) map[int]string {
+	var categoryList []model.Category
+	db1 := mysql.DB.Model(&model.Category{}).Debug()
+	db1 = db1.Where("id in (?)", categoryIds).Find(&categoryList)
+	category := make(map[int]string)
+	for _, item := range categoryList {
+		category[item.Id] = item.Name
+	}
+	return category
+}
