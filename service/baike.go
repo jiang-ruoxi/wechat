@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"log"
 	"strconv"
 	"wechat/common"
 	"wechat/model"
@@ -21,7 +20,11 @@ func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
 	var baiKeList []model.BaiKe
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 
-	db = db.Select("id").Where("category_id = ?", categoryId).Find(&baiKeList)
+	if categoryId > 0 {
+		db = db.Select("id").Where("category_id = ?", categoryId).Find(&baiKeList)
+	} else {
+		db = db.Select("id").Find(&baiKeList)
+	}
 
 	questionIds := make([]int, 0)
 	for _, item := range baiKeList {
@@ -29,7 +32,10 @@ func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
 	}
 
 	//队列名称
-	queue := fmt.Sprintf(common.QUEUE, categoryId)
+	queue := fmt.Sprintf(common.DEFAULT_QUEUE)
+	if categoryId > 0 {
+		queue = fmt.Sprintf(common.QUEUE, categoryId)
+	}
 
 	pipe := redis.RedisClient.Pipeline()
 	for _, item := range questionIds {
@@ -44,18 +50,24 @@ func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
 
 //GetLPopData 从对应栏目中的队列中lpop数据
 func (bs *BaiKeService) GetLPopData(categoryId int) map[string]interface{} {
+	//获取之前判断队列中还有多少数据
+	bs.IsCheckCount(categoryId)
+
 	//队列名称
-	queue := fmt.Sprintf(common.QUEUE, categoryId)
+	queue := fmt.Sprintf(common.DEFAULT_QUEUE)
+	if categoryId > 0 {
+		queue = fmt.Sprintf(common.QUEUE, categoryId)
+	}
+
 	questionId, err := redis.RedisClient.LPop(context.Background(), queue).Result()
 	if err != nil {
-		log.Fatal("从队列中获取数据失败")
+		fmt.Println("从队列中获取数据失败")
 	}
 	// 创建db
 	var baiKe model.BaiKe
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 	db = db.Where("id = ?", questionId).Find(&baiKe)
 
-	fmt.Printf("baike: %#v \n", baiKe)
 	return map[string]interface{}{
 		"id":          baiKe.Id,
 		"category_id": baiKe.CategoryId,
@@ -232,4 +244,17 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 		return err
 	}
 	return nil
+}
+
+//IsCheckCount 校验队列中的数据是否小于指定的数量
+func (bs *BaiKeService) IsCheckCount(categoryId int) {
+	//队列名称
+	queue := common.DEFAULT_QUEUE
+	if categoryId > 0 {
+		queue = fmt.Sprintf(common.QUEUE, categoryId)
+	}
+	total, _ := redis.RedisClient.LLen(context.Background(), queue).Result()
+	if total < common.QUEUE_LEN {
+		bs.PushDataToQueue(categoryId)
+	}
 }

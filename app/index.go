@@ -9,9 +9,9 @@ import (
 )
 
 func ApiIndex(c *gin.Context) {
-
+	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
-	service.GetLPopData(1)
+	service.PushDataToQueue(categoryId)
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
