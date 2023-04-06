@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"wechat/common"
 	"wechat/service"
+	"wechat/utils"
 )
 
 func ApiIndex(c *gin.Context) {
@@ -49,6 +50,17 @@ func ApiAnswer(c *gin.Context) {
 		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
 		return
 	}
+	verify := utils.Rules{
+		"OpenId":      {utils.NotEmpty()},
+		"CategoryId":  {utils.NotEmpty()},
+		"QuestionId":  {utils.NotEmpty()},
+		"IsSelect":    {utils.NotEmpty()},
+		"RightSelect": {utils.NotEmpty()},
+	}
+	if err := utils.Verify(req, verify); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, err.Error(), c)
+		return
+	}
 	var service service.BaiKeService
 	if err := service.InsertAnswer(&req); err != nil {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
@@ -82,6 +94,16 @@ func ApiLike(c *gin.Context) {
 		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
 		return
 	}
+	verify := utils.Rules{
+		"CategoryId": {utils.NotEmpty()},
+		"QuestionId": {utils.NotEmpty()},
+		"OpenId":     {utils.NotEmpty()},
+		"Answer":     {utils.NotEmpty()},
+	}
+	if err := utils.Verify(req, verify); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, err.Error(), c)
+		return
+	}
 	var service service.BaiKeService
 	if err := service.InsertLike(&req); err != nil {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
@@ -90,13 +112,22 @@ func ApiLike(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-
 //ApiUser 保存用户的数据
 func ApiUser(c *gin.Context) {
 	var req common.UserReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
+		return
+	}
+	verify := utils.Rules{
+		"OpenId":   {utils.NotEmpty()},
+		"NickName": {utils.NotEmpty()},
+		"HeadUrl":  {utils.NotEmpty()},
+		"Area":     {utils.NotEmpty()},
+	}
+	if err := utils.Verify(req, verify); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, err.Error(), c)
 		return
 	}
 	var service service.BaiKeService
