@@ -18,6 +18,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/answer_list", app.ApiAnswerList)
 		api.POST("/answer", app.ApiAnswer)
 		api.GET("/like_list", app.ApiLikeList)
+		api.POST("/like", app.ApiLike)
 	}
 
 	return router

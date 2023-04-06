@@ -194,3 +194,42 @@ func (bs *BaiKeService) GetCategoryKeyValue(categoryIds []string) map[int]string
 	}
 	return category
 }
+
+//InsertLike 插入我的收藏
+func (bs *BaiKeService) InsertLike(c *common.LikeReq) (err error) {
+	//定义对应的类型
+	var data model.Like
+	//格式化数据生成
+	c.GenerateLike(&data)
+	if err := mysql.DB.Model(&model.Like{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
+}
+
+//InsertAnswer 插入答案数据
+func (bs *BaiKeService) InsertAnswer(c *common.AnswerReq) (err error) {
+	//定义对应的类型
+	var data model.Answer
+	//格式化数据生成
+	c.GenerateAnswer(&data)
+	if err := mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
+}
+
+//InsertUser 插入用户数据
+func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
+	//定义对应的类型
+	var data model.User
+	//格式化数据生成
+	c.GenerateUser(&data)
+	if err := mysql.DB.Model(&model.User{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
+}

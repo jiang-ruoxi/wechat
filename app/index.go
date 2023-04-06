@@ -43,19 +43,18 @@ func ApiAnswerList(c *gin.Context) {
 
 //ApiAnswer 保存回答的答案
 func ApiAnswer(c *gin.Context) {
-	page, _ := strconv.Atoi(c.Query("page"))
-	pageSize, _ := strconv.Atoi(c.Query("page_size"))
-	var service service.BaiKeService
-	list, total, err := service.GetAnswerList(page, pageSize)
+	var req common.AnswerReq
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
+		return
 	}
-	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-		"list":      list,
-		"total":     total,
-		"page":      page,
-		"page_size": pageSize,
-	}, common.SUCCESS_MSG, c)
+	var service service.BaiKeService
+	if err := service.InsertAnswer(&req); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
 //ApiLikeList 获取收藏记录
@@ -77,17 +76,33 @@ func ApiLikeList(c *gin.Context) {
 
 //ApiLike 保存收藏的数据
 func ApiLike(c *gin.Context) {
-	page, _ := strconv.Atoi(c.Query("page"))
-	pageSize, _ := strconv.Atoi(c.Query("page_size"))
-	var service service.BaiKeService
-	list, total, err := service.GetAnswerList(page, pageSize)
+	var req common.LikeReq
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
+		return
 	}
-	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-		"list":      list,
-		"total":     total,
-		"page":      page,
-		"page_size": pageSize,
-	}, common.SUCCESS_MSG, c)
+	var service service.BaiKeService
+	if err := service.InsertLike(&req); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
+
+
+//ApiUser 保存用户的数据
+func ApiUser(c *gin.Context) {
+	var req common.UserReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
+		return
+	}
+	var service service.BaiKeService
+	if err := service.InsertUser(&req); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
