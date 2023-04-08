@@ -14,4 +14,4 @@ redis:
   db: 0
   addr: 127.0.0.1
   port: 6379
-  password: ""
+  password: "50fbf142-5f00-4684-b440-8630905ecb29"

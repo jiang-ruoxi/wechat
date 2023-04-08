@@ -213,7 +213,7 @@ func (bs *BaiKeService) InsertLike(c *common.LikeReq) (err error) {
 	var data model.Like
 	//格式化数据生成
 	c.GenerateLike(&data)
-	if err := mysql.DB.Model(&model.Like{}).Create(&data).Error; err != nil {
+	if err = mysql.DB.Model(&model.Like{}).Create(&data).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
 	}
@@ -226,7 +226,7 @@ func (bs *BaiKeService) InsertAnswer(c *common.AnswerReq) (err error) {
 	var data model.Answer
 	//格式化数据生成
 	c.GenerateAnswer(&data)
-	if err := mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
+	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
 	}
@@ -239,7 +239,7 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 	var data model.User
 	//格式化数据生成
 	c.GenerateUser(&data)
-	if err := mysql.DB.Model(&model.User{}).Create(&data).Error; err != nil {
+	if err = mysql.DB.Model(&model.User{}).Create(&data).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
 	}
