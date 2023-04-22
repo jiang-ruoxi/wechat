@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
+	"wechat/global"
 )
 
 // 设置日志级别、输出格式和日志文件的路径
@@ -58,5 +59,7 @@ func SetLogs(logLevel zapcore.Level, logFormat, fileName string) {
 
 	// 将自定义的logger替换为全局的logger
 	zap.ReplaceGlobals(logger)
+
+	global.WECHAT_LOG = logger
 }
 

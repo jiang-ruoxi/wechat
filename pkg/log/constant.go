@@ -1,6 +1,8 @@
 package log
 
 const (
+	//目录
+	LOG_DIR = "./logs/"
 	// logFormat
 	LOGFORMAT_JSON    = "json"
 	LOGFORMAT_CONSOLE = "console"

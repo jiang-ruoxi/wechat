@@ -17,6 +17,11 @@ func FormatDateFromUnix(unix int64) string {
 	return date.Format(tf2)
 }
 
+//GetCurrentFormatDateTime 获取当前的日期时间
+func GetCurrentFormatDateTime() string {
+	return time.Now().Format(timeFormatTpl)
+}
+
 //GetCurrentFormatDate 获取当前的日期时间
 func GetCurrentFormatDate() string {
 	return time.Now().Format(tf2)

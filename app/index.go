@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 	"wechat/common"
+	"wechat/global"
 	"wechat/service"
 	"wechat/utils"
 )
@@ -22,7 +23,7 @@ func ApiQuestion(c *gin.Context) {
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	question := service.GetLPopData(categoryId)
-	logger.Info("无法获取网址",
+	global.WECHAT_LOG.Debug("11111111111",
 		zap.String("url", "http://www.baidu.com"),
 		zap.Int("attempt", 3),
 		zap.Duration("backoff", time.Second),
