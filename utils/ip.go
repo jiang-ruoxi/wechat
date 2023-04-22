@@ -27,7 +27,7 @@ func GetIpAddress() (localIp string, err error) {
 
 //GetIPDataInfo 获取ip具体的数据
 func GetIPDataInfo(params string) (interface{}, error) {
-	db, err := geoip2.Open("./GeoLite2-City.mmdb")
+	db, err := geoip2.Open("./utils/GeoLite2-City.mmdb")
 	if err != nil {
 		log.Fatal(err)
 	}

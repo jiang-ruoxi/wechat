@@ -2,7 +2,9 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"strconv"
+	"time"
 	"wechat/common"
 	"wechat/service"
 	"wechat/utils"
@@ -20,6 +22,11 @@ func ApiQuestion(c *gin.Context) {
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	question := service.GetLPopData(categoryId)
+	logger.Info("无法获取网址",
+		zap.String("url", "http://www.baidu.com"),
+		zap.Int("attempt", 3),
+		zap.Duration("backoff", time.Second),
+	)
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
 		"data": question,
 	}, common.SUCCESS_MSG, c)

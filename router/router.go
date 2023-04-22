@@ -1,14 +1,20 @@
 package router
 
 import (
+	"github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"time"
 	"wechat/app"
 	"wechat/middleware"
 )
 
 func InitRouter() *gin.Engine {
-	router := gin.Default()
+	router := gin.New()
 
+	// 使用zap日志库
+	router.Use(ginzap.Ginzap(zap.L(), time.RFC3339, true))
+	router.Use(ginzap.RecoveryWithZap(zap.L(), true))
 	//后台路由组
 	api := router.Group("v1")
 	api.Use(middleware.Auth())
