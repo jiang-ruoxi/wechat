@@ -1,10 +1,9 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"strconv"
-	"time"
 	"wechat/common"
 	"wechat/global"
 	"wechat/service"
@@ -23,11 +22,8 @@ func ApiQuestion(c *gin.Context) {
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	question := service.GetLPopData(categoryId)
-	global.WECHAT_LOG.Debug("11111111111",
-		zap.String("url", "http://www.baidu.com"),
-		zap.Int("attempt", 3),
-		zap.Duration("backoff", time.Second),
-	)
+	address, _ := utils.GetIpAddress()
+	global.WECHAT_LOG.Info(fmt.Sprintf("当前访问的ip地址为：%#v \n", address))
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
 		"data": question,
 	}, common.SUCCESS_MSG, c)
