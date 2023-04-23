@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -24,6 +25,9 @@ func ApiQuestion(c *gin.Context) {
 	question := service.GetLPopData(categoryId)
 	address, _ := utils.GetIpAddress()
 	global.WECHAT_LOG.Info(fmt.Sprintf("当前访问的ip地址为：%#v \n", address))
+	info, _ := utils.GetIPDataInfo(address)
+	marshal, _ := json.Marshal(info)
+	global.WECHAT_LOG.Info(fmt.Sprintf("当前访问的ip地址详细信息为：%#v \n", string(marshal)))
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
 		"data": question,
 	}, common.SUCCESS_MSG, c)
