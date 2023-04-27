@@ -281,6 +281,7 @@ func (bs *BaiKeService) AddQuestion(openId, questionId, isSelect, rightSelect st
 	data.QuestionId = questionId
 	data.IsSelect = isSelect
 	data.RightSelect = rightSelect
+	data.CategoryId = "0"
 	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
 		return err
 	}

@@ -212,9 +212,8 @@ func AddQuestion(c *gin.Context) {
 
 	var service service.BaiKeService
 	err := service.AddQuestion(openId, questionId, isSelect, rightSelect)
-	global.WECHAT_LOG.Info(fmt.Sprintf("AddQuestion：%#v \n", err))
 	if err != nil {
-
+		global.WECHAT_LOG.Info(fmt.Sprintf("AddQuestion：%#v \n", err))
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 		return
 	}
