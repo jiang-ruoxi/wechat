@@ -174,3 +174,19 @@ func GetOpenId(c *gin.Context) {
 		"data":      data.Openid,
 	}, common.SUCCESS_MSG, c)
 }
+
+func AddUser(c *gin.Context) {
+	var req common.UserReq
+	openId := c.Query("openId")
+	nickName := c.Query("nickName")
+	avatarUrl := c.Query("avatarUrl")
+	req.OpenId = openId
+	req.NickName = nickName
+	req.HeadUrl = avatarUrl
+	var service service.BaiKeService
+	if err := service.InsertUser(&req); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}

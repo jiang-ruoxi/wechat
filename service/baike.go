@@ -239,6 +239,11 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 	var data model.User
 	//格式化数据生成
 	c.GenerateUser(&data)
+	var count int64
+	mysql.DB.Model(&model.User{}).Where("open_id = ?", data.OpenId).Count(&count)
+	if count > 0  {
+		return nil
+	}
 	if err = mysql.DB.Model(&model.User{}).Create(&data).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
