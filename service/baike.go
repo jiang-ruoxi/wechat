@@ -241,7 +241,7 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 	c.GenerateUser(&data)
 	var count int64
 	mysql.DB.Model(&model.User{}).Where("open_id = ?", data.OpenId).Count(&count)
-	if count > 0  {
+	if count > 0 {
 		return nil
 	}
 	if err = mysql.DB.Model(&model.User{}).Create(&data).Error; err != nil {
@@ -279,4 +279,35 @@ func (bs *BaiKeService) GetInfoByOpenId(openId string) (count int64, err error) 
 	mysql.DB.Model(&model.User{}).Where("open_id = ?", openId).Count(&count)
 
 	return count, nil
+}
+
+//AddQuestion 插入用户数据
+func (bs *BaiKeService) AddQuestion(openId, questionId, isSelect, rightSelect string) (err error) {
+	var count int64
+	mysql.DB.Model(&model.Answer{}).Where("open_id = ? and question_id = ?", openId, questionId).Count(&count)
+	if count > 0 {
+		return nil
+	}
+	var data model.Answer
+	data.OpenId = openId
+	data.QuestionId = questionId
+	data.IsSelect = isSelect
+	data.RightSelect = rightSelect
+	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+//InsertAnswer 插入答案数据
+func (bs *BaiKeService) InsertAnswer(c *common.AnswerReq) (err error) {
+	//定义对应的类型
+	var data model.Answer
+	//格式化数据生成
+	c.GenerateAnswer(&data)
+	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
 }

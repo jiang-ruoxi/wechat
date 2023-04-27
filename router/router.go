@@ -31,6 +31,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/getOpenId", app.GetOpenId)
 		api.GET("/addUser", app.AddUser)
 		api.GET("/getInfoByOpenId", app.GetInfoByOpenId)
+		api.GET("/addQuestion", app.AddQuestion)
 	}
 
 	return router

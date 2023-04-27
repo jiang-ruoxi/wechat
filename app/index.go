@@ -203,3 +203,18 @@ func GetInfoByOpenId(c *gin.Context) {
 		"count": count,
 	}, common.SUCCESS_MSG, c)
 }
+
+func AddQuestion(c *gin.Context) {
+	openId := c.Query("openId")
+	questionId := c.Query("questionId")
+	isSelect := c.Query("isSelect")
+	rightSelect := c.Query("rightSelect")
+
+	var service service.BaiKeService
+	err := service.AddQuestion(openId, questionId, isSelect, rightSelect)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
