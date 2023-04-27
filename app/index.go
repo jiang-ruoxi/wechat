@@ -156,6 +156,11 @@ func ApiDeleteQueue(c *gin.Context) {
 }
 
 func GetOpenId(c *gin.Context) {
+	type OpenIdInfo struct {
+		SessionKey string `json:"session_key"`
+		Openid     string `json:"openid"`
+	}
+	var data OpenIdInfo
 	code := c.Query("code")
 	client := &http.Client{}
 	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=wx59dda0671b488462&secret=23f5a067460f0a40811acea3feccf14c&js_code=%s&grant_type=authorization_code", code)
@@ -164,7 +169,8 @@ func GetOpenId(c *gin.Context) {
 	resp, _ := client.Do(req)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Printf(string(body))
+	json.Unmarshal(body, &data);
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-		"data":      string(body),
+		"data":      data.Openid,
 	}, common.SUCCESS_MSG, c)
 }
