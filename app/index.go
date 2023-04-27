@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"wechat/common"
 	"wechat/global"
@@ -151,4 +153,18 @@ func ApiDeleteQueue(c *gin.Context) {
 	var service service.BaiKeService
 	service.DeleteQueue(categoryId)
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
+
+func GetOpenId(c *gin.Context) {
+	code := c.Query("code")
+	client := &http.Client{}
+	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=wx59dda0671b488462&secret=23f5a067460f0a40811acea3feccf14c&js_code=%s&grant_type=authorization_code", code)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("content-type", "application/json")
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Printf(string(body))
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"data":      string(body),
+	}, common.SUCCESS_MSG, c)
 }
