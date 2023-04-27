@@ -95,17 +95,17 @@ func (bs *BaiKeService) GetAnswerList(page, pageSize int) (list []map[string]int
 	db = db.Limit(limit).Offset(offset).Find(&answerList)
 
 	//获取问题列表与栏目列表key=>value格式
-	questionIds := make([]string, 0)
-	for _, item := range answerList {
-		questionIds = append(questionIds, strconv.Itoa(item.QuestionId))
-	}
-	questionList := bs.GetQuestionKeyValue(questionIds)
+	//questionIds := make([]string, 0)
+	//for _, item := range answerList {
+	//	//questionIds = append(questionIds, strconv.Itoa(item.QuestionId))
+	//}
+	//questionList := bs.GetQuestionKeyValue(questionIds)
 
 	categoryIds := make([]string, 0)
 	for _, item := range answerList {
 		categoryIds = append(categoryIds, strconv.Itoa(item.Id))
 	}
-	categoryList := bs.GetCategoryKeyValue(categoryIds)
+	//categoryList := bs.GetCategoryKeyValue(categoryIds)
 
 	data := make([]map[string]interface{}, 0)
 
@@ -114,8 +114,8 @@ func (bs *BaiKeService) GetAnswerList(page, pageSize int) (list []map[string]int
 		d := map[string]interface{}{
 			"id":           item.Id,
 			"open_id":      item.OpenId,
-			"category":     categoryList[item.CategoryId],
-			"question":     questionList[item.QuestionId],
+			//"category":     categoryList[item.CategoryId],
+			//"question":     questionList[item.QuestionId],
 			"is_select":    item.IsSelect,
 			"right_select": item.RightSelect,
 			"answer_time":  utils.FormatDateFromUnix(answerTime),
@@ -220,18 +220,6 @@ func (bs *BaiKeService) InsertLike(c *common.LikeReq) (err error) {
 	return nil
 }
 
-//InsertAnswer 插入答案数据
-func (bs *BaiKeService) InsertAnswer(c *common.AnswerReq) (err error) {
-	//定义对应的类型
-	var data model.Answer
-	//格式化数据生成
-	c.GenerateAnswer(&data)
-	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
-		fmt.Println("数据创建失败")
-		return err
-	}
-	return nil
-}
 
 //InsertUser 插入用户数据
 func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
