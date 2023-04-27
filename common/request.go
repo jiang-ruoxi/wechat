@@ -44,8 +44,6 @@ func (req LikeReq) GenerateLike(model *model.Like) {
 
 func (req AnswerReq) GenerateAnswer(model *model.Answer) {
 	model.OpenId = req.OpenId
-	model.CategoryId = req.CategoryId
-	model.QuestionId = req.QuestionId
 	model.IsSelect = req.IsSelect
 	model.RightSelect = req.RightSelect
 	model.AddTime = strconv.Itoa(int(time.Now().UTC().Unix()))
