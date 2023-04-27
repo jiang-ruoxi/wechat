@@ -169,9 +169,9 @@ func GetOpenId(c *gin.Context) {
 	resp, _ := client.Do(req)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Printf(string(body))
-	json.Unmarshal(body, &data);
+	json.Unmarshal(body, &data)
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-		"data":      data.Openid,
+		"data": data.Openid,
 	}, common.SUCCESS_MSG, c)
 }
 
@@ -189,4 +189,17 @@ func AddUser(c *gin.Context) {
 		return
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
+
+func GetInfoByOpenId(c *gin.Context) {
+	openId := c.Query("openId")
+	var service service.BaiKeService
+	count, err := service.GetInfoByOpenId(openId)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"count": count,
+	}, common.SUCCESS_MSG, c)
 }

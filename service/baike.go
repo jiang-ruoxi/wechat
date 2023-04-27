@@ -273,3 +273,10 @@ func (bs *BaiKeService) DeleteQueue(categoryId int) {
 	}
 	redis.RedisClient.Del(context.Background(), queue).Result()
 }
+
+//GetInfoByOpenId 插入用户数据
+func (bs *BaiKeService) GetInfoByOpenId(openId string) (count int64, err error) {
+	mysql.DB.Model(&model.User{}).Where("open_id = ?", openId).Count(&count)
+
+	return count, nil
+}
