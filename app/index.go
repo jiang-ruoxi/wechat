@@ -228,7 +228,7 @@ func AddUploads(c *gin.Context) {
 		var Path string = "/data/web/static/wechat"
 		dst := path.Join(Path, file.Filename)
 		c.SaveUploadedFile(file, dst)
-		dst = strings.Replace(dst, Path, "https://static.58haha.com/", 1)
+		dst = strings.Replace(dst, Path, "https://static.58haha.com/wechat", 1)
 		c.JSON(200, gin.H{
 			"dst": dst,
 		})
