@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"path"
 	"strconv"
+	"strings"
 	"wechat/common"
 	"wechat/global"
 	"wechat/service"
@@ -227,10 +228,14 @@ func AddUploads(c *gin.Context){
 	if err == nil {
 		dst := path.Join("/data/web/static",file.Filename)
 		c.SaveUploadedFile(file,dst)
+		dst =  strings.Replace(dst,"/data/web/static/","https://static.58haha.com/", 1)
 		c.JSON(200,gin.H{
 			"code":1,
 			"msg":"文件上传成功",
 			"dst":dst,
 		})
+	}else{
+		global.WECHAT_LOG.Info(fmt.Sprintf("AddUploads：%#v \n", err))
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 	}
 }
