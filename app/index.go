@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"path"
 	"strconv"
 	"wechat/common"
 	"wechat/global"
@@ -218,4 +219,18 @@ func AddQuestion(c *gin.Context) {
 		return
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
+
+
+func AddUploads(c *gin.Context){
+	file, err:= c.FormFile("file")
+	if err == nil {
+		dst := path.Join("/data/web/static",file.Filename)
+		c.SaveUploadedFile(file,dst)
+		c.JSON(200,gin.H{
+			"code":1,
+			"msg":"文件上传成功",
+			"dst":dst,
+		})
+	}
 }
