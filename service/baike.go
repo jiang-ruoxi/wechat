@@ -357,18 +357,19 @@ func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, 
 	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
 
 	var rank int
+	dataMap :=  make(map[string]interface{})
 	for _, item := range data {
 		rank = rank + 1
 		if item.OpenId == userId {
-			rankMap["nick_name"] = item.NickName
-			rankMap["head_url"] = item.HeadUrl
-			rankMap["score"] = item.Score
-			rankMap["rank"] = rank
+			dataMap["nick_name"] = item.NickName
+			dataMap["head_url"] = item.HeadUrl
+			dataMap["score"] = item.Score
+			dataMap["rank"] = rank
 			if item.Score < 1 {
-				rankMap["score"] = "-"
-				rankMap["rank"] = "-"
+				dataMap["score"] = "-"
+				dataMap["rank"] = "-"
 			}
 		}
 	}
-	return rankMap, err
+	return dataMap, err
 }
