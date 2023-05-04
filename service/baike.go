@@ -327,6 +327,9 @@ func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err
 	rankMap := make(map[string]interface{})
 	var rank int
 	for _, item := range data {
+		rankMap["nick_name"] = ""
+		rankMap["head_url"] = ""
+		rankMap["score"] = 0
 		rank = rank + 1
 		rankMap["nick_name"] = item.NickName
 		rankMap["head_url"] = item.HeadUrl
