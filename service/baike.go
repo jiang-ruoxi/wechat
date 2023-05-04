@@ -262,7 +262,14 @@ func (bs *BaiKeService) DeleteQueue(categoryId int) {
 }
 
 //GetInfoByOpenId 插入用户数据
-func (bs *BaiKeService) GetInfoByOpenId(openId string) (count int64, err error) {
+func (bs *BaiKeService) GetInfoByOpenId(openId string) (data model.User, err error) {
+	mysql.DB.Model(&model.User{}).Where("open_id = ?", openId).Find(&data)
+
+	return data, nil
+}
+
+//GetCountByOpenId 插入用户数据
+func (bs *BaiKeService) GetCountByOpenId(openId string) (count int64, err error) {
 	mysql.DB.Model(&model.User{}).Where("open_id = ?", openId).Count(&count)
 
 	return count, nil

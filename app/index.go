@@ -196,7 +196,20 @@ func AddUser(c *gin.Context) {
 func GetInfoByOpenId(c *gin.Context) {
 	openId := c.Query("openId")
 	var service service.BaiKeService
-	count, err := service.GetInfoByOpenId(openId)
+	info, err := service.GetInfoByOpenId(openId)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"data": info,
+	}, common.SUCCESS_MSG, c)
+}
+
+func GetCountByOpenId(c *gin.Context) {
+	openId := c.Query("openId")
+	var service service.BaiKeService
+	count, err := service.GetCountByOpenId(openId)
 	if err != nil {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 		return

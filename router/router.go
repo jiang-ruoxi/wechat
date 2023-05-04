@@ -30,6 +30,7 @@ func InitRouter() *gin.Engine {
 
 		api.GET("/getOpenId", app.GetOpenId)
 		api.GET("/addUser", app.AddUser)
+		api.GET("/getCountByOpenId", app.GetCountByOpenId)
 		api.GET("/getInfoByOpenId", app.GetInfoByOpenId)
 		api.GET("/addQuestion", app.AddQuestion)
 		api.GET("/setScore", app.SetScore)
