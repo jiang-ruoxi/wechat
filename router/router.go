@@ -34,7 +34,8 @@ func InitRouter() *gin.Engine {
 		api.GET("/getInfoByOpenId", app.GetInfoByOpenId)
 		api.GET("/addQuestion", app.AddQuestion)
 		api.GET("/setScore", app.SetScore)
-		api.GET("/getRank", app.GetRankList)
+		api.GET("/getRankList", app.GetRankList)
+		api.GET("/getRank", app.GetRank)
 		api.POST("/upload", app.AddUploads)
 
 	}

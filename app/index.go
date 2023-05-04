@@ -276,3 +276,17 @@ func GetRankList(c *gin.Context) {
 		"list": list,
 	}, common.SUCCESS_MSG, c)
 }
+
+//GetRank 获取答题记录
+func GetRank(c *gin.Context) {
+	userId := c.Query("user_id")
+	var service service.BaiKeService
+	list, err := service.GetRank(userId)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"list": list,
+	}, common.SUCCESS_MSG, c)
+}

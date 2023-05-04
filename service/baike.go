@@ -343,9 +343,32 @@ func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err
 			rankMap["score"] = "-"
 			rankMap["rank"] = "-"
 		}
-		
+
 		rankMapList = append(rankMapList, rankMap)
 
 	}
 	return rankMapList, err
+}
+
+//GetRank 插入答案数据
+func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, err error) {
+	var data []model.User
+	db := mysql.DB.Model(&model.User{}).Debug()
+	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
+
+	var rank int
+	for _, item := range data {
+		rank = rank + 1
+		if item.OpenId == userId {
+			rankMap["nick_name"] = item.NickName
+			rankMap["head_url"] = item.HeadUrl
+			rankMap["score"] = item.Score
+			rankMap["rank"] = rank
+			if item.Score < 1 {
+				rankMap["score"] = "-"
+				rankMap["rank"] = "-"
+			}
+		}
+	}
+	return rankMap, err
 }
