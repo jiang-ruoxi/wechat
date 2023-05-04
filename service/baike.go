@@ -112,8 +112,8 @@ func (bs *BaiKeService) GetAnswerList(page, pageSize int) (list []map[string]int
 	for _, item := range answerList {
 		answerTime, _ := strconv.ParseInt(item.AddTime, 10, 64)
 		d := map[string]interface{}{
-			"id":           item.Id,
-			"open_id":      item.OpenId,
+			"id":      item.Id,
+			"open_id": item.OpenId,
 			//"category":     categoryList[item.CategoryId],
 			//"question":     questionList[item.QuestionId],
 			"is_select":    item.IsSelect,
@@ -220,7 +220,6 @@ func (bs *BaiKeService) InsertLike(c *common.LikeReq) (err error) {
 	return nil
 }
 
-
 //InsertUser 插入用户数据
 func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 	//定义对应的类型
@@ -296,6 +295,23 @@ func (bs *BaiKeService) InsertAnswer(c *common.AnswerReq) (err error) {
 	//格式化数据生成
 	c.GenerateAnswer(&data)
 	if err = mysql.DB.Model(&model.Answer{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
+}
+
+//SetScore 插入答案数据
+func (bs *BaiKeService) SetScore(userId string, score string) (err error) {
+	var data model.User
+	mysql.DB.Model(&model.User{}).Where("open_id =?", userId).First(&data)
+	scoreOld := data.Score
+	scoreNew, _ := strconv.Atoi(score)
+	scoreRes := scoreOld + scoreNew
+	//格式化数据生成
+	if err = mysql.DB.Model(&model.User{}).Where("open_id =?", userId).Update(map[string]interface{}{
+		"score": scoreRes,
+	}).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
 	}

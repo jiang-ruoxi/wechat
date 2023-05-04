@@ -222,19 +222,31 @@ func AddQuestion(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-
-func AddUploads(c *gin.Context){
-	file, err:= c.FormFile("file")
+func AddUploads(c *gin.Context) {
+	file, err := c.FormFile("file")
 	if err == nil {
 		var Path string = "/data/web/static/wechat"
-		dst := path.Join(Path,file.Filename)
-		c.SaveUploadedFile(file,dst)
-		dst =  strings.Replace(dst,Path,"https://static.58haha.com/", 1)
-		c.JSON(200,gin.H{
-			"dst":dst,
+		dst := path.Join(Path, file.Filename)
+		c.SaveUploadedFile(file, dst)
+		dst = strings.Replace(dst, Path, "https://static.58haha.com/", 1)
+		c.JSON(200, gin.H{
+			"dst": dst,
 		})
-	}else{
+	} else {
 		global.WECHAT_LOG.Info(fmt.Sprintf("AddUploads：%#v \n", err))
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 	}
+}
+
+func SetScore(c *gin.Context) {
+	userId := c.Query("user_id")
+	score := c.Query("score")
+	var service service.BaiKeService
+	err := service.SetScore(userId, score)
+	if err != nil {
+		global.WECHAT_LOG.Info(fmt.Sprintf("AddQuestion：%#v \n", err))
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
