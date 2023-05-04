@@ -257,6 +257,7 @@ func GetRankList(c *gin.Context) {
 	list, err := service.GetRankList()
 	if err != nil {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
 		"list": list,
