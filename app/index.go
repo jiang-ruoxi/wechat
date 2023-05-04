@@ -229,9 +229,9 @@ func AddUploads(c *gin.Context){
 		dst := path.Join("/data/web/static",file.Filename)
 		c.SaveUploadedFile(file,dst)
 		dst =  strings.Replace(dst,"/data/web/static/","https://static.58haha.com/", 1)
-		common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-			"dst": dst,
-		}, common.SUCCESS_MSG, c)
+		c.JSON(200,gin.H{
+			"dst":dst,
+		})
 	}else{
 		global.WECHAT_LOG.Info(fmt.Sprintf("AddUploads：%#v \n", err))
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
