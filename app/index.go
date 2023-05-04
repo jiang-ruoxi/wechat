@@ -250,3 +250,15 @@ func SetScore(c *gin.Context) {
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
+
+//GetRankList 获取答题记录
+func GetRankList(c *gin.Context) {
+	var service service.BaiKeService
+	list, err := service.GetRankList()
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"list": list,
+	}, common.SUCCESS_MSG, c)
+}

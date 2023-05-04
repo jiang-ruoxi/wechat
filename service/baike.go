@@ -317,3 +317,21 @@ func (bs *BaiKeService) SetScore(userId string, score string) (err error) {
 	}
 	return nil
 }
+
+//GetRankList 插入答案数据
+func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err error) {
+	var data []model.User
+	db := mysql.DB.Model(&model.User{}).Select("nick_name", "head_url", "score")
+	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
+
+	var rankMap map[string]interface{}
+	var rank int
+	for _, item := range data {
+		rankMap["nick_name"] = item.NickName
+		rankMap["head_url"] = item.HeadUrl
+		rankMap["score"] = item.Score
+		rankMap["rank"] = rank + 1
+		rankMapList = append(rankMapList, rankMap)
+	}
+	return rankMapList, err
+}
