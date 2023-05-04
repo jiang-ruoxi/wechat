@@ -323,8 +323,8 @@ func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err
 	var data []model.User
 	db := mysql.DB.Model(&model.User{}).Debug()
 	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
-
-	var rankMap map[string]interface{}
+	
+	rankMap := make(map[string]interface{})
 	var rank int
 	for _, item := range data {
 		rankMap["nick_name"] = item.NickName
