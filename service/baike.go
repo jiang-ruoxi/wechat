@@ -21,9 +21,9 @@ func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 
 	if categoryId > 0 {
-		db = db.Select("id").Where("category_id = ?", categoryId).Order("question desc").Find(&baiKeList)
+		db = db.Select("id").Where("category_id = ?", categoryId).Order("question desc, id desc").Find(&baiKeList)
 	} else {
-		db = db.Select("id").Order("question desc").Find(&baiKeList)
+		db = db.Select("id").Order("question desc, id desc").Find(&baiKeList)
 	}
 
 	questionIds := make([]int, 0)
@@ -357,7 +357,7 @@ func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, 
 	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
 
 	var rank int
-	dataMap :=  make(map[string]interface{})
+	dataMap := make(map[string]interface{})
 	for _, item := range data {
 		rank = rank + 1
 		if item.OpenId == userId {
