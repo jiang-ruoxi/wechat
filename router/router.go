@@ -1,12 +1,13 @@
 package router
 
 import (
-	"github.com/gin-contrib/zap"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"time"
 	"wechat/app"
 	"wechat/middleware"
+
+	ginzap "github.com/gin-contrib/zap"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func InitRouter() *gin.Engine {
@@ -37,6 +38,8 @@ func InitRouter() *gin.Engine {
 		api.GET("/getRankList", app.GetRankList)
 		api.GET("/getRank", app.GetRank)
 		api.POST("/upload", app.AddUploads)
+
+		api.GET("/msg/verify", app.GetMsgVerify)
 
 	}
 

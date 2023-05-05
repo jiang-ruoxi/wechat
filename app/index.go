@@ -1,18 +1,22 @@
 package app
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"path"
+	"sort"
 	"strconv"
 	"strings"
 	"wechat/common"
 	"wechat/global"
 	"wechat/service"
 	"wechat/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func ApiIndex(c *gin.Context) {
@@ -22,7 +26,7 @@ func ApiIndex(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-//ApiQuestion 获取对应的栏目答题数据
+// ApiQuestion 获取对应的栏目答题数据
 func ApiQuestion(c *gin.Context) {
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
@@ -32,7 +36,7 @@ func ApiQuestion(c *gin.Context) {
 	}, common.SUCCESS_MSG, c)
 }
 
-//ApiAnswerList 获取答题记录
+// ApiAnswerList 获取答题记录
 func ApiAnswerList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
@@ -49,7 +53,7 @@ func ApiAnswerList(c *gin.Context) {
 	}, common.SUCCESS_MSG, c)
 }
 
-//ApiAnswer 保存回答的答案
+// ApiAnswer 保存回答的答案
 func ApiAnswer(c *gin.Context) {
 	var req common.AnswerReq
 	err := c.ShouldBindJSON(&req)
@@ -76,7 +80,7 @@ func ApiAnswer(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-//ApiLikeList 获取收藏记录
+// ApiLikeList 获取收藏记录
 func ApiLikeList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
@@ -93,7 +97,7 @@ func ApiLikeList(c *gin.Context) {
 	}, common.SUCCESS_MSG, c)
 }
 
-//ApiLike 保存收藏的数据
+// ApiLike 保存收藏的数据
 func ApiLike(c *gin.Context) {
 	var req common.LikeReq
 	err := c.ShouldBindJSON(&req)
@@ -119,7 +123,7 @@ func ApiLike(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-//ApiUser 保存用户的数据
+// ApiUser 保存用户的数据
 func ApiUser(c *gin.Context) {
 	var req common.UserReq
 	err := c.ShouldBindJSON(&req)
@@ -259,7 +263,7 @@ func SetScore(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
 
-//GetRankList 获取答题记录
+// GetRankList 获取答题记录
 func GetRankList(c *gin.Context) {
 	var service service.BaiKeService
 	list, err := service.GetRankList()
@@ -272,7 +276,7 @@ func GetRankList(c *gin.Context) {
 	}, common.SUCCESS_MSG, c)
 }
 
-//GetRank 获取答题记录
+// GetRank 获取答题记录
 func GetRank(c *gin.Context) {
 	userId := c.Query("user_id")
 	var service service.BaiKeService
@@ -284,4 +288,30 @@ func GetRank(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
 		"rank": rank,
 	}, common.SUCCESS_MSG, c)
+}
+
+// GetMsgVerify 获取答题记录
+func GetMsgVerify(c *gin.Context) {
+	const token = "58haha_wechat_token" // 微信小程序后台设置的 Token
+	signature := c.Query("signature")
+	timestamp := c.Query("timestamp")
+	nonce := c.Query("nonce")
+	echostr := c.Query("echostr")
+
+	// 将 token、timestamp、nonce 三个参数进行字典序排序
+	strs := sort.StringSlice{token, timestamp, nonce}
+	strs.Sort()
+
+	// 将三个参数字符串拼接成一个字符串进行 SHA1 加密
+	str := strings.Join(strs, "")
+	h := sha1.New()
+	h.Write([]byte(str))
+	hashedStr := hex.EncodeToString(h.Sum(nil))
+
+	// 验证签名
+	if hashedStr == signature {
+		c.String(http.StatusOK, echostr)
+	} else {
+		c.String(http.StatusBadRequest, "Invalid signature")
+	}
 }
