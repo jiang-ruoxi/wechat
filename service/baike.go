@@ -21,9 +21,9 @@ func (bs *BaiKeService) PushDataToQueue(categoryId int) error {
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 
 	if categoryId > 0 {
-		db = db.Select("id").Where("category_id = ?", categoryId).Order("question desc, id desc").Find(&baiKeList)
+		db = db.Select("id").Where("category_id = ?", categoryId).Order("question desc").Find(&baiKeList)
 	} else {
-		db = db.Select("id").Order("question desc, id desc").Find(&baiKeList)
+		db = db.Select("id").Order("question desc").Find(&baiKeList)
 	}
 
 	questionIds := make([]int, 0)
