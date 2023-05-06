@@ -54,19 +54,19 @@ func (bs *BaiKeService) SendMsg() {
 
 	// 构建请求 body 数据
 	dataJson := data{}
-	dataJson.Keyword1.Value = "2023-05-06 12:11:11"
+	dataJson.Keyword1.Value = utils.GetCurrentFormatDate()
 	dataJson.Keyword1.Color = "#173177"
-	dataJson.Keyword2.Value = "测试内容"
+	dataJson.Keyword2.Value = "新增用户"
 	dataJson.Keyword2.Color = "#173177"
-	dataJson.Keyword3.Value = "测试时间"
+	dataJson.Keyword3.Value = "有新用户来进行挑战百科知识啦"
 	dataJson.Keyword3.Color = "#173177"
-	dataJson.Keyword4.Value = "备注"
+	dataJson.Keyword4.Value = "百科知识，公基知识，事业编刷题题库，事业编公共基础刷题题库，公共基础知识刷题题库"
 	dataJson.Keyword4.Color = "#173177"
 	requestBody := body{
 		Touser:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
 		TemplateID:      "ts6dbTrgBPBjOAEB6FI6T_SzZqJfbQOxDvDGtozN9GU",
 		Page:            "index",
-		FormID:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
+		FormID:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM" + strconv.FormatInt(time.Now().UnixMicro(), 10),
 		Data:            dataJson,
 		EmphasisKeyword: "keyword1.DATA",
 	}
