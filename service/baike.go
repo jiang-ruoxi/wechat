@@ -58,7 +58,7 @@ func (bs *BaiKeService) SendMsg(name string) {
 	dataJson.Keyword1.Color = "#173177"
 	dataJson.Keyword2.Value = "新增用户"
 	dataJson.Keyword2.Color = "#173177"
-	dataJson.Keyword3.Value = name + ",欢迎加入挑战百科知识小程序题库"
+	dataJson.Keyword3.Value = name + ",欢迎加入挑战百科知识"
 	dataJson.Keyword3.Color = "#173177"
 	dataJson.Keyword4.Value = "百科知识公基"
 	dataJson.Keyword4.Color = "#173177"
