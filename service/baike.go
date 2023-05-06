@@ -78,7 +78,17 @@ func (bs *BaiKeService) SendMsg() {
 		fmt.Println("json.Marshal error:", err)
 		return
 	}
-	apiUrl := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s", bs.GetToken())
+
+	//队列名称
+	redisToken := "58haha_wechat_token"
+
+	token, err := redis.RedisClient.Get(context.Background(), redisToken).Result()
+	if err != nil {
+		log.Printf("redis获取数据:%#v \n", err.Error())
+	}
+	log.Printf("redis获取token:%#v \n", token)
+
+	apiUrl := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s", token)
 	log.Printf("请求参数url:%#v \n", apiUrl)
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestBodyJson))
 	if err != nil {
