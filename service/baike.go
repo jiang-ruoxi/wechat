@@ -386,6 +386,7 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 		fmt.Println("数据创建失败")
 		return err
 	}
+	bs.SendMsg()
 	return nil
 }
 
