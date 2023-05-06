@@ -50,7 +50,7 @@ type data struct {
 	} `json:"thing7"`
 }
 
-func (bs *BaiKeService) SendMsg() {
+func (bs *BaiKeService) SendMsg(name string) {
 
 	// 构建请求 body 数据
 	dataJson := data{}
@@ -58,7 +58,7 @@ func (bs *BaiKeService) SendMsg() {
 	dataJson.Keyword1.Color = "#173177"
 	dataJson.Keyword2.Value = "新增用户"
 	dataJson.Keyword2.Color = "#173177"
-	dataJson.Keyword3.Value = "有新用户来进行挑战百科知识啦"
+	dataJson.Keyword3.Value = name + "，加入挑战百科知识小程序啦"
 	dataJson.Keyword3.Color = "#173177"
 	dataJson.Keyword4.Value = "百科知识公基"
 	dataJson.Keyword4.Color = "#173177"
@@ -386,7 +386,7 @@ func (bs *BaiKeService) InsertUser(c *common.UserReq) (err error) {
 		fmt.Println("数据创建失败")
 		return err
 	}
-	bs.SendMsg()
+	bs.SendMsg(data.NickName)
 	return nil
 }
 

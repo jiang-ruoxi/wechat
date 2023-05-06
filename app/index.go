@@ -326,6 +326,6 @@ func GetToken(c *gin.Context) {
 
 func SendMsg(c *gin.Context) {
 	var service service.BaiKeService
-	service.SendMsg()
+	service.SendMsg("default")
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
