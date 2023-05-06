@@ -40,6 +40,8 @@ func InitRouter() *gin.Engine {
 		api.POST("/upload", app.AddUploads)
 
 		api.GET("/msg/verify", app.GetMsgVerify)
+		api.GET("/token", app.GetToken)
+		api.GET("/send_msg", app.SendMsg)
 
 	}
 

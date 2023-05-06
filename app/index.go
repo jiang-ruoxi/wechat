@@ -315,3 +315,17 @@ func GetMsgVerify(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Invalid signature")
 	}
 }
+
+func GetToken(c *gin.Context) {
+	var service service.BaiKeService
+	token := service.GetToken()
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"token": token,
+	}, common.SUCCESS_MSG, c)
+}
+
+func SendMsg(c *gin.Context) {
+	var service service.BaiKeService
+	service.SendMsg()
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}
