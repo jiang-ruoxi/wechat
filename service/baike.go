@@ -73,7 +73,7 @@ func (bs *BaiKeService) SendMsg() {
 
 	// 将 body 数据转为 json
 	requestBodyJson, err := json.Marshal(requestBody)
-	log.Printf("请求参数:%#v \n", requestBodyJson)
+	log.Printf("请求参数:%#v \n", string(requestBodyJson))
 	if err != nil {
 		fmt.Println("json.Marshal error:", err)
 		return
