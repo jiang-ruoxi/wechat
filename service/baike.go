@@ -54,14 +54,14 @@ func (bs *BaiKeService) SendMsg() {
 
 	// 构建请求 body 数据
 	dataJson := data{}
-	dataJson.Keyword1.Value = "测试标题"
+	dataJson.Keyword1.Value = "2023-05-06 12:11:11"
 	dataJson.Keyword1.Color = "#173177"
 	dataJson.Keyword2.Value = "测试内容"
 	dataJson.Keyword2.Color = "#173177"
 	dataJson.Keyword3.Value = "测试时间"
 	dataJson.Keyword3.Color = "#173177"
-	dataJson.Keyword3.Value = "备注"
-	dataJson.Keyword3.Color = "#173177"
+	dataJson.Keyword4.Value = "备注"
+	dataJson.Keyword4.Color = "#173177"
 	requestBody := body{
 		Touser:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
 		TemplateID:      "ts6dbTrgBPBjOAEB6FI6T_SzZqJfbQOxDvDGtozN9GU",
@@ -79,6 +79,7 @@ func (bs *BaiKeService) SendMsg() {
 		return
 	}
 	apiUrl := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s", bs.GetToken())
+	log.Printf("请求参数url:%#v \n", apiUrl)
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestBodyJson))
 	if err != nil {
 		fmt.Println("http.NewRequest error:", err)
