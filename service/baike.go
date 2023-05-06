@@ -60,7 +60,7 @@ func (bs *BaiKeService) SendMsg() {
 	dataJson.Keyword2.Color = "#173177"
 	dataJson.Keyword3.Value = "有新用户来进行挑战百科知识啦"
 	dataJson.Keyword3.Color = "#173177"
-	dataJson.Keyword4.Value = "百科知识，公基知识，事业编刷题题库，事业编公共基础刷题题库，公共基础知识刷题题库"
+	dataJson.Keyword4.Value = "百科知识公基知识事业编刷题公共基础知识刷题题库"
 	dataJson.Keyword4.Color = "#173177"
 	requestBody := body{
 		Touser:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
