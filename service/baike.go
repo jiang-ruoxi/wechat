@@ -35,15 +35,19 @@ type data struct {
 	Keyword1 struct {
 		Value string `json:"value"`
 		Color string `json:"color"`
-	} `json:"keyword1"`
+	} `json:"time5"`
 	Keyword2 struct {
 		Value string `json:"value"`
 		Color string `json:"color"`
-	} `json:"keyword2"`
+	} `json:"thing6"`
 	Keyword3 struct {
 		Value string `json:"value"`
 		Color string `json:"color"`
-	} `json:"keyword3"`
+	} `json:"thing8"`
+	Keyword4 struct {
+		Value string `json:"value"`
+		Color string `json:"color"`
+	} `json:"thing7"`
 }
 
 func (bs *BaiKeService) SendMsg() {
@@ -55,6 +59,8 @@ func (bs *BaiKeService) SendMsg() {
 	dataJson.Keyword2.Value = "测试内容"
 	dataJson.Keyword2.Color = "#173177"
 	dataJson.Keyword3.Value = "测试时间"
+	dataJson.Keyword3.Color = "#173177"
+	dataJson.Keyword3.Value = "备注"
 	dataJson.Keyword3.Color = "#173177"
 	requestBody := body{
 		Touser:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
