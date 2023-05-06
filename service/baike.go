@@ -71,7 +71,7 @@ func (bs *BaiKeService) SendMsg() {
 		fmt.Println("json.Marshal error:", err)
 		return
 	}
-	apiUrl := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s", bs.GetToken())
+	apiUrl := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s", bs.GetToken())
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestBodyJson))
 	if err != nil {
 		fmt.Println("http.NewRequest error:", err)
