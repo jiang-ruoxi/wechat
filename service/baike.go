@@ -65,7 +65,7 @@ func (bs *BaiKeService) SendMsg() {
 	requestBody := body{
 		Touser:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM",
 		TemplateID:      "ts6dbTrgBPBjOAEB6FI6T_SzZqJfbQOxDvDGtozN9GU",
-		Page:            "index",
+		Page:            "/pages/index/index",
 		FormID:          "oqXuP4nEcrQdreKXPK7PpTQVXrbM" + strconv.FormatInt(time.Now().UnixMicro(), 10),
 		Data:            dataJson,
 		EmphasisKeyword: "keyword1.DATA",
