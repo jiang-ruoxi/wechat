@@ -558,13 +558,7 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	return shareInfo, err
 }
 
-// ShareInfo 分享数据
-type CategoryData struct {
-	CategoryId    string `json:"category_id"`
-	CategoryCount string `json:"category_count"`
-}
-
-func (bs *BaiKeService) GetCategoryCount() (categoryData CategoryData, err error) {
+func (bs *BaiKeService) GetCategoryCount() (categoryData model.BaiKe, err error) {
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 	db.Select("category_id, COUNT(id) AS category_count").Group("category_id").Find(&categoryData)
 	err = db.Error
