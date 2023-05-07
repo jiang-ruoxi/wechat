@@ -526,7 +526,6 @@ func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, 
 	return dataMap, err
 }
 
-
 // ShareInfo 分享数据
 func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface{}, err error) {
 	var data model.User
@@ -540,8 +539,8 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	//计算注册几天
 
 	int64Time, err := strconv.ParseInt(data.AddTime, 10, 64)
-	t1 :=utils.FormatDateFromUnixT3(int64Time) //20210414
-	t2 :=utils.FormatDateFromUnixT3(time.Now().Unix()) //20210414
+	t1 := utils.FormatDateFromUnixT3(int64Time)         //20210414
+	t2 := utils.FormatDateFromUnixT3(time.Now().Unix()) //20210414
 	t1Date, err := strconv.Atoi(t1)
 	t2Date, err := strconv.Atoi(t2)
 	shareInfo["last_day"] = t2Date - t1Date + 1
@@ -557,4 +556,17 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	weekday := weekdays[now.Weekday()]
 	shareInfo["weak_day"] = weekday
 	return shareInfo, err
+}
+
+// ShareInfo 分享数据
+type CategoryData struct {
+	CategoryId    string `json:"category_id"`
+	CategoryCount string `json:"category_count"`
+}
+
+func (bs *BaiKeService) GetCategoryCount() (categoryData CategoryData, err error) {
+	db := mysql.DB.Model(&model.BaiKe{}).Debug()
+	db.Select("category_id, COUNT(id) AS category_count").Group("category_id").Find(&categoryData)
+	err = db.Error
+	return categoryData, err
 }

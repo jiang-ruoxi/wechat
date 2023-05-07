@@ -342,3 +342,15 @@ func ShareInfo(c *gin.Context) {
 		"share": share,
 	}, common.SUCCESS_MSG, c)
 }
+
+func GetCategoryCount(c *gin.Context) {
+	var service service.BaiKeService
+	data, err := service.GetCategoryCount()
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"data": data,
+	}, common.SUCCESS_MSG, c)
+}
