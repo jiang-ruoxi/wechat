@@ -329,3 +329,16 @@ func SendMsg(c *gin.Context) {
 	service.SendMsg("default")
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
+
+func ShareInfo(c *gin.Context) {
+	openId := c.Query("openId")
+	var service service.BaiKeService
+	share, err := service.ShareInfo(openId)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"share": share,
+	}, common.SUCCESS_MSG, c)
+}

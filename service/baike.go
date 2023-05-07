@@ -525,3 +525,34 @@ func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, 
 	}
 	return dataMap, err
 }
+
+
+// ShareInfo 分享数据
+func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface{}, err error) {
+	var data model.User
+	db := mysql.DB.Model(&model.User{}).Debug()
+	db.Where("open_id = ?", openId).Find(&data)
+
+	shareInfo["nick_name"] = data.NickName
+	shareInfo["head_image"] = data.HeadUrl
+
+	//计算注册几天
+	int64Time, err := strconv.ParseInt(data.AddTime, 10, 64)
+	t1 := time.Unix(int64Time, 0) // 2021-04-14 00:00:00
+	t2 := time.Unix(time.Now().Unix(), 0) // 2021-04-20 00:00:00
+	duration := t2.Sub(t1)
+	days := int(duration.Hours() / 24)
+	shareInfo["last_day"] = days
+
+	//获取当前日期
+	now := time.Now()
+	year, month, day := now.Date()
+	dateStr := fmt.Sprintf("%d-%02d-%02d", year, int(month), day)
+	shareInfo["date_time"] = dateStr
+
+	//获取当前时间是星期几
+	weekdays := []string{"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"}
+	weekday := weekdays[now.Weekday()]
+	shareInfo["weak_day"] = weekday
+	return shareInfo, err
+}

@@ -42,7 +42,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/msg/verify", app.GetMsgVerify)
 		api.GET("/token", app.GetToken)
 		api.GET("/send_msg", app.SendMsg)
-
+		api.GET("/share", app.ShareInfo)
 	}
 
 	return router
