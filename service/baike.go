@@ -564,7 +564,7 @@ type CategoryData struct {
 	CategoryCount string `json:"category_count"`
 }
 
-func (bs *BaiKeService) GetCategoryCount() (categoryData CategoryData, err error) {
+func (bs *BaiKeService) GetCategoryCount() (categoryData []CategoryData, err error) {
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
 	db.Raw("SELECT category_id, COUNT(id) AS category_count FROM s_baike  GROUP BY category_id").Scan(&categoryData)
 	err = db.Error
