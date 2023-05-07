@@ -538,12 +538,13 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	shareInfo["head_image"] = data.HeadUrl
 
 	//计算注册几天
+
 	int64Time, err := strconv.ParseInt(data.AddTime, 10, 64)
-	t1 := time.Unix(int64Time, 0) // 2021-04-14 00:00:00
-	t2 := time.Unix(time.Now().Unix(), 0) // 2021-04-20 00:00:00
-	duration := t2.Sub(t1)
-	days := int(duration.Hours() / 24)
-	shareInfo["last_day"] = days
+	t1 :=utils.FormatDateFromUnixT3(int64Time) //20210414
+	t2 :=utils.FormatDateFromUnixT3(time.Now().Unix()) //20210414
+	t1Date, err := strconv.Atoi(t1)
+	t2Date, err := strconv.Atoi(t2)
+	shareInfo["last_day"] = t2Date - t1Date + 1
 
 	//获取当前日期
 	now := time.Now()

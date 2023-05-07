@@ -8,6 +8,7 @@ import (
 const (
 	timeFormatTpl = "2006-01-02"
 	tf2           = "2006-01-02 15:04:05"
+	tf3           = "20060102"
 	RFC3339       = "2006-01-02T15:04:05Z07:00"
 )
 
@@ -15,6 +16,13 @@ const (
 func FormatDateFromUnix(unix int64) string {
 	date := time.Unix(unix, 0)
 	return date.Format(tf2)
+}
+
+
+//FormatDateFromUnixT3 时间戳转格式化
+func FormatDateFromUnixT3(unix int64) string {
+	date := time.Unix(unix, 0)
+	return date.Format(tf3)
 }
 
 //GetCurrentFormatDateTime 获取当前的日期时间
