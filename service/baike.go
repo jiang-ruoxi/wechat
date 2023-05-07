@@ -533,6 +533,7 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	db := mysql.DB.Model(&model.User{}).Debug()
 	db.Where("open_id = ?", openId).Find(&data)
 
+	shareInfo = make(map[string]interface{})
 	shareInfo["nick_name"] = data.NickName
 	shareInfo["head_image"] = data.HeadUrl
 
