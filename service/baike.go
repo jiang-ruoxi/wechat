@@ -546,10 +546,10 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 
 	//获取当前日期
 	now := time.Now()
-	// year, month, day := now.Date()
-	// dateStr := fmt.Sprintf("%d-%02d-%02d", year, int(month), day)
+	year, month, day := now.Date()
+	dateStr := fmt.Sprintf("%d-%02d-%02d", year, int(month), day)
 
-	dateStr := now.Format("2006-01-02 15:04:05")
+	// dateStr := now.Format("2006-01-02 15:04:05")
 	shareInfo["date_time"] = dateStr
 
 	//获取当前时间是星期几
