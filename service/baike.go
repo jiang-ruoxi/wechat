@@ -537,7 +537,6 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 	shareInfo["head_image"] = data.HeadUrl
 
 	//计算注册几天
-
 	int64Time, err := strconv.ParseInt(data.AddTime, 10, 64)
 	t1 := utils.FormatDateFromUnixT3(int64Time)         //20210414
 	t2 := utils.FormatDateFromUnixT3(time.Now().Unix()) //20210414
@@ -547,8 +546,10 @@ func (bs *BaiKeService) ShareInfo(openId string) (shareInfo map[string]interface
 
 	//获取当前日期
 	now := time.Now()
-	year, month, day := now.Date()
-	dateStr := fmt.Sprintf("%d-%02d-%02d", year, int(month), day)
+	// year, month, day := now.Date()
+	// dateStr := fmt.Sprintf("%d-%02d-%02d", year, int(month), day)
+
+	dateStr := now.Format("2006-01-02 15:04:05")
 	shareInfo["date_time"] = dateStr
 
 	//获取当前时间是星期几
