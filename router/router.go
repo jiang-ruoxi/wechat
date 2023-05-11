@@ -3,7 +3,6 @@ package router
 import (
 	"time"
 	"wechat/app"
-	"wechat/middleware"
 
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
@@ -18,7 +17,7 @@ func InitRouter() *gin.Engine {
 	router.Use(ginzap.RecoveryWithZap(zap.L(), true))
 	//后台路由组
 	api := router.Group("v1")
-	api.Use(middleware.Auth())
+	api.Use()
 	{
 		api.GET("/delete", app.ApiDeleteQueue)
 		api.GET("/index", app.ApiIndex)
@@ -44,6 +43,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/send_msg", app.SendMsg)
 		api.GET("/share", app.ShareInfo)
 		api.GET("/getCategoryCount", app.GetCategoryCount)
+		api.GET("/getListNumber", app.MakeNumerResult)
 	}
 
 	return router
