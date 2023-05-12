@@ -7,6 +7,7 @@ import (
 )
 
 type ShuxueService struct {
+	
 }
 
 func (ss *ShuxueService) GenerateAdditionList(op string, count, max int) (list []map[string]interface{}) {

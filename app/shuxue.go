@@ -15,6 +15,7 @@ func MakeNumerResult(c *gin.Context) {
 	op := c.Query("op")
 
 	var service service.ShuxueService
+
 	list := service.GenerateAdditionList(op, count, max)
 
 	common.ReturnResponse(common.SUCCESS, list, common.SUCCESS_MSG, c)
