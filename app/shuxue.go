@@ -12,10 +12,10 @@ func MakeNumerResult(c *gin.Context) {
 
 	count, _ := strconv.Atoi(c.Query("count"))
 	max, _ := strconv.Atoi(c.Query("max"))
-	category := c.Query("category")
+	op := c.Query("op")
 
 	var service service.ShuxueService
-	list := service.GenerateAdditionList(category, count, max)
+	list := service.GenerateAdditionList(op, count, max)
 
 	common.ReturnResponse(common.SUCCESS, list, common.SUCCESS_MSG, c)
 }
