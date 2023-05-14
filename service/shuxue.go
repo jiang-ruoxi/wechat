@@ -7,17 +7,22 @@ import (
 )
 
 type ShuxueService struct {
-	
 }
 
-func (ss *ShuxueService) GenerateAdditionList(op string, count, max int) (list []map[string]interface{}) {
+func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et string) (list []map[string]interface{}) {
 	for i := 0; i < count; i++ {
 		var all, fh string
 		var first, second, third int
-		if op == "3" {
-			all, first, second, third, fh = ss.MixGenerateAddition(max)
+
+		if max == 20 {
+			all, first, second, third, fh = ss.TwGenerateAddition(op, max, et)
 		} else {
-			all, first, second, third, fh = ss.GenerateAddition(max, op)
+			//op == 3是混合的加减
+			if op == "3" {
+				all, first, second, third, fh = ss.MixGenerateAddition(max)
+			} else {
+				all, first, second, third, fh = ss.GenerateAddition(max, op)
+			}
 		}
 
 		info := make(map[string]interface{})
@@ -29,6 +34,62 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int) (list [
 		list = append(list, info)
 	}
 	return list
+}
+
+func (ss *ShuxueService) TwGenerateAddition(op string, max int, et string) (string, int, int, int, string) {
+	//op 1加法，2减法，3混合
+	//et 1加法不进位，2减法不退位 3加法进位 4减法退位
+	var problem string
+	var a, b, c int
+	var symbol string
+	if op == "1" && et == "1" {
+		// 设置随机数种子
+		rand.Seed(time.Now().Unix())
+
+		// 生成两个不进位的随机数
+		a = rand.Intn(10)
+		b = rand.Intn(10 - a)
+
+		c = a + b
+		symbol = "+"
+		problem = fmt.Sprintf("%d %s %d = %d", a, symbol, b, c)
+	} else if op == "1" && et == "3" {
+		// 设置随机数种子
+		rand.Seed(time.Now().Unix())
+
+		// 首先生成两个数字
+		a = rand.Intn(max)
+		b = rand.Intn(max)
+
+		// 处理进位
+		if a%10+b%10 >= 10 {
+			a += 10
+		}
+		c = a + b
+		symbol = "+"
+		problem = fmt.Sprintf("%d %s %d = %d", a, symbol, b, c)
+	} else if op == "2" && et == "2" {
+		rand.Seed(time.Now().UnixNano())
+		a = rand.Intn(max)
+		b = rand.Intn(a + 1)
+		c = a - b
+		symbol = "-"
+		problem = fmt.Sprintf("%d - %d = %d\n", a, b, c)
+	} else if op == "2" && et == "4" {
+		rand.Seed(time.Now().UnixNano())
+		a = rand.Intn(20)
+		b = rand.Intn(a + 1)
+		if a%10 < b%10 { // 发生借位
+			a = (a/10 - 1) * 10 // 借位操作
+			b = (b/10 + 1) * 10 // 进位操作
+		}
+		c = a - b
+		symbol = "-"
+		problem = fmt.Sprintf("%d - %d = %d\n", a, b, c)
+	} else if op == "3" {
+		problem, a, b, c, symbol = ss.MixGenerateAddition(max)
+	}
+	return problem, a, b, c, symbol
 }
 
 func (ss *ShuxueService) GenerateAddition(n int, symbol string) (string, int, int, int, string) {
