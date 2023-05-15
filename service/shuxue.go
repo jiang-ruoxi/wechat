@@ -4,9 +4,25 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"wechat/model"
+	"wechat/pkg/mysql"
 )
 
 type ShuxueService struct {
+}
+
+// GetSXList 数学列表
+func (bs *ShuxueService) GetSXList(page, pageSize int) (list []model.ShuXue, total int64, err error) {
+	limit := pageSize
+	offset := pageSize * (page - 1)
+	// 创建db
+	var sxList []model.ShuXue
+	db := mysql.DB.Model(&model.ShuXue{}).Debug()
+	err = db.Count(&total).Error
+	db = db.Order("id desc")
+	db = db.Limit(limit).Offset(offset).Find(&sxList)
+
+	return sxList, total, err
 }
 
 func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et string) (list []map[string]interface{}) {
@@ -19,7 +35,7 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et stri
 			if op == "1" && et == "1" {
 				//rand.Seed(time.Now().UnixNano())
 				var a, b, c int
-				var symbol,problem string
+				var symbol, problem string
 				a = rand.Intn(20)
 				b = rand.Intn(20 - a)
 				c = a + b
@@ -30,9 +46,9 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et stri
 				second = b
 				third = c
 				fh = "+"
-			}else  if op == "1" && et == "3" {
+			} else if op == "1" && et == "3" {
 				var a, b, c int
-				var symbol,problem string
+				var symbol, problem string
 				//// 设置随机数种子
 				//rand.Seed(time.Now().Unix())
 
@@ -51,7 +67,7 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et stri
 				second = b
 				third = c
 				fh = "+"
-			}else{
+			} else {
 				all, first, second, third, fh = ss.TwGenerateAddition(op, max, et)
 			}
 		} else {
@@ -82,7 +98,7 @@ func (ss *ShuxueService) TwGenerateAddition(op string, max int, et string) (stri
 	if op == "1" && et == "1" {
 		rand.Seed(time.Now().UnixNano())
 		var a, b, c int
-		var symbol,problem string
+		var symbol, problem string
 		a = rand.Intn(10)
 		b = rand.Intn(10 - a)
 		c = a + b
@@ -135,7 +151,7 @@ func (ss *ShuxueService) TwGenerateAddition(op string, max int, et string) (stri
 			var temp int = a
 			a = b
 			b = temp
-		}else{
+		} else {
 			c = a - b
 		}
 		symbol = "-"

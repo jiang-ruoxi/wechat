@@ -44,6 +44,8 @@ func InitRouter() *gin.Engine {
 		api.GET("/share", app.ShareInfo)
 		api.GET("/getCategoryCount", app.GetCategoryCount)
 		api.GET("/getListNumber", app.MakeNumerResult)
+
+		api.GET("/math/chuzhong", app.ApiSXList)
 	}
 
 	return router

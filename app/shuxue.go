@@ -23,3 +23,21 @@ func MakeNumerResult(c *gin.Context) {
 
 	common.ReturnResponse(common.SUCCESS, list, common.SUCCESS_MSG, c)
 }
+
+
+// ApiSXList 数学列表
+func ApiSXList(c *gin.Context) {
+	page, _ := strconv.Atoi(c.Query("page"))
+	pageSize, _ := strconv.Atoi(c.Query("page_size"))
+	var service service.ShuxueService
+	list, total, err := service.GetSXList(page, pageSize)
+	if err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"list":      list,
+		"total":     total,
+		"page":      page,
+		"page_size": pageSize,
+	}, common.SUCCESS_MSG, c)
+}
