@@ -45,13 +45,12 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et stri
 					a += 10
 				}
 				c = a + b
-				symbol = "+"
 				problem = fmt.Sprintf("%d %s %d = %d", a, symbol, b, c)
 				all = problem
 				first = a
 				second = b
 				third = c
-				fh = "-"
+				fh = "+"
 			}else{
 				all, first, second, third, fh = ss.TwGenerateAddition(op, max, et)
 			}
