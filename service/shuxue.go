@@ -10,13 +10,14 @@ type ShuxueService struct {
 }
 
 func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et string) (list []map[string]interface{}) {
+	rand.Seed(time.Now().Unix())
 	for i := 0; i < count; i++ {
 		var all, fh string
 		var first, second, third int
 
 		if max == 20 {
 			if op == "1" && et == "1" {
-				rand.Seed(time.Now().UnixNano())
+				//rand.Seed(time.Now().UnixNano())
 				var a, b, c int
 				var symbol,problem string
 				a = rand.Intn(20)
@@ -33,7 +34,7 @@ func (ss *ShuxueService) GenerateAdditionList(op string, count, max int, et stri
 				var a, b, c int
 				var symbol,problem string
 				//// 设置随机数种子
-				rand.Seed(time.Now().Unix())
+				//rand.Seed(time.Now().Unix())
 
 				// 首先生成两个数字
 				a = rand.Intn(max)
