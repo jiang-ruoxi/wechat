@@ -492,8 +492,7 @@ func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err
 		rankMap["score"] = item.Score
 		rankMap["rank"] = rank
 		if item.Score < 1 {
-			rankMap["score"] = "-"
-			rankMap["rank"] = "-"
+			continue
 		}
 
 		rankMapList = append(rankMapList, rankMap)
