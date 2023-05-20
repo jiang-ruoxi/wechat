@@ -566,8 +566,30 @@ type CategoryData struct {
 }
 
 func (bs *BaiKeService) GetCategoryCount() (categoryData []CategoryData, err error) {
+	var categoryList []model.Category
+	db1 := mysql.DB.Model(&model.Category{}).Debug()
+	db1.Where("status = ?", 1).Find(&categoryList)
+
 	db := mysql.DB.Model(&model.BaiKe{}).Debug()
-	db.Raw("SELECT category_id, COUNT(id) AS category_count FROM s_baike  GROUP BY category_id").Scan(&categoryData)
+	var categoryDataList []CategoryData
+	db.Raw("SELECT category_id, COUNT(id) AS category_count FROM s_baike  GROUP BY category_id").Scan(&categoryDataList)
 	err = db.Error
-	return categoryData, err
+
+	var tempList []CategoryData
+	var temp CategoryData
+	for _, item := range categoryList {
+		temp.CategoryId = strconv.Itoa(item.Id)
+		temp.CategoryCount = "0"
+		tempList = append(tempList, temp)
+	}
+
+	for index, item := range tempList {
+		for _, it := range categoryDataList {
+			if item.CategoryId == it.CategoryId {
+				tempList[index].CategoryCount = it.CategoryCount
+			}
+		}
+	}
+
+	return tempList, err
 }
