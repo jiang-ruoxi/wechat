@@ -506,7 +506,7 @@ func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err
 func (bs *BaiKeService) GetRank(userId string) (rankMap map[string]interface{}, err error) {
 	var data []model.User
 	db := mysql.DB.Model(&model.User{}).Debug()
-	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
+	err = db.Limit(50).Order("score desc,id desc").Find(&data).Error
 
 	var rank int
 	dataMap := make(map[string]interface{})
