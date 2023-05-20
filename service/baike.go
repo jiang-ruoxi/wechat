@@ -481,7 +481,7 @@ func (bs *BaiKeService) SetScore(userId string, score string) (err error) {
 func (bs *BaiKeService) GetRankList() (rankMapList []map[string]interface{}, err error) {
 	var data []model.User
 	db := mysql.DB.Model(&model.User{}).Debug()
-	err = db.Limit(100).Order("score desc,id desc").Find(&data).Error
+	err = db.Limit(50).Order("score desc,id desc").Find(&data).Error
 
 	var rank int
 	for _, item := range data {
