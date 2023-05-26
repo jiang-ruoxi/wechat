@@ -1,14 +1,24 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"time"
 	"wechat/model"
 	"wechat/pkg/mysql"
+	"wechat/pkg/redis"
 )
 
 type ShuxueService struct {
+}
+func (bs *ShuxueService) GetHBToken() string {
+	//队列名称
+	redisToken := "huiben_wechat_token"
+
+	token, _ := redis.RedisClient.Get(context.Background(), redisToken).Result()
+
+	return token
 }
 
 // GetSXList 数学列表

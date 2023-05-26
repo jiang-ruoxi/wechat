@@ -46,6 +46,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/getListNumber", app.MakeNumerResult)
 
 		api.GET("/math/chuzhong", app.ApiSXList)
+		api.GET("/huiben/token", app.ApiHBToken)
 	}
 
 	return router

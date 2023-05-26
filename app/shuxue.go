@@ -24,7 +24,6 @@ func MakeNumerResult(c *gin.Context) {
 	common.ReturnResponse(common.SUCCESS, list, common.SUCCESS_MSG, c)
 }
 
-
 // ApiSXList 数学列表
 func ApiSXList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -39,5 +38,14 @@ func ApiSXList(c *gin.Context) {
 		"total":     total,
 		"page":      page,
 		"page_size": pageSize,
+	}, common.SUCCESS_MSG, c)
+}
+
+// ApiHBToken 绘本token
+func ApiHBToken(c *gin.Context) {
+	var service service.ShuxueService
+	token := service.GetHBToken()
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"token": token,
 	}, common.SUCCESS_MSG, c)
 }
