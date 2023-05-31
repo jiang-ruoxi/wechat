@@ -70,10 +70,19 @@ func ApiBookList(c *gin.Context) {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
-		"list":      list,
-		"total":     total,
-		"page":      page,
-		"page_size": pageSize,
-		"total_page": math.Ceil(float64(total)/float64(pageSize)),
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"page_size":  pageSize,
+		"total_page": math.Ceil(float64(total) / float64(pageSize)),
+	}, common.SUCCESS_MSG, c)
+}
+
+func ApiBookInfo(c *gin.Context) {
+	bookId, _ := strconv.Atoi(c.Query("book_id"))
+	var service service.BookService
+	bookInfo := service.GetBookInfo(bookId)
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"info": bookInfo,
 	}, common.SUCCESS_MSG, c)
 }
