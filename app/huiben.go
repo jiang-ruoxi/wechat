@@ -15,6 +15,7 @@ func AddVideoLog(c *gin.Context) {
 
 func UploadMp3(c *gin.Context)  {
 	file, err := c.FormFile("file")
+	global.WECHAT_LOG.Info(fmt.Sprintf("上传录音接收到的参数：%#v \n", file))
 	if err == nil {
 		var Path string = "/data/web/static/video"
 		dst := path.Join(Path, file.Filename)
