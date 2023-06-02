@@ -15,13 +15,14 @@ func AddVideoLog(c *gin.Context) {
 
 func UploadMp3(c *gin.Context)  {
 	file, err := c.FormFile("file")
-	fmt.Printf("上传录音接收到的参数:%s \n",file)
 	if err == nil {
 		var Path string = "/data/web/static/video"
 		dst := path.Join(Path, file.Filename)
-		e := c.SaveUploadedFile(file, dst)
-		fmt.Printf("SaveUploadedFile:%s \n",e)
+		fmt.Printf("file.Filename:%s \n",file.Filename)
+		fmt.Printf("dst:%s \n",dst)
+		c.SaveUploadedFile(file, dst)
 		dst = strings.Replace(dst, Path, "https://static.58haha.com/video", 1)
+		fmt.Printf("dst:%s \n",dst)
 		c.JSON(200, gin.H{
 			"dst": dst,
 		})
