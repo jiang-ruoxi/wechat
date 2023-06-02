@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"unsafe"
+	"wechat/common"
 	"wechat/model"
 	"wechat/pkg/mysql"
 )
@@ -92,4 +93,16 @@ func (bs *BookService) GetBookInfoBak(bookId int) {
 	}
 
 	fmt.Println("File content:", *str)
+}
+
+func (bs *BookService) InsertVideoLog(c *common.VideoLogReq) (err error) {
+	//定义对应的类型
+	var data model.VideoLog
+	//格式化数据生成
+	c.GenerateVideoLog(&data)
+	if err = mysql.DB.Model(&model.VideoLog{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
 }
