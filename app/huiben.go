@@ -55,3 +55,26 @@ func UploadMp3(c *gin.Context) {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
 	}
 }
+
+func MakeVideo(c *gin.Context) {
+	var req common.VideoLogReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		common.ReturnResponse(common.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, common.ERR_RES_PARAMS_ILLEGAL_MSG, c)
+		return
+	}
+	verify := utils.Rules{
+		"OpenId":   {utils.NotEmpty()},
+		"BookId":   {utils.NotEmpty()},
+	}
+	if err := utils.Verify(req, verify); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, err.Error(), c)
+		return
+	}
+	var service service.BookService
+	if err := service.MakeVideo(&req); err != nil {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
+}

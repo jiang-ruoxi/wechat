@@ -2,6 +2,7 @@ package service
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,6 +13,7 @@ import (
 	"wechat/common"
 	"wechat/model"
 	"wechat/pkg/mysql"
+	"wechat/pkg/redis"
 )
 
 type BookService struct {
@@ -104,5 +106,31 @@ func (bs *BookService) InsertVideoLog(c *common.VideoLogReq) (err error) {
 		fmt.Println("数据创建失败")
 		return err
 	}
+	return nil
+}
+
+func (bs *BookService) MakeVideo(c *common.VideoLogReq) (err error) {
+	//定义对应的类型
+	var data model.VideoLog
+	//格式化数据生成
+	c.GenerateVideoLog(&data)
+
+	var videoLog []model.VideoLog
+
+	db := mysql.DB.Model(&model.VideoLog{}).Debug()
+	db.Where("open_id =? and book_id = ?", data.OpenId, data.BookId).Find(&videoLog)
+
+	if err = db.Error; err != nil {
+		fmt.Println("查询失败")
+		return err
+	}
+
+	videoLogJson, _ := json.Marshal(videoLog)
+	item := string(videoLogJson)
+	fmt.Printf("%#v \n",item)
+	
+	queue := "huiben_video_make"
+	redis.RedisClient.RPush(context.Background(), queue, item).Result()
+
 	return nil
 }
