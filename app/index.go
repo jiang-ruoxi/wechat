@@ -354,3 +354,24 @@ func GetCategoryCount(c *gin.Context) {
 		"data": data,
 	}, common.SUCCESS_MSG, c)
 }
+
+
+func GetEnBookOpenId(c *gin.Context) {
+	type OpenIdInfo struct {
+		SessionKey string `json:"session_key"`
+		Openid     string `json:"openid"`
+	}
+	var data OpenIdInfo
+	code := c.Query("code")
+	client := &http.Client{}
+	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=wx65b5468d031d0923&secret=57fa4c517564b26973893618d4ca8fd8&js_code=%s&grant_type=authorization_code", code)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("content-type", "application/json")
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Printf(string(body))
+	json.Unmarshal(body, &data)
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"data": data.Openid,
+	}, common.SUCCESS_MSG, c)
+}
