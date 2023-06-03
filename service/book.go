@@ -19,8 +19,22 @@ import (
 type BookService struct {
 }
 
+type BookInfo struct {
+	BookId    int    `json:"book_id"`
+	BookCount string `json:"book_count"`
+}
+
+type BookInfoList struct {
+	Id        int    `json:"id"`
+	BookId    int    `json:"book_id"`
+	Title     string `json:"title"`
+	Icon      string `json:"icon"`
+	Level     uint8    `json:"level"`
+	BookCount string `json:"book_count"`
+}
+
 // GetBookList 绘本列表
-func (bs *BookService) GetBookList(level, page, pageSize int) (list []model.Book, total int64, err error) {
+func (bs *BookService) GetBookList(level, page, pageSize int) (bookInfoList []BookInfoList, total int64, err error) {
 	limit := pageSize
 	offset := pageSize * (page - 1)
 	// 创建db
@@ -31,7 +45,31 @@ func (bs *BookService) GetBookList(level, page, pageSize int) (list []model.Book
 	db = db.Order("position asc")
 	db = db.Limit(limit).Offset(offset).Find(&bookList)
 
-	return bookList, total, err
+	db1 := mysql.DB.Model(&model.BookInfo{}).Debug()
+	var bookDataList []BookInfo
+	db1.Raw("SELECT book_id,count(id) as book_count FROM s_huiben_info GROUP BY book_id").Scan(&bookDataList)
+
+	var temp BookInfoList
+	for _, item := range bookList {
+		temp.Id = item.Id
+		temp.BookId = item.BookId
+		temp.Title = item.Title
+		temp.Icon = item.Icon
+		temp.Level = item.Level
+		bookInfoList = append(bookInfoList, temp)
+	}
+
+	for index, item := range bookInfoList {
+		for _, it := range bookDataList {
+			if item.BookId == it.BookId {
+				bookInfoList[index].BookCount = it.BookCount
+			}
+		}
+	}
+
+	err = db.Error
+
+	return bookInfoList, total, err
 }
 func (bs *BookService) GetBookInfo(bookId int) (list []model.BookInfo) {
 	// 创建db
@@ -127,8 +165,8 @@ func (bs *BookService) MakeVideo(c *common.VideoLogReq) (err error) {
 
 	videoLogJson, _ := json.Marshal(videoLog)
 	item := string(videoLogJson)
-	fmt.Printf("%#v \n",item)
-	
+	fmt.Printf("%#v \n", item)
+
 	queue := "huiben_video_make"
 	redis.RedisClient.RPush(context.Background(), queue, item).Result()
 
