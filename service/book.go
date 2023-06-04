@@ -42,7 +42,7 @@ func (bs *BookService) GetBookList(level, page, pageSize int) (bookInfoList []Bo
 	db := mysql.DB.Model(&model.Book{}).Debug()
 	db = db.Where("level = ?", level)
 	err = db.Count(&total).Error
-	db = db.Order("position asc")
+	db = db.Order("position desc")
 	db = db.Limit(limit).Offset(offset).Find(&bookList)
 
 	db1 := mysql.DB.Model(&model.BookInfo{}).Debug()
