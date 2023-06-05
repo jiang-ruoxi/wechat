@@ -239,25 +239,25 @@ func (bs *BookService) GetMiniList() []MiniData {
 		Name:    "百科知识公基",
 		AppId:   "wxb1e2d179618ef271",
 		Icon:    "https://static.58haha.com/mini/wxb1e2d179618ef271.jpeg",
-		Content: "一个事业编刷题和事业编答题一站式的事业编题库百科知识增长，应对事业编刷题题库和事业编答题题库的小程序",
+		Content: "一个事业编刷题和事业编答题一站式的事业编题库百科知识增长的小程序",
 	}
 	gx := MiniData{
 		Name:    "国学拼音识数运算",
 		AppId:   "wx1090960cb624449c",
 		Icon:    "https://static.58haha.com/mini/wx1090960cb624449c.jpeg",
-		Content: "一个事业编刷题和事业编答题一站式的事业编题库百科知识增长，应对事业编刷题题库和事业编答题题库的小程序",
+		Content: "一款儿童数学识数并进行计算的小程序题库",
 	}
 	fj := MiniData{
 		Name:    "英语绘本分级跟读",
 		AppId:   "wx65b5468d031d0923",
 		Icon:    "https://static.58haha.com/mini/wx65b5468d031d0923.jpeg",
-		Content: "一款英语分级绘本跟读小程序，可以实现英语绘本跟读，也可以进行英语绘本阅读的小程序",
+		Content: "一款英语分级绘本跟读并进行英语绘本阅读的小程序",
 	}
 	cj := MiniData{
 		Name:    "初级英语绘本跟读",
 		AppId:   "wxd1adfdd4aa40cf1a",
 		Icon:    "https://static.58haha.com/mini/wxd1adfdd4aa40cf1a.jpeg",
-		Content: "一款儿童初级英语绘本跟读小程序，可以实现英语绘本跟读，也可以进行英语绘本阅读的小程序",
+		Content: "一款英语分级绘本跟读并进行英语绘本阅读的小程序",
 	}
 	var listMiniData []MiniData
 	listMiniData = append(listMiniData, gj, gx, fj, cj)
