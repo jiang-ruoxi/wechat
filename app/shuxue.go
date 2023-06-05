@@ -95,3 +95,11 @@ func ApiBookInfo(c *gin.Context) {
 		"info": bookInfo,
 	}, common.SUCCESS_MSG, c)
 }
+
+func ApiMiniList(c *gin.Context) {
+	var service service.BookService
+	miniList := service.GetMiniList()
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"data": miniList,
+	}, common.SUCCESS_MSG, c)
+}
