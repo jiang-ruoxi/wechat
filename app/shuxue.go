@@ -52,6 +52,15 @@ func ApiHBToken(c *gin.Context) {
 }
 
 func ApiBookList(c *gin.Context) {
+	sign := c.Query("t")
+
+	var service service.BookService
+	isSign := service.IsCheckSign(sign)
+	if !isSign {
+		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)
+		return
+	}
+
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1
@@ -64,7 +73,7 @@ func ApiBookList(c *gin.Context) {
 	if level < 1 {
 		level = 1
 	}
-	var service service.BookService
+
 	list, total, err := service.GetBookList(level, page, pageSize)
 	if err != nil {
 		common.ReturnResponse(common.FAIL, map[string]interface{}{}, common.FAIL_MSG, c)

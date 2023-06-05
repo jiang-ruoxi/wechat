@@ -3,6 +3,8 @@ package service
 import (
 	"bytes"
 	"context"
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,6 +12,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"time"
 	"unsafe"
 	"wechat/common"
 	"wechat/model"
@@ -180,4 +183,45 @@ func (bs *BookService) MakeVideo(c *common.VideoLogReq) (err error) {
 	redis.RedisClient.RPush(context.Background(), queue, item).Result()
 
 	return nil
+}
+
+//IsCheckSign 验证请求
+func (bs *BookService) IsCheckSign(sign string) bool {
+	if sign == "" || len(sign) != 32 {
+		return false
+	}
+	t := time.Now().Unix()
+	fmt.Println(t)
+	var slice []int64 = make([]int64, 0, 5)
+	for i := 0; i < 5; i++ {
+		t = t - 1
+		slice = append(slice, t)
+	}
+
+	md5StrSlice := make([]string, 0, 5)
+	for _, item := range slice {
+		str := strconv.FormatInt(item, 10)
+		md := fmt.Sprintf("%s%s", str, "ruoxi")
+		fmt.Println(md)
+		hash := md5.Sum([]byte(md))
+		md5str := hex.EncodeToString(hash[:])
+		fmt.Println(md5str + "\n")
+		md5StrSlice = append(md5StrSlice, md5str)
+	}
+	isExit := bs.IsInSlice(sign, md5StrSlice)
+	if !isExit {
+		return false
+	}
+
+	return true
+}
+
+//IsInSlice 判断字符串是否在切片中
+func (bs *BookService) IsInSlice(str string, slice []string) bool {
+	for _, s := range slice {
+		if s == str {
+			return true
+		}
+	}
+	return false
 }
