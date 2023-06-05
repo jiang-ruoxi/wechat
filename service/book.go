@@ -238,19 +238,19 @@ func (bs *BookService) GetMiniList() []MiniData {
 	gj := MiniData{
 		Name:    "百科知识公基",
 		AppId:   "wxb1e2d179618ef271",
-		Icon:    "https://static.58haha.com/mini/wxb1e2d179618ef271.jpeg",
+		Icon:    "https://static.58haha.com/mini/wxb1e2d179618ef271.jpeg?v=1.0",
 		Content: "一个事业编刷题和事业编答题一站式的事业编题库百科知识增长的小程序",
 	}
 	gx := MiniData{
 		Name:    "儿童古诗数学运算",
 		AppId:   "wx1090960cb624449c",
-		Icon:    "https://static.58haha.com/mini/wx1090960cb624449c.jpeg",
+		Icon:    "https://static.58haha.com/mini/wx1090960cb624449c.jpeg?v=1.0",
 		Content: "一款小学语文古诗阅读绘本以及小数数学口算出题工具，口算结果实时判断",
 	}
 	cj := MiniData{
 		Name:    "初级英语绘本跟读",
 		AppId:   "wxd1adfdd4aa40cf1a",
-		Icon:    "https://static.58haha.com/mini/wxd1adfdd4aa40cf1a.jpeg",
+		Icon:    "https://static.58haha.com/mini/wxd1adfdd4aa40cf1a.jpeg?v=1.0",
 		Content: "一款儿童英语绘本跟读小程序，可实现英语绘本跟读，也可进行绘本阅读",
 	}
 	var listMiniData []MiniData
