@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"unsafe"
 	"wechat/common"
@@ -29,7 +30,8 @@ type BookInfoList struct {
 	BookId    int    `json:"book_id"`
 	Title     string `json:"title"`
 	Icon      string `json:"icon"`
-	Level     uint8    `json:"level"`
+	Level     uint8  `json:"level"`
+	Position  uint8  `json:"position"`
 	BookCount string `json:"book_count"`
 }
 
@@ -56,6 +58,7 @@ func (bs *BookService) GetBookList(level, page, pageSize int) (bookInfoList []Bo
 		temp.Title = item.Title
 		temp.Icon = item.Icon
 		temp.Level = item.Level
+		temp.Position = item.Position
 		bookInfoList = append(bookInfoList, temp)
 	}
 
@@ -67,6 +70,12 @@ func (bs *BookService) GetBookList(level, page, pageSize int) (bookInfoList []Bo
 		}
 	}
 
+	sort.Slice(bookInfoList, func(i, j int) bool {
+		if bookInfoList[i].Position > bookInfoList[j].Position {
+			return true
+		}
+		return bookInfoList[i].Position == bookInfoList[j].Position && bookInfoList[i].Id < bookInfoList[j].Id
+	})
 	err = db.Error
 
 	return bookInfoList, total, err
