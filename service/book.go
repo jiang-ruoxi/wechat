@@ -247,12 +247,6 @@ func (bs *BookService) GetMiniList() []MiniData {
 		Icon:    "https://static.58haha.com/mini/wx1090960cb624449c.jpeg",
 		Content: "一款儿童数学识数并进行计算的小程序题库",
 	}
-	fj := MiniData{
-		Name:    "英语绘本分级跟读",
-		AppId:   "wx65b5468d031d0923",
-		Icon:    "https://static.58haha.com/mini/wx65b5468d031d0923.jpeg",
-		Content: "一款英语分级绘本跟读并进行英语绘本阅读的小程序",
-	}
 	cj := MiniData{
 		Name:    "初级英语绘本跟读",
 		AppId:   "wxd1adfdd4aa40cf1a",
@@ -260,7 +254,7 @@ func (bs *BookService) GetMiniList() []MiniData {
 		Content: "一款英语分级绘本跟读并进行英语绘本阅读的小程序",
 	}
 	var listMiniData []MiniData
-	listMiniData = append(listMiniData, gj, gx, fj, cj)
+	listMiniData = append(listMiniData, gj, gx, cj)
 
 	return listMiniData
 }
