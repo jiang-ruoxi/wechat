@@ -192,13 +192,13 @@ func (bs *BookService) IsCheckSign(sign string) bool {
 	}
 	t := time.Now().Unix()
 	fmt.Println(t)
-	var slice []int64 = make([]int64, 0, 5)
-	for i := 0; i < 5; i++ {
+	var slice []int64 = make([]int64, 0, 10)
+	for i := 0; i < 10; i++ {
 		t = t - 1
 		slice = append(slice, t)
 	}
 
-	md5StrSlice := make([]string, 0, 5)
+	md5StrSlice := make([]string, 0, 15)
 	for _, item := range slice {
 		str := strconv.FormatInt(item, 10)
 		md := fmt.Sprintf("%s%s", str, "ruoxi")
