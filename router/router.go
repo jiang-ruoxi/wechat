@@ -49,6 +49,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/huiben/token", app.ApiHBToken)
 		api.GET("/en_book/getMiniList", app.ApiMiniList)
 		api.GET("/en_book/getList", app.ApiBookList)
+		api.GET("/en_book/sign/getList", app.ApiSignBookList)
 		api.GET("/en_book/getBookInfo", app.ApiBookInfo)
 		api.GET("/en_book/getEnBookOpenId", app.GetEnBookOpenId)
 		api.POST("/en_book/addVideoLog", app.AddVideoLog)
