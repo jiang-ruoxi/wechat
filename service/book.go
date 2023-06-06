@@ -187,14 +187,13 @@ func (bs *BookService) MakeVideo(c *common.VideoLogReq) (err error) {
 
 //IsCheckSign 验证请求
 func (bs *BookService) IsCheckSign(sign string) bool {
-	return true
 	if sign == "" || len(sign) != 32 {
 		return false
 	}
 	t := time.Now().Unix()
 	fmt.Println(t)
-	var slice []int64 = make([]int64, 0, 10)
-	for i := 0; i < 10; i++ {
+	var slice []int64 = make([]int64, 0, 15)
+	for i := 0; i < 15; i++ {
 		t = t - 1
 		slice = append(slice, t)
 	}
