@@ -127,6 +127,13 @@ func (ps *PoetryService) InsertVideoLog(c *common.PoetryVideoReq) (err error) {
 	var data model.PoetryLog
 	//格式化数据生成
 	c.GeneratePoetryVideoLog(&data)
+
+	var total int64
+	db := mysql.DB.Model(&model.PoetryLog{}).Debug()
+	db.Raw("SELECT count(id) as num FROM s_poetry_log where open_id = ? AND poetry_id = ?",data.OpenId, data.PoetryId).Count(&total)
+	if total > 0 {
+		mysql.DB.Model(&model.PoetryLog{}).Where("open_id = ? AND poetry_id = ?", data.OpenId, data.PoetryId).Delete(&model.PoetryLog{})
+	}
 	if err = mysql.DB.Model(&model.PoetryLog{}).Create(&data).Error; err != nil {
 		fmt.Println("数据创建失败")
 		return err
