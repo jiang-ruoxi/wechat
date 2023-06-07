@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"wechat/common"
 	"wechat/model"
 	"wechat/pkg/mysql"
 )
@@ -119,4 +120,16 @@ func (ps *PoetryService) GetPoetryInfo(poetryId int) (infoData PoetryData) {
 	result.Info = info.Info
 
 	return result
+}
+
+func (ps *PoetryService) InsertVideoLog(c *common.PoetryVideoReq) (err error) {
+	//定义对应的类型
+	var data model.PoetryLog
+	//格式化数据生成
+	c.GeneratePoetryVideoLog(&data)
+	if err = mysql.DB.Model(&model.PoetryLog{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
 }
