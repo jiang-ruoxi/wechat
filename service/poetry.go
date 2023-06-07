@@ -130,7 +130,7 @@ func (ps *PoetryService) InsertVideoLog(c *common.PoetryVideoReq) (err error) {
 
 	var total int64
 	db := mysql.DB.Model(&model.PoetryLog{}).Debug()
-	db.Raw("SELECT count(id) as num FROM s_poetry_log where open_id = ? AND poetry_id = ?",data.OpenId, data.PoetryId).Count(&total)
+	db.Raw("SELECT count(id) as num FROM s_poetry_log where open_id = ? AND poetry_id = ?", data.OpenId, data.PoetryId).Count(&total)
 	if total > 0 {
 		mysql.DB.Model(&model.PoetryLog{}).Where("open_id = ? AND poetry_id = ?", data.OpenId, data.PoetryId).Delete(&model.PoetryLog{})
 	}
@@ -139,4 +139,14 @@ func (ps *PoetryService) InsertVideoLog(c *common.PoetryVideoReq) (err error) {
 		return err
 	}
 	return nil
+}
+
+func (ps *PoetryService) GetPoetryLog(openId string, poetryId int) (infoData model.PoetryLog, total int64) {
+	// 创建db
+	var info model.PoetryLog
+	db := mysql.DB.Model(&model.PoetryLog{}).Debug()
+	db = db.Where("open_id = ? and poetry_id = ?", openId, poetryId)
+	db.Count(&total)
+	db = db.Find(&info)
+	return info, total
 }

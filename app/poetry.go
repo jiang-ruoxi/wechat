@@ -111,3 +111,14 @@ func AddPoetryVideoLog(c *gin.Context) {
 	}
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{}, common.SUCCESS_MSG, c)
 }
+
+func GetPoetryLog(c *gin.Context) {
+	poetryId, _ := strconv.Atoi(c.Query("poetry_id"))
+	openId := c.Query("open_id")
+	var service service.PoetryService
+	info, total := service.GetPoetryLog(openId, poetryId)
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"info":  info,
+		"total": total,
+	}, common.SUCCESS_MSG, c)
+}
