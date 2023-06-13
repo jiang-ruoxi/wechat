@@ -593,3 +593,17 @@ func (bs *BaiKeService) GetCategoryCount() (categoryData []CategoryData, err err
 
 	return tempList, err
 }
+
+
+// InsertBaiKe 插入数据
+func (bs *BaiKeService) InsertBaiKe(c *common.BaiKeReq) (err error) {
+	//定义对应的类型
+	var data model.BaiKe
+	//格式化数据生成
+	c.GenerateBaiKe(&data)
+	if err = mysql.DB.Model(&model.BaiKe{}).Create(&data).Error; err != nil {
+		fmt.Println("数据创建失败")
+		return err
+	}
+	return nil
+}

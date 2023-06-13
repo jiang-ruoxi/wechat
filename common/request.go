@@ -47,6 +47,19 @@ type PoetryVideoReq struct {
 	Mp3      string `json:"mp3" comment:"mp3"`
 }
 
+type BaiKeReq struct {
+	Id         int    `json:"id" comment:"id"`
+	CategoryId int    `json:"category_id" comment:"category_id"`
+	Question   string `json:"question" comment:"question"`
+	OptionA    string `json:"option_a" comment:"option_a"`
+	OptionB    string `json:"option_b" comment:"option_b"`
+	OptionC    string `json:"option_c" comment:"option_c"`
+	OptionD    string `json:"option_d" comment:"option_d"`
+	Answer     string `json:"answer" comment:"answer"`
+	Analytic   string `json:"analytic" comment:"analytic"`
+	AddTime    string `json:"add_time" comment:"add_time"`
+}
+
 func (req LikeReq) GenerateLike(model *model.Like) {
 	model.OpenId = req.OpenId
 	model.CategoryId = req.CategoryId
@@ -82,4 +95,16 @@ func (req PoetryVideoReq) GeneratePoetryVideoLog(model *model.PoetryLog) {
 	model.OpenId = req.OpenId
 	model.PoetryId = req.PoetryId
 	model.Mp3 = req.Mp3
+}
+
+func (req BaiKeReq) GenerateBaiKe(model *model.BaiKe) {
+	model.CategoryId = req.CategoryId
+	model.Question = req.Question
+	model.OptionA = req.OptionA
+	model.OptionB = req.OptionB
+	model.OptionC = req.OptionC
+	model.OptionD = req.OptionD
+	model.Answer = req.Answer
+	model.Analytic = req.Analytic
+	model.AddTime = strconv.Itoa(int(time.Now().UTC().Unix()))
 }
