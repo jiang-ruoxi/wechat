@@ -605,5 +605,6 @@ func (bs *BaiKeService) InsertBaiKe(c *common.BaiKeReq) (err error) {
 		fmt.Println("数据创建失败")
 		return err
 	}
+	bs.DeleteQueue(data.CategoryId)
 	return nil
 }
