@@ -170,22 +170,21 @@ func (ps *PoetryService) GetPoetryInfoCI(poetryId int) (infoData PoetryData) {
 	db := mysql.DB.Model(&model.PoetryCI{}).Debug()
 	db = db.Where("poetry_id = ?", poetryId)
 	db = db.Find(&info)
-	fmt.Println(info.Content)
+	str := strings.TrimPrefix(info.Content, "[")
+	str = strings.TrimSuffix(str, "]")
 
-	zp := regexp.MustCompile(`[\t\n\f\r]`)
-	arr := zp.Split(info.Content, -1)
-	//arr := strings.Split(info.Content, "\t")
+	arr := strings.Split(str, "\",\"")
 	for i := 0; i < len(arr); i++ {
 		arr[i] = strings.TrimSuffix(strings.TrimPrefix(arr[i], "\""), "\"")
 	}
+
 	var PInfo PoetryInfo
 	var poetryListInfo []PoetryInfo
 	for _, item := range arr {
 		PInfo.ZH = item
 		poetryListInfo = append(poetryListInfo, PInfo)
 	}
-	fmt.Println(arr)
-
+	
 	var result PoetryData
 	result.PoetryListInfo = poetryListInfo
 	result.Id = info.Id
