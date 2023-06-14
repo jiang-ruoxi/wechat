@@ -164,13 +164,38 @@ func (ps *PoetryService) GetPoetryListCI(page, pageSize int) (poetryInfoList []P
 	return poetryInfoList, total, err
 }
 
-func (ps *PoetryService) GetPoetryInfoCI(poetryId int) (infoData model.PoetryCI) {
+func (ps *PoetryService) GetPoetryInfoCI(poetryId int) (infoData PoetryData) {
 	// 创建db
 	var info model.PoetryCI
 	db := mysql.DB.Model(&model.PoetryCI{}).Debug()
 	db = db.Where("poetry_id = ?", poetryId)
 	db = db.Find(&info)
+	fmt.Println(info.Content)
 
+	zp := regexp.MustCompile(`[\t\n\f\r]`)
+	arr := zp.Split(info.Content, -1)
+	//arr := strings.Split(info.Content, "\t")
+	for i := 0; i < len(arr); i++ {
+		arr[i] = strings.TrimSuffix(strings.TrimPrefix(arr[i], "\""), "\"")
+	}
+	var PInfo PoetryInfo
+	var poetryListInfo []PoetryInfo
+	for _, item := range arr {
+		PInfo.ZH = item
+		poetryListInfo = append(poetryListInfo, PInfo)
+	}
+	fmt.Println(arr)
 
-	return info
+	var result PoetryData
+	result.PoetryListInfo = poetryListInfo
+	result.Id = info.Id
+	result.PoetryId = info.PoetryId
+	result.Title = info.Title
+	result.GradeId = info.GradeId
+	result.Grade = info.Grade
+	result.Author = info.Author
+	result.Dynasty = info.Dynasty
+	result.Content = info.Content
+
+	return result
 }
