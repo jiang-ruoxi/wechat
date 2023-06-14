@@ -163,3 +163,14 @@ func (ps *PoetryService) GetPoetryListCI(page, pageSize int) (poetryInfoList []P
 
 	return poetryInfoList, total, err
 }
+
+func (ps *PoetryService) GetPoetryInfoCI(poetryId int) (infoData model.PoetryCI) {
+	// 创建db
+	var info model.PoetryCI
+	db := mysql.DB.Model(&model.PoetryCI{}).Debug()
+	db = db.Where("poetry_id = ?", poetryId)
+	db = db.Find(&info)
+
+
+	return info
+}

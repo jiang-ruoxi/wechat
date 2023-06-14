@@ -145,3 +145,12 @@ func ApiPoetryListCI(c *gin.Context) {
 		"total_page": math.Ceil(float64(total) / float64(pageSize)),
 	}, common.SUCCESS_MSG, c)
 }
+
+func ApiPoetryInfoCI(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Query("id"))
+	var service service.PoetryService
+	info := service.GetPoetryInfoCI(id)
+	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
+		"info": info,
+	}, common.SUCCESS_MSG, c)
+}
