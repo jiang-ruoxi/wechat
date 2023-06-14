@@ -150,3 +150,16 @@ func (ps *PoetryService) GetPoetryLog(openId string, poetryId int) (infoData mod
 	db = db.Find(&info)
 	return info, total
 }
+
+// GetPoetryListCI 列表
+func (ps *PoetryService) GetPoetryListCI(page, pageSize int) (poetryInfoList []PoetryInfoList, total int64, err error) {
+	limit := pageSize
+	offset := pageSize * (page - 1)
+
+	db := mysql.DB.Model(&model.PoetryCI{}).Debug()
+
+	db.Raw("SELECT id FROM s_junior_poetry").Count(&total)
+	db.Raw("SELECT id,poetry_id,title,grade_id,grade,author,dynasty FROM s_junior_poetry limit ? offset ?", limit, offset).Scan(&poetryInfoList)
+
+	return poetryInfoList, total, err
+}
