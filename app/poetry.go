@@ -130,7 +130,7 @@ func ApiPoetryListCI(c *gin.Context) {
 	}
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
 	if pageSize < 1 {
-		pageSize = 200
+		pageSize = 1000
 	}
 	var service service.PoetryService
 	list, total, err := service.GetPoetryListCI(page, pageSize)
