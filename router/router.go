@@ -68,6 +68,8 @@ func InitRouter() *gin.Engine {
 
 		api.GET("/s_chinese_picture/getList", app.ApiChineseBookList)
 		api.GET("/s_chinese_picture/getBookInfo", app.ApiChineseBookInfo)
+		api.GET("/s_chengyu/getList", app.ApiChineseCYList)
+		api.GET("/s_chengyu/getInfo", app.ApiChineseCYInfo)
 	}
 
 	return router

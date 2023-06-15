@@ -2,6 +2,7 @@ package service
 
 import (
 	"sort"
+	"strings"
 	"wechat/model"
 	"wechat/pkg/mysql"
 )
@@ -78,4 +79,57 @@ func (cbs *ChineseBookService) GetChineseBookInfo(bookId int) (list []model.Chin
 	db = db.Order("id asc")
 	db = db.Find(&bookInfoList)
 	return bookInfoList
+}
+
+// GetChineseCYList 绘本列表
+func (cbs *ChineseBookService) GetChineseCYList(level, page, pageSize int) (bookInfoList []model.ChengYU, total int64, err error) {
+	limit := pageSize
+	offset := pageSize * (page - 1)
+	// 创建db
+	var cyList []model.ChengYU
+	db := mysql.DB.Model(&model.ChengYU{}).Debug()
+	db = db.Where("level = ?", level)
+	err = db.Count(&total).Error
+	db = db.Limit(limit).Offset(offset).Find(&cyList)
+
+	return cyList, total, err
+}
+
+type CYdATA struct {
+	Id      int    `json:"id"`
+	Title   string `json:"title"`
+	Pinyin  string `json:"pinyin"`
+	Explain string `json:"explain"`
+	Source  string `json:"source"`
+	Usage   string `json:"usage"`
+	Example string `json:"example"`
+	Near    string `json:"near"`
+	Antonym string `json:"antonym"`
+	Analyse string `json:"analyse"`
+	Story   string `json:"story"`
+	Level   uint8  `json:"level"`
+	StoryList []string `json:"story_list"`
+}
+
+func (cbs *ChineseBookService) GetChineseCYInfo(bookId int) (cy CYdATA) {
+	// 创建db
+	var cyInfo model.ChengYU
+	db := mysql.DB.Model(&model.ChengYU{}).Debug()
+	db = db.Where("id = ?", bookId)
+	db = db.First(&cyInfo)
+	fields := strings.Fields(cyInfo.Story)
+	cy.Id = cyInfo.Id
+	cy.Title = cyInfo.Title
+	cy.Pinyin = cyInfo.Pinyin
+	cy.Explain = cyInfo.Explain
+	cy.Source = cyInfo.Source
+	cy.Usage = cyInfo.Usage
+	cy.Example = cyInfo.Example
+	cy.Near = cyInfo.Near
+	cy.Antonym = cyInfo.Antonym
+	cy.Analyse = cyInfo.Analyse
+	cy.Story = cyInfo.Story
+	cy.Level = cyInfo.Level
+	cy.StoryList = fields
+	return cy
 }
