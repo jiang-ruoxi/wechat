@@ -65,6 +65,9 @@ func InitRouter() *gin.Engine {
 		api.GET("/s_poetry/getPoetryLog", app.GetPoetryLog)
 		api.POST("/s_poetry/uploadMp3", app.UploadPoetryMp3)
 		api.POST("/s_poetry/addVideoLog", app.AddPoetryVideoLog)
+
+		api.GET("/s_chinese_picture/getList", app.ApiChineseBookList)
+		api.GET("/s_chinese_picture/getBookInfo", app.ApiChineseBookInfo)
 	}
 
 	return router
