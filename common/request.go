@@ -36,7 +36,7 @@ type UserReq struct {
 
 type VideoLogReq struct {
 	OpenId   string `json:"open_id" comment:"open_id"`
-	BookId   int    `json:"book_id" comment:"book_id"`
+	BookId   string `json:"book_id" comment:"book_id"`
 	Position uint   `json:"position" comment:"position"`
 	Url      string `json:"url" comment:"url"`
 }
