@@ -24,13 +24,13 @@ type BookService struct {
 }
 
 type BookInfo struct {
-	BookId    int    `json:"book_id"`
+	BookId    string    `json:"book_id"`
 	BookCount string `json:"book_count"`
 }
 
 type BookInfoList struct {
 	Id        int    `json:"id"`
-	BookId    int    `json:"book_id"`
+	BookId    string    `json:"book_id"`
 	Title     string `json:"title"`
 	Icon      string `json:"icon"`
 	Level     uint8  `json:"level"`
@@ -83,7 +83,7 @@ func (bs *BookService) GetBookList(level, page, pageSize int) (bookInfoList []Bo
 
 	return bookInfoList, total, err
 }
-func (bs *BookService) GetBookInfo(bookId int) (list []model.BookInfo) {
+func (bs *BookService) GetBookInfo(bookId string) (list []model.BookInfo) {
 	// 创建db
 	var bookInfoList []model.BookInfo
 	db := mysql.DB.Model(&model.BookInfo{}).Debug()
