@@ -50,7 +50,7 @@ func ApiChineseBookInfo(c *gin.Context) {
 		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
 		return
 	}
-	bookId, _ := strconv.Atoi(c.Query("book_id"))
+	bookId := c.Query("book_id")
 	var service service.ChineseBookService
 	bookInfo := service.GetChineseBookInfo(bookId)
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{

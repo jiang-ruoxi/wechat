@@ -71,7 +71,7 @@ func (cbs *ChineseBookService) GetChineseBookList(level, page, pageSize int) (bo
 	return bookInfoList, total, err
 }
 
-func (cbs *ChineseBookService) GetChineseBookInfo(bookId int) (list []model.ChineseBookInfo) {
+func (cbs *ChineseBookService) GetChineseBookInfo(bookId string) (list []model.ChineseBookInfo) {
 	// 创建db
 	var bookInfoList []model.ChineseBookInfo
 	db := mysql.DB.Model(&model.ChineseBookInfo{}).Debug()
