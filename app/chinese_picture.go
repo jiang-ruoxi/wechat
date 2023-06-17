@@ -1,7 +1,9 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/mssola/user_agent"
 	"math"
 	"strconv"
 	"wechat/common"
@@ -9,6 +11,19 @@ import (
 )
 
 func ApiChineseBookList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	ua := user_agent.New(uaText)
+	fmt.Println("------获取---User-Agent---开始")
+	fmt.Println(uaText)
+	fmt.Printf("%v\n", ua.Mobile())  // => true
+	name, version := ua.Browser()
+	fmt.Printf("%v\n", name)    // => "Android"
+	fmt.Printf("%v\n", version) // => "4.0"
+	fmt.Println("------获取---User-Agent---结束")
+	fmt.Println("------获取---HTTP_USER_AGENT---开始")
+	uaText1 := c.Request.Header.Get("HTTP_USER_AGENT")
+	fmt.Printf("%v\n", uaText1) // => "4.0"
+	fmt.Println("------获取---HTTP_USER_AGENT---结束")
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1

@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/jinzhu/gorm v1.9.16
+	github.com/mssola/user_agent v0.6.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/oschwald/geoip2-golang v1.8.0
 	github.com/robfig/cron/v3 v3.0.1
