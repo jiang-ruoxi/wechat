@@ -1,29 +1,22 @@
 package app
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/mssola/user_agent"
 	"math"
 	"strconv"
+	"strings"
 	"wechat/common"
 	"wechat/service"
 )
 
 func ApiChineseBookList(c *gin.Context) {
 	uaText := c.Request.Header.Get("User-Agent")
-	ua := user_agent.New(uaText)
-	fmt.Println("------获取---User-Agent---开始")
-	fmt.Println(uaText)
-	fmt.Printf("%v\n", ua.Mobile())  // => true
-	name, version := ua.Browser()
-	fmt.Printf("%v\n", name)    // => "Android"
-	fmt.Printf("%v\n", version) // => "4.0"
-	fmt.Println("------获取---User-Agent---结束")
-	fmt.Println("------获取---HTTP_USER_AGENT---开始")
-	uaText1 := c.Request.Header.Get("HTTP_USER_AGENT")
-	fmt.Printf("%v\n", uaText1) // => "4.0"
-	fmt.Println("------获取---HTTP_USER_AGENT---结束")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
+
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1
@@ -58,7 +51,6 @@ func ApiChineseBookInfo(c *gin.Context) {
 		"info": bookInfo,
 	}, common.SUCCESS_MSG, c)
 }
-
 
 func ApiChineseCYList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
