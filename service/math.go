@@ -37,6 +37,7 @@ func (ms *MathService) GetMathItemList(op, num, max, defaultLine int) (list []ma
 						info["third"] = tem1 - tem2
 						info["all"] = fmt.Sprintf("%d - %d = %d\t\t", tem1, tem2,tem1-tem2)
 						info["o"] = fmt.Sprintf("%d - %d = ______\t\t", tem1, tem2)
+						info["t"] = fmt.Sprintf("%d - %d\t\t", tem1, tem2)
 						list = append(list, info)
 						count = ms.calCount(count, defaultLine)
 					}
@@ -49,6 +50,7 @@ func (ms *MathService) GetMathItemList(op, num, max, defaultLine int) (list []ma
 						info["third"] = tem1 + tem2
 						info["all"] = fmt.Sprintf("%d + %d = %d\t\t", tem1, tem2,tem1+tem2)
 						info["o"] = fmt.Sprintf("%d + %d = ______\t\t", tem1, tem2)
+						info["t"] = fmt.Sprintf("%d + %d\t\t", tem1, tem2)
 						list = append(list, info)
 						count++
 						if count%defaultLine == 0 {
@@ -68,6 +70,7 @@ func (ms *MathService) GetMathItemList(op, num, max, defaultLine int) (list []ma
 					info["third"] = tem1 - tem2
 					info["all"] = fmt.Sprintf("%d - %d = %d\t\t", tem1, tem2,tem1-tem2)
 					info["o"] = fmt.Sprintf("%d - %d = ______\t\t", tem1, tem2)
+					info["t"] = fmt.Sprintf("%d - %d\t\t", tem1, tem2)
 					list = append(list, info)
 					count = ms.calCount(count, defaultLine)
 				}
@@ -83,6 +86,7 @@ func (ms *MathService) GetMathItemList(op, num, max, defaultLine int) (list []ma
 					info["third"] = tem1 + tem2
 					info["all"] = fmt.Sprintf("%d + %d = %d\t\t", tem1, tem2,tem1+tem2)
 					info["o"] = fmt.Sprintf("%d + %d = ______\t\t", tem1, tem2)
+					info["t"] = fmt.Sprintf("%d + %d\t\t", tem1, tem2)
 					list = append(list, info)
 					count++
 					if count%defaultLine == 0 {
@@ -101,6 +105,7 @@ func (ms *MathService) GetMathItemList(op, num, max, defaultLine int) (list []ma
 					info["third"] = tem1 + tem2
 					info["all"] = fmt.Sprintf("%d + %d = %d\t\t", tem1, tem2,tem1+tem2)
 					info["o"] = fmt.Sprintf("%d + %d = ______\t\t", tem1, tem2)
+					info["t"] = fmt.Sprintf("%d + %d\t\t", tem1, tem2)
 					list = append(list, info)
 					count++
 					if count%defaultLine == 0 {
