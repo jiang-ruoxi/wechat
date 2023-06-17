@@ -11,13 +11,13 @@ type ChineseBookService struct {
 }
 
 type ChineseBookInfo struct {
-	BookId    int    `json:"book_id"`
+	BookId    string    `json:"book_id"`
 	BookCount string `json:"book_count"`
 }
 
 type ChineseBookInfoList struct {
 	Id        int    `json:"id"`
-	BookId    int    `json:"book_id"`
+	BookId    string    `json:"book_id"`
 	Title     string `json:"title"`
 	Icon      string `json:"icon"`
 	Level     uint8  `json:"level"`
