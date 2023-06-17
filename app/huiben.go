@@ -12,6 +12,12 @@ import (
 )
 
 func AddVideoLog(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.VideoLogReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -37,6 +43,12 @@ func AddVideoLog(c *gin.Context) {
 }
 
 func UploadMp3(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	file, err := c.FormFile("file")
 	if err == nil {
 		var Path string = "/data/web/static/video"
@@ -57,6 +69,12 @@ func UploadMp3(c *gin.Context) {
 }
 
 func MakeVideo(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.VideoLogReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {

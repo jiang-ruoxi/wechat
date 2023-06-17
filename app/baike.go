@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"strings"
 	"wechat/common"
 	"wechat/service"
 	"wechat/utils"
@@ -9,6 +10,12 @@ import (
 
 // AddBaiKe 保存数据
 func AddBaiKe(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.BaiKeReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {

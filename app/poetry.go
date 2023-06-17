@@ -17,6 +17,12 @@ import (
 )
 
 func ApiPoetryList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1
@@ -40,6 +46,12 @@ func ApiPoetryList(c *gin.Context) {
 }
 
 func ApiPoetryInfo(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	id, _ := strconv.Atoi(c.Query("id"))
 	var service service.PoetryService
 	info := service.GetPoetryInfo(id)
@@ -49,6 +61,12 @@ func ApiPoetryInfo(c *gin.Context) {
 }
 
 func GetPoetryOpenId(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	type OpenIdInfo struct {
 		SessionKey string `json:"session_key"`
 		Openid     string `json:"openid"`
@@ -69,6 +87,12 @@ func GetPoetryOpenId(c *gin.Context) {
 }
 
 func UploadPoetryMp3(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	file, err := c.FormFile("file")
 	if err == nil {
 		var Path string = "/data/web/static/poetry_log"
@@ -89,6 +113,12 @@ func UploadPoetryMp3(c *gin.Context) {
 }
 
 func AddPoetryVideoLog(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.PoetryVideoReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -113,6 +143,12 @@ func AddPoetryVideoLog(c *gin.Context) {
 }
 
 func GetPoetryLog(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	poetryId, _ := strconv.Atoi(c.Query("poetry_id"))
 	openId := c.Query("open_id")
 	var service service.PoetryService
@@ -124,6 +160,12 @@ func GetPoetryLog(c *gin.Context) {
 }
 
 func ApiPoetryListCI(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1
@@ -147,6 +189,12 @@ func ApiPoetryListCI(c *gin.Context) {
 }
 
 func ApiPoetryInfoCI(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	id, _ := strconv.Atoi(c.Query("id"))
 	var service service.PoetryService
 	info := service.GetPoetryInfoCI(id)

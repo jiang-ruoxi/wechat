@@ -3,6 +3,7 @@ package app
 import (
 	"math"
 	"strconv"
+	"strings"
 	"wechat/common"
 	"wechat/service"
 
@@ -10,7 +11,12 @@ import (
 )
 
 func MakeNumerResult(c *gin.Context) {
-
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	count, _ := strconv.Atoi(c.Query("count"))
 	max, _ := strconv.Atoi(c.Query("max"))
 	//op 1加法，2减法，3混合
@@ -27,6 +33,12 @@ func MakeNumerResult(c *gin.Context) {
 
 // ApiSXList 数学列表
 func ApiSXList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
 	var service service.ShuxueService
@@ -44,6 +56,12 @@ func ApiSXList(c *gin.Context) {
 
 // ApiHBToken 绘本token
 func ApiHBToken(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var service service.ShuxueService
 	token := service.GetHBToken()
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{
@@ -52,6 +70,12 @@ func ApiHBToken(c *gin.Context) {
 }
 
 func ApiBookList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page < 1 {
 		page = 1
@@ -79,6 +103,12 @@ func ApiBookList(c *gin.Context) {
 }
 
 func ApiSignBookList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	sign := c.Query("t")
 
 	var service service.BookService
@@ -115,6 +145,12 @@ func ApiSignBookList(c *gin.Context) {
 }
 
 func ApiBookInfo(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	bookId, _ := strconv.Atoi(c.Query("book_id"))
 	var service service.BookService
 	bookInfo := service.GetBookInfo(bookId)
@@ -124,6 +160,12 @@ func ApiBookInfo(c *gin.Context) {
 }
 
 func ApiMiniList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var service service.BookService
 	miniList := service.GetMiniList()
 	common.ReturnResponse(common.SUCCESS, map[string]interface{}{

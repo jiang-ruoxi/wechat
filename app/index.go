@@ -20,6 +20,12 @@ import (
 )
 
 func ApiIndex(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	service.PushDataToQueue(categoryId)
@@ -28,6 +34,12 @@ func ApiIndex(c *gin.Context) {
 
 // ApiQuestion 获取对应的栏目答题数据
 func ApiQuestion(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	question := service.GetLPopData(categoryId)
@@ -38,6 +50,12 @@ func ApiQuestion(c *gin.Context) {
 
 // ApiAnswerList 获取答题记录
 func ApiAnswerList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
 	var service service.BaiKeService
@@ -55,6 +73,12 @@ func ApiAnswerList(c *gin.Context) {
 
 // ApiAnswer 保存回答的答案
 func ApiAnswer(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.AnswerReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -82,6 +106,12 @@ func ApiAnswer(c *gin.Context) {
 
 // ApiLikeList 获取收藏记录
 func ApiLikeList(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("page_size"))
 	var service service.BaiKeService
@@ -99,6 +129,12 @@ func ApiLikeList(c *gin.Context) {
 
 // ApiLike 保存收藏的数据
 func ApiLike(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.LikeReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -125,6 +161,12 @@ func ApiLike(c *gin.Context) {
 
 // ApiUser 保存用户的数据
 func ApiUser(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.UserReq
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -150,6 +192,12 @@ func ApiUser(c *gin.Context) {
 }
 
 func ApiDeleteQueue(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	var service service.BaiKeService
 	service.DeleteQueue(categoryId)
@@ -157,6 +205,12 @@ func ApiDeleteQueue(c *gin.Context) {
 }
 
 func GetOpenId(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	type OpenIdInfo struct {
 		SessionKey string `json:"session_key"`
 		Openid     string `json:"openid"`
@@ -177,6 +231,12 @@ func GetOpenId(c *gin.Context) {
 }
 
 func AddUser(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	var req common.UserReq
 	openId := c.Query("openId")
 	nickName := c.Query("nickName")
@@ -193,6 +253,12 @@ func AddUser(c *gin.Context) {
 }
 
 func GetInfoByOpenId(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	openId := c.Query("openId")
 	var service service.BaiKeService
 	info, err := service.GetInfoByOpenId(openId)
@@ -206,6 +272,12 @@ func GetInfoByOpenId(c *gin.Context) {
 }
 
 func GetCountByOpenId(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	openId := c.Query("openId")
 	var service service.BaiKeService
 	count, err := service.GetCountByOpenId(openId)
@@ -219,6 +291,12 @@ func GetCountByOpenId(c *gin.Context) {
 }
 
 func AddQuestion(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	openId := c.Query("openId")
 	questionId := c.Query("questionId")
 	isSelect := c.Query("isSelect")
@@ -235,6 +313,12 @@ func AddQuestion(c *gin.Context) {
 }
 
 func AddUploads(c *gin.Context) {
+	uaText := c.Request.Header.Get("User-Agent")
+	isFlag := strings.Contains(strings.ToLower(uaText), "micromessenger")
+	if !isFlag {
+		common.ReturnResponse(common.FORBID, map[string]interface{}{}, common.FORBID_MSG, c)
+		return
+	}
 	file, err := c.FormFile("file")
 	if err == nil {
 		var Path string = "/data/web/static/wechat"
