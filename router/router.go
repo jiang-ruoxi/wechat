@@ -48,6 +48,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/getMathListNumber", app.GetMathItemList)
 
 		api.GET("/math/chuzhong", app.ApiSXList)
+		api.GET("/math/ssq", app.GetMathLottoList)
 		api.GET("/huiben/token", app.ApiHBToken)
 		api.GET("/en_book/getMiniList", app.ApiMiniList)
 		api.GET("/en_book/getList", app.ApiBookList)
