@@ -5,6 +5,9 @@ system:
   db-type: mysql
   use-redis: true
   use-http-cache: true
+wechat:
+  appid: "wx65b5468d031d0923"
+  secret: "57fa4c517564b26973893618d4ca8fd8"
 # Redis配置信息
 redis:
   db: 0

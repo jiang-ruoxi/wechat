@@ -35,6 +35,7 @@ func InitRouter() *gin.Engine {
 		//英文绘本
 		api.GET("/english/getList", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookList)
 		api.GET("/english/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookInfo)
+		api.GET("/english/getOpenId", app.ApiOpenId)
 
 		//百科知识
 	}

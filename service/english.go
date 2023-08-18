@@ -1,10 +1,14 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"sort"
 	"wechat/common/response"
 	"wechat/global"
 	"wechat/model"
-	"sort"
 )
 
 type EnglishService struct {
@@ -56,5 +60,21 @@ func (es *EnglishService) GetEnglishBookList(level, page, size int) (englishBook
 func (es *EnglishService) GetEnglishBookInfo(bookId string) (bookInfoItems []model.EnglishBookInfo) {
 	db := global.GVA_DB.Model(&model.EnglishBookInfo{}).Debug()
 	db = db.Where("book_id = ?", bookId).Order("id asc").Find(&bookInfoItems)
+	return
+}
+
+//GetOpenId 获取open_id信息
+func (es *EnglishService) GetOpenId(code string) (openId string) {
+	var data response.OpenIdData
+	appid := global.GVA_CONFIG.Wechat.AppId
+	secret := global.GVA_CONFIG.Wechat.Secret
+	client := &http.Client{}
+	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appid, secret, code)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("content-type", "application/json")
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	json.Unmarshal(body, &data)
+	openId = data.Openid
 	return
 }

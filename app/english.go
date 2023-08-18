@@ -37,3 +37,13 @@ func ApiEnglishBookInfo(c *gin.Context) {
 		"info": bookInfo,
 	}, global.SUCCESS_MSG, c)
 }
+
+//ApiOpenId 获取open_id
+func ApiOpenId(c *gin.Context) {
+	code := c.Query("code")
+	var service service.EnglishService
+	openId := service.GetOpenId(code)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"info": openId,
+	}, global.SUCCESS_MSG, c)
+}

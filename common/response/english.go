@@ -9,3 +9,9 @@ type ResponseEnglishBook struct {
 	Position  uint8  `json:"position"`
 	BookCount string `json:"book_count"`
 }
+
+
+type OpenIdData struct {
+	SessionKey string `json:"session_key"`
+	Openid     string `json:"openid"`
+}
