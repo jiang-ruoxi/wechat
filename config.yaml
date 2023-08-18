@@ -6,8 +6,8 @@ system:
   use-redis: true
   use-http-cache: true
 wechat:
-  appid: "wx65b5468d031d0923"
-  secret: "57fa4c517564b26973893618d4ca8fd8"
+  appid: "wxd1adfdd4aa40cf1a"
+  secret: "07ed4211bb088190ea3ec7bd02458879"
 # Redis配置信息
 redis:
   db: 0
