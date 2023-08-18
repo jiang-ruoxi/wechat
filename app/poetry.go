@@ -1,8 +1,12 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"math"
+	"path"
+	"strconv"
+	"strings"
 	"wechat/common"
 	"wechat/global"
 	"wechat/service"
@@ -98,4 +102,35 @@ func ApiSchoolOpenId(c *gin.Context) {
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"info": openId,
 	}, global.SUCCESS_MSG, c)
+}
+
+//ApiPoetryLog
+func ApiPoetryLog(c *gin.Context) {
+	poetryId, _ := strconv.Atoi(c.Query("poetry_id"))
+	openId := c.Query("open_id")
+	var service service.PoetryService
+	info, total := service.GetPoetryLog(openId, poetryId)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"info":  info,
+		"total": total,
+	}, global.SUCCESS_MSG, c)
+}
+
+//ApiUploadPoetryMp3 上传录音
+func ApiUploadPoetryMp3(c *gin.Context) {
+	file, err := c.FormFile("file")
+	if err == nil {
+		var Path string = "/data/web/static/poetry_log"
+		dst := path.Join(Path, file.Filename)
+		fmt.Printf("file.Filename:%s \n", file.Filename)
+		fmt.Printf("dst:%s \n", dst)
+		c.SaveUploadedFile(file, dst)
+		dst = strings.Replace(dst, Path, "https://static.58haha.com/poetry_log", 1)
+		fmt.Printf("dst:%s \n", dst)
+		c.JSON(200, gin.H{
+			"dst": dst,
+		})
+	} else {
+		common.ReturnResponse(global.FAIL, map[string]interface{}{}, global.FAIL_MSG, c)
+	}
 }

@@ -175,3 +175,13 @@ func (ps *PoetryService) GetSchoolOpenId(code string) (openId string) {
 	openId = data.Openid
 	return
 }
+
+//GetPoetryLog
+func (ps *PoetryService) GetPoetryLog(openId string, poetryId int) (infoData model.PoetryLog, total int64) {
+	// 创建db
+	var info model.PoetryLog
+	db := global.GVA_DB.Model(&model.PoetryLog{}).Debug()
+	db = db.Where("open_id = ? and poetry_id = ?", openId, poetryId).Count(&total)
+	db = db.Find(&info)
+	return info, total
+}
