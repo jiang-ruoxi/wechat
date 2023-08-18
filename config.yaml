@@ -8,6 +8,8 @@ system:
 wechat:
   appid: "xxxxxxxxx"
   secret: "xxxxxxx"
+  school_appid: "xxxxxxxxx"
+  school_secret: "xxxxxxxxx"
 # Redis配置信息
 redis:
   db: 0

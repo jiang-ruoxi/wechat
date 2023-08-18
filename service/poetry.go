@@ -1,11 +1,15 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"regexp"
+	"strings"
 	"wechat/common/response"
 	"wechat/global"
 	"wechat/model"
-	"regexp"
-	"strings"
 )
 
 type PoetryService struct {
@@ -153,5 +157,21 @@ func (ps *PoetryService) ChengPoetryInfo(id int) (cy response.CYdATA) {
 	cy.Story = cyInfo.Story
 	cy.Level = cyInfo.Level
 	cy.StoryList = fields
+	return
+}
+
+//GetSchoolOpenId 获取open_id信息
+func (ps *PoetryService) GetSchoolOpenId(code string) (openId string) {
+	var data response.OpenIdData
+	appid := global.GVA_CONFIG.Wechat.SchoolAppId
+	secret := global.GVA_CONFIG.Wechat.SchoolSecret
+	client := &http.Client{}
+	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appid, secret, code)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("content-type", "application/json")
+	resp, _ := client.Do(req)
+	body, _ := ioutil.ReadAll(resp.Body)
+	json.Unmarshal(body, &data)
+	openId = data.Openid
 	return
 }

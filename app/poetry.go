@@ -89,3 +89,13 @@ func ApiChengPoetryInfo(c *gin.Context) {
 		"info": bookInfo,
 	}, global.SUCCESS_MSG, c)
 }
+
+//ApiSchoolOpenId 获取appid
+func ApiSchoolOpenId(c *gin.Context) {
+	code := c.Query("code")
+	var service service.PoetryService
+	openId := service.GetSchoolOpenId(code)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"info": openId,
+	}, global.SUCCESS_MSG, c)
+}
