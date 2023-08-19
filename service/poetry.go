@@ -17,7 +17,8 @@ type PoetryService struct {
 }
 
 //GetSchoolPoetryList 小学古诗词列表
-func (ps *PoetryService) GetSchoolPoetryList(page, size int) (poetryList []response.ResponseSchoolPoetry, total int64) {
+func (ps *PoetryService) GetSchoolPoetryList(page int) (poetryList []response.ResponseSchoolPoetry, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.Poetry{}).Debug()
 	db.Count(&total)
@@ -87,7 +88,8 @@ func (ps *PoetryService) GetSchoolPoetryInfo(poetryId int) (infoData response.Re
 }
 
 //GetJuniorPoetryList 中学古诗词列表
-func (ps *PoetryService) GetJuniorPoetryList(page, size int) (poetryList []response.ResponseSchoolPoetry, total int64) {
+func (ps *PoetryService) GetJuniorPoetryList(page int) (poetryList []response.ResponseSchoolPoetry, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.JuniorPoetry{}).Debug()
 	db.Count(&total)
@@ -131,7 +133,8 @@ func (ps *PoetryService) GetJuniorPoetryInfo(poetryId int) (infoData response.Re
 }
 
 //GetChengPoetryList 成语列表
-func (ps *PoetryService) GetChengPoetryList(level, page, size int) (chengPoetryList []model.ChengYU, total int64) {
+func (ps *PoetryService) GetChengPoetryList(level, page int) (chengPoetryList []model.ChengYU, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.ChengYU{}).Debug()
 	db = db.Where("level = ?", level).Count(&total)

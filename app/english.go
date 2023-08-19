@@ -14,17 +14,15 @@ import (
 //ApiEnglishBookList 英语绘本列表信息
 func ApiEnglishBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	size := utils.GetIntParamItem("page_size", global.DEFAULT_PAGE_SIZE, c)
 	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
 	var service service.EnglishService
-	list, total := service.GetEnglishBookList(level, page, size)
+	list, total := service.GetEnglishBookList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"page_size":  size,
-		"total_page": math.Ceil(float64(total) / float64(size)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 

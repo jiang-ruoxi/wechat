@@ -13,22 +13,16 @@ import (
 
 //ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
-	////检查是否微信请求来源
-	//if !common.CheckRequestUserAgent(c) {
-	//	return
-	//}
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	size := utils.GetIntParamItem("page_size", global.DEFAULT_PAGE_SIZE, c)
 	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
 	var service service.ChineseService
-	list, total := service.GetChineseBookList(level, page, size)
+	list, total := service.GetChineseBookList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"page_size":  size,
-		"total_page": math.Ceil(float64(total) / float64(size)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 

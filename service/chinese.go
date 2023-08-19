@@ -1,17 +1,18 @@
 package service
 
 import (
+	"sort"
 	"wechat/common/response"
 	"wechat/global"
 	"wechat/model"
-	"sort"
 )
 
 type ChineseService struct {
 }
 
 //GetChineseBookList 获取国学绘本的列表信息
-func (cs *ChineseService) GetChineseBookList(level, page, size int) (chineseBookList []response.ResponseChineseBook, total int64) {
+func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList []response.ResponseChineseBook, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
 	var bookList []model.ChineseBook
 	bookDB := global.GVA_DB.Model(&model.ChineseBook{}).Debug()

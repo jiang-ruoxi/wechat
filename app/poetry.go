@@ -19,16 +19,13 @@ import (
 //ApiSchoolPoetryList 小学古诗列表信息
 func ApiSchoolPoetryList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	size := utils.GetIntParamItem("page_size", global.DEFAULT_PAGE_SIZE, c)
-
 	var service service.PoetryService
-	list, total := service.GetSchoolPoetryList(page, size)
+	list, total := service.GetSchoolPoetryList(page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"page_size":  size,
-		"total_page": math.Ceil(float64(total) / float64(size)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 
@@ -45,16 +42,14 @@ func ApiSchoolPoetryInfo(c *gin.Context) {
 //ApiJuniorPoetryList 中学古诗列表信息
 func ApiJuniorPoetryList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	size := utils.GetIntParamItem("page_size", global.DEFAULT_PAGE_SIZE, c)
 
 	var service service.PoetryService
-	list, total := service.GetJuniorPoetryList(page, size)
+	list, total := service.GetJuniorPoetryList(page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"page_size":  size,
-		"total_page": math.Ceil(float64(total) / float64(size)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 
@@ -71,17 +66,15 @@ func ApiJuniorPoetryInfo(c *gin.Context) {
 //ApiChengPoetryList 成语列表信息
 func ApiChengPoetryList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	size := utils.GetIntParamItem("page_size", global.DEFAULT_PAGE_SIZE, c)
 	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
 	var service service.PoetryService
-	list, total := service.GetChengPoetryList(level, page, size)
+	list, total := service.GetChengPoetryList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"page_size":  size,
-		"total_page": math.Ceil(float64(total) / float64(size)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 

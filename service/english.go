@@ -15,7 +15,8 @@ type EnglishService struct {
 }
 
 //GetEnglishBookList 获取英语绘本的列表信息
-func (es *EnglishService) GetEnglishBookList(level, page, size int) (englishBookList []response.ResponseEnglishBook, total int64) {
+func (es *EnglishService) GetEnglishBookList(level, page int) (englishBookList []response.ResponseEnglishBook, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
 	var bookList []model.EnglishBook
 	bookDB := global.GVA_DB.Model(&model.EnglishBook{}).Debug()
