@@ -8,6 +8,10 @@ const DEFAULT_NUM = 1
 const DEFAULT_PAGE = 1
 const DEFAULT_LEVEL = 1
 const DEFAULT_PAGE_SIZE = 18
+const QUEUE_LEN = 3
+const DEFAULT_QUEUE = "queue_list_question"
+const QUEUE = "queue_list_question_%d"
+const AUTH_TOKEN = "wechat"
 
 const (
 	SUCCESS                = 10000
