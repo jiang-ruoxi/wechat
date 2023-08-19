@@ -15,14 +15,14 @@ redis:
   db: 0
   addr: 127.0.0.1
   port: 6379
-  password: "123456"
+  password: ""
 # mysql配置信息
 mysql:
   path: 127.0.0.1
   port: 3306
   config: "charset=utf8mb4&parseTime=True&loc=Local"
   db-name: web
-  username: jiang
+  username: root
   password: 123456
   max-idle-conns: 10
   max-open-conns: 100

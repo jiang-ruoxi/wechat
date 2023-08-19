@@ -20,7 +20,7 @@ type PoetryService struct {
 func (ps *PoetryService) GetSchoolPoetryList(page, size int) (poetryList []response.ResponseSchoolPoetry, total int64) {
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.Poetry{}).Debug()
-	db.Raw("SELECT id FROM s_poetry").Count(&total)
+	db.Count(&total)
 	db.Raw("SELECT id,poetry_id,title,grade_id,grade,grade_level,author,dynasty FROM s_poetry limit ? offset ?", size, offset).Scan(&poetryList)
 	return
 }
@@ -90,7 +90,7 @@ func (ps *PoetryService) GetSchoolPoetryInfo(poetryId int) (infoData response.Re
 func (ps *PoetryService) GetJuniorPoetryList(page, size int) (poetryList []response.ResponseSchoolPoetry, total int64) {
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.JuniorPoetry{}).Debug()
-	db.Raw("SELECT id FROM s_junior_poetry").Count(&total)
+	db.Count(&total)
 	db.Raw("SELECT id,poetry_id,title,grade_id,grade,author,dynasty FROM s_junior_poetry limit ? offset ?", size, offset).Scan(&poetryList)
 	return
 }
