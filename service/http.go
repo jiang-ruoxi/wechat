@@ -44,7 +44,7 @@ func (hs *HttpService) SendHttpPost() {
 	global.GVA_DB.Model(&model.PoetryPicture{}).Debug().Find(&poetryList)
 
 	for idx, _ := range poetryList {
-		poetryId := strconv.Itoa(poetryList[idx].PoetryId)
+		poetryId := strconv.Itoa(poetryList[idx].BookId)
 		hs.DealHttpPostData(poetryId)
 	}
 }

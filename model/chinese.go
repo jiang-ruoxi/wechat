@@ -31,12 +31,12 @@ func (ChineseBookInfo) TableName() string {
 
 //PoetryPicture 古诗绘本
 type PoetryPicture struct {
-	Id       int    `json:"id" form:"id" gorm:"column:id;comment:主键id;size:11;"`
-	PoetryId int    `json:"poetry_id" form:"poetry_id" gorm:"column:poetry_id;comment:绘本id;size:11;"`
-	Title    string `json:"title" form:"title" gorm:"column:title;comment:title;size:1024;"`
-	Icon     string `json:"icon" form:"icon" gorm:"column:icon;comment:缩略图;size:1024;"`
-	Author   string `json:"author" form:"author" gorm:"column:author;comment:作者;size:1024;"`
-	TypeId   int    `json:"type_id" form:"type_id" gorm:"column:type_id;comment:类型;size:3;"`
+	Id     int    `json:"id" form:"id" gorm:"column:id;comment:主键id;size:11;"`
+	BookId int    `json:"book_id" form:"book_id" gorm:"column:book_id;comment:绘本id;size:11;"`
+	Title  string `json:"title" form:"title" gorm:"column:title;comment:title;size:1024;"`
+	Icon   string `json:"icon" form:"icon" gorm:"column:icon;comment:缩略图;size:1024;"`
+	Author string `json:"author" form:"author" gorm:"column:author;comment:作者;size:1024;"`
+	TypeId int    `json:"type_id" form:"type_id" gorm:"column:type_id;comment:类型;size:3;"`
 }
 
 // TableName PoetryPicture 表名

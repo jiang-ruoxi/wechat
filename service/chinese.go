@@ -59,3 +59,23 @@ func (cs *ChineseService) GetChineseBookInfo(bookId string) (bookInfoItems []mod
 	db = db.Where("book_id = ?", bookId).Order("id asc").Find(&bookInfoItems)
 	return
 }
+
+
+//GetPoetryBookList 获取古诗绘本的列表信息
+func (cs *ChineseService) GetPoetryBookList(typeId, page int) (bookList []model.PoetryPicture, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+	bookDB := global.GVA_DB.Model(&model.PoetryPicture{}).Debug()
+	bookDB = bookDB.Where("type_id = ?", typeId).Count(&total)
+	bookDB = bookDB.Limit(size).Offset(offset)
+	bookDB.Find(&bookList)
+
+	return
+}
+
+//GetPoetryBookInfo 获取古诗绘本的详情信息
+func (cs *ChineseService) GetPoetryBookInfo(bookId string) (bookInfoItems []model.PoetryPictureInfo) {
+	db := global.GVA_DB.Model(&model.PoetryPictureInfo{}).Debug()
+	db = db.Where("book_id = ?", bookId).Order("position asc").Find(&bookInfoItems)
+	return
+}
