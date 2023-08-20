@@ -43,6 +43,9 @@ func InitRouter() *gin.Engine {
 		//百科知识
 		api.GET("/baike/getCategoryCount", routerCache(global.RedisURL_CACHE), app.ApiCategoryCount)
 		api.GET("/baike/getQuestion", app.ApiQuestion)
+
+		//下载图片
+		api.GET("/downLoad/pic", app.ApiDownLoadPic)
 	}
 	return router
 }
