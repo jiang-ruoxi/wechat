@@ -5,10 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"math"
 	"path"
-	"strconv"
 	"strings"
 	"wechat/common"
-	"wechat/common/request"
 	"wechat/global"
 	"wechat/service"
 	"wechat/utils"
@@ -100,13 +98,9 @@ func ApiSchoolOpenId(c *gin.Context) {
 
 //ApiPoetryLog
 func ApiPoetryLog(c *gin.Context) {
-	poetryId, _ := strconv.Atoi(c.Query("poetry_id"))
-	openId := c.Query("open_id")
-	var service service.PoetryService
-	info, total := service.GetPoetryLog(openId, poetryId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"info":  info,
-		"total": total,
+		"info":  "",
+		"total": 1,
 	}, global.SUCCESS_MSG, c)
 }
 
@@ -131,25 +125,5 @@ func ApiUploadPoetryMp3(c *gin.Context) {
 
 //ApiAddPoetryVideoLog
 func ApiAddPoetryVideoLog(c *gin.Context) {
-	var req request.PoetryVideoReq
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		common.ReturnResponse(global.ERR_RES_PARAMS_ILLEGAL, map[string]interface{}{}, global.ERR_RES_PARAMS_ILLEGAL_MSG, c)
-		return
-	}
-	verify := utils.Rules{
-		"OpenId":   {utils.NotEmpty()},
-		"PoetryId": {utils.NotEmpty()},
-		"Mp3":      {utils.NotEmpty()},
-	}
-	if err := utils.Verify(req, verify); err != nil {
-		common.ReturnResponse(global.FAIL, map[string]interface{}{}, err.Error(), c)
-		return
-	}
-	var service service.PoetryService
-	if err := service.InsertVideoLog(&req); err != nil {
-		common.ReturnResponse(global.FAIL, map[string]interface{}{}, global.FAIL_MSG, c)
-		return
-	}
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{}, global.SUCCESS_MSG, c)
 }

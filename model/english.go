@@ -12,7 +12,7 @@ type EnglishBook struct {
 
 // TableName EnglishBook 表名
 func (EnglishBook) TableName() string {
-	return "s_huiben"
+	return "s_english_picture"
 }
 
 // EnglishBookInfo 英语绘本对应的书籍具体的详情
@@ -29,5 +29,5 @@ type EnglishBookInfo struct {
 
 // TableName EnglishBookInfo 表名
 func (EnglishBookInfo) TableName() string {
-	return "s_huiben_info"
+	return "s_english_picture_info"
 }

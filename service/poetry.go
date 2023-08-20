@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-	"wechat/common/request"
 	"wechat/common/response"
 	"wechat/global"
 	"wechat/model"
@@ -179,33 +178,4 @@ func (ps *PoetryService) GetSchoolOpenId(code string) (openId string) {
 	json.Unmarshal(body, &data)
 	openId = data.Openid
 	return
-}
-
-//GetPoetryLog
-func (ps *PoetryService) GetPoetryLog(openId string, poetryId int) (infoData model.PoetryLog, total int64) {
-	// 创建db
-	var info model.PoetryLog
-	db := global.GVA_DB.Model(&model.PoetryLog{}).Debug()
-	db = db.Where("open_id = ? and poetry_id = ?", openId, poetryId).Count(&total)
-	db = db.Find(&info)
-	return info, total
-}
-
-//InsertVideoLog
-func (ps *PoetryService) InsertVideoLog(c *request.PoetryVideoReq) (err error) {
-	//定义对应的类型
-	var data model.PoetryLog
-	//格式化数据生成
-	c.GeneratePoetryVideoLog(&data)
-
-	var total int64
-	db := global.GVA_DB.Model(&model.PoetryLog{}).Debug()
-	db.Raw("SELECT count(id) as num FROM s_poetry_log where open_id = ? AND poetry_id = ?", data.OpenId, data.PoetryId).Count(&total)
-	if total > 0 {
-		global.GVA_DB.Model(&model.PoetryLog{}).Where("open_id = ? AND poetry_id = ?", data.OpenId, data.PoetryId).Delete(&model.PoetryLog{})
-	}
-	if err = global.GVA_DB.Model(&model.PoetryLog{}).Create(&data).Error; err != nil {
-		return err
-	}
-	return nil
 }

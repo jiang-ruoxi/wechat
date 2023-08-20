@@ -17,7 +17,7 @@ type Poetry struct {
 
 // TableName Poetry 表名
 func (Poetry) TableName() string {
-	return "s_poetry"
+	return "s_school_poetry"
 }
 
 // JuniorPoetry 初高中级别的古诗词对应的表
@@ -56,16 +56,4 @@ type ChengYU struct {
 // TableName ChengYU 表名
 func (ChengYU) TableName() string {
 	return "s_chengyu"
-}
-
-// PoetryLog 结构体
-type PoetryLog struct {
-	Id       int    `json:"id" form:"id" gorm:"column:id;comment:主键id;size:11;"`
-	OpenId   string `json:"open_id" form:"open_id" gorm:"column:open_id;comment:用户open_id;size:128;"`
-	PoetryId   int    `json:"poetry_id" form:"poetry_id" gorm:"column:poetry_id;comment:古诗id;size:11;"`
-	Mp3      string `json:"mp3" form:"mp3" gorm:"column:mp3;comment:转换后的url;size:256;"`
-}
-
-func (PoetryLog) TableName() string {
-	return "s_poetry_log"
 }
