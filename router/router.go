@@ -46,6 +46,7 @@ func InitRouter() *gin.Engine {
 
 		//下载图片
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
+		api.GET("/http/post", app.ApiHttpPost)
 	}
 	return router
 }
