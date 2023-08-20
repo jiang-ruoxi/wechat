@@ -75,6 +75,7 @@ func (es *EnglishService) GetOpenId(code string) (openId string) {
 	req.Header.Add("content-type", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	json.Unmarshal(body, &data)
 	openId = data.Openid
 	return
