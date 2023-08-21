@@ -1,11 +1,12 @@
 package pkg
 
 import (
+	"github.com/robfig/cron"
 	"log"
+	"strconv"
 	"wechat/global"
 	"wechat/initialize"
 	"wechat/router"
-	"strconv"
 )
 
 func Execute() {
@@ -30,4 +31,21 @@ func Execute() {
 	if err := r.Run(":" + strconv.Itoa(global.GVA_CONFIG.SYSTEM.Port)); err != nil {
 		log.Fatal("服务器启动失败...Error:" + err.Error())
 	}
+}
+
+func ExecuteCron() {
+	// 创建一个 cron 实例
+	c := cron.New()
+	//// 添加定时任务
+	//var service service.CacheService
+	//
+	////每30分钟执行一次
+	//c.AddFunc("@every 5m", func() {
+	//	fmt.Println("Cron job executed at:", time.Now())
+	//	service.DealRedisRouterCache("TimeLong")
+	//})
+	// 启动 cron
+	c.Start()
+	//在程序退出时关闭 cron
+	defer c.Stop()
 }

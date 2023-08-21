@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/jinzhu/gorm v1.9.16
+	github.com/robfig/cron v1.2.0
 	go.uber.org/zap v1.25.0
 	gopkg.in/yaml.v3 v3.0.1
 )
