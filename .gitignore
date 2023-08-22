@@ -3,6 +3,5 @@
 .vscode
 .fleet
 logs/*
-vendor/*
 tmp/*
 config.yam
