@@ -10,6 +10,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/robfig/cron v1.2.0
 	go.uber.org/zap v1.25.0
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -39,7 +40,6 @@ require (
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect

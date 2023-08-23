@@ -2,12 +2,15 @@ package cache
 
 import (
 	"bytes"
+	"context"
 	"encoding/gob"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
 	"time"
+	"wechat/global"
 
 	"github.com/chenyahui/gin-cache/persist"
 	"github.com/gin-gonic/gin"
@@ -81,6 +84,12 @@ func cache(
 			err := cacheStore.Get(cacheKey, &respCache)
 			if err == nil {
 				replyWithCache(c, cfg, respCache)
+
+				//当命中缓存路由时候判断，当前路由key的有效期是否小于300秒
+				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 300 {
+					go redisCacheForcedRefresh(cacheKey, c, cfg, cacheDuration, cacheStore)
+				}
+
 				cfg.hitCacheCallback(c)
 				return
 			}

@@ -26,7 +26,6 @@ github.com/bytedance/sonic/utf8
 github.com/cespare/xxhash/v2
 # github.com/chenyahui/gin-cache v1.8.1
 ## explicit; go 1.13
-github.com/chenyahui/gin-cache
 github.com/chenyahui/gin-cache/persist
 # github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311
 ## explicit; go 1.15
