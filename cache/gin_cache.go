@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/gob"
-	"log"
 	"net/http"
 	"net/url"
 	"sort"

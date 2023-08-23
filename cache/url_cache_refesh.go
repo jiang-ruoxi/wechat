@@ -23,4 +23,5 @@ func redisCacheForcedRefresh(cacheKey string, c *gin.Context, cfg *Config, cache
 			cfg.logger.Errorf("set cache key error: %s, cache key: %s", err, cacheKey)
 		}
 	}
+	c.Abort()
 }
