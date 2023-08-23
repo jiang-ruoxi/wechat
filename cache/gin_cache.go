@@ -83,13 +83,11 @@ func cache(
 			err := cacheStore.Get(cacheKey, &respCache)
 			if err == nil {
 				replyWithCache(c, cfg, respCache)
-
+				cfg.hitCacheCallback(c)
 				//当命中缓存路由时候判断，当前路由key的有效期是否小于300秒
-				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 300 {
+				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 290 {
 					go redisCacheForcedRefresh(cacheKey, c, cfg, cacheDuration, cacheStore)
 				}
-
-				cfg.hitCacheCallback(c)
 				return
 			}
 
