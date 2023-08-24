@@ -84,17 +84,18 @@ func cache(
 			err := cacheStore.Get(cacheKey, &respCache)
 			if err == nil {
 				//当命中缓存路由时候判断，当前路由key的有效期是否小于300秒
-				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 270 {
-					cfg.hitCacheCallback(c)
-					go redisCacheForcedRefresh(cacheKey, c, cfg, cacheDuration, cacheStore, sfGroup, respCache)
-				} else {
-					replyWithCache(c, cfg, respCache)
-					cfg.hitCacheCallback(c)
-					return
+				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 250 {
+					log.Printf("缓存即将失效，但是还有返回现在的缓存数据，并请求新的数据进行缓存，下次请求为新数据")
+					//cfg.hitCacheCallback(c)
+					//replyWithCacheNext(c, cfg, respCache)
+					go redisCacheForcedRefresh(cacheKey, cfg, cacheDuration, cacheStore, respCache)
 				}
-				//return
+				log.Println("在缓存中获取")
+				replyWithCache(c, cfg, respCache)
+				cfg.hitCacheCallback(c)
+				return
 			}
-			log.Printf("missCacheCallback:%+v \n", 1111)
+
 			if err != persist.ErrCacheMiss {
 				cfg.logger.Errorf("get cache error: %s, cache key: %s", err, cacheKey)
 			}
@@ -108,11 +109,15 @@ func cache(
 			ResponseWriter: c.Writer,
 		}
 		c.Writer = cacheWriter
+		log.Printf("cacheKey：%+v \n", cacheKey)
+		contains := strings.Contains(cacheKey, "no_cache_ext")
+		if contains {
+			log.Printf("contains：%+v \n", contains)
+			cacheDuration = time.Duration(1)*time.Second
 
-		log.Printf("外面c.Writer:%+v \n", c.Writer)
+		}
 		inFlight := false
 		rawRespCache, _, _ := sfGroup.Do(cacheKey, func() (interface{}, error) {
-			log.Printf("missCacheCallback:%+v \n", 222)
 			if cfg.singleFlightForgetTimeout > 0 {
 				forgetTimer := time.AfterFunc(cfg.singleFlightForgetTimeout, func() {
 					sfGroup.Forget(cacheKey)
@@ -124,23 +129,18 @@ func cache(
 
 			inFlight = true
 
-			log.Printf("外面c.cacheWriter:%+v \n", cacheWriter)
 			respCache := &ResponseCache{}
 			respCache.fillWithCacheWriter(cacheWriter, cfg.withoutHeader)
-			log.Printf("missCacheCallback:%+v \n", 3333)
 			// only cache 2xx response
+			log.Printf("cacheDuration：%+v \n", cacheDuration)
 			if !c.IsAborted() && cacheWriter.Status() < 300 && cacheWriter.Status() >= 200 {
-				log.Printf("missCacheCallback:%+v \n", 4444)
 				if err := cacheStore.Set(cacheKey, respCache, cacheDuration); err != nil {
 					cfg.logger.Errorf("set cache key error: %s, cache key: %s", err, cacheKey)
 				}
 			}
-
 			return respCache, nil
 		})
-		log.Printf("missCacheCallback:%+v \n", 5555)
 		if !inFlight {
-			log.Printf("missCacheCallback:%+v \n", 6666)
 			replyWithCache(c, cfg, rawRespCache.(*ResponseCache))
 			cfg.shareSingleFlightCallback(c)
 		}
@@ -277,29 +277,4 @@ func replyWithCache(
 
 	// abort handler chain and return directly
 	c.Abort()
-}
-
-func replyWithCacheNext(
-	c *gin.Context,
-	cfg *Config,
-	respCache *ResponseCache,
-) {
-	cfg.beforeReplyWithCacheCallback(c, respCache)
-
-	c.Writer.WriteHeader(respCache.Status)
-
-	if !cfg.withoutHeader {
-		for key, values := range respCache.Header {
-			for _, val := range values {
-				c.Writer.Header().Set(key, val)
-			}
-		}
-	}
-
-	if _, err := c.Writer.Write(respCache.Data); err != nil {
-		cfg.logger.Errorf("write response error: %s", err)
-	}
-
-	// abort handler chain and return directly
-	c.Next()
 }
