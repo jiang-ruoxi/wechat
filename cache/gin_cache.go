@@ -110,11 +110,10 @@ func cache(
 		}
 		c.Writer = cacheWriter
 		log.Printf("cacheKey：%+v \n", cacheKey)
-		contains := strings.Contains(cacheKey, "no_cache_ext")
+		contains := strings.Contains(cacheKey, GIN_CACHE_EXT)
 		if contains {
 			log.Printf("contains：%+v \n", contains)
-			cacheDuration = time.Duration(1)*time.Second
-
+			cacheDuration = time.Duration(GIN_CACHE_TEMP) * time.Second
 		}
 		inFlight := false
 		rawRespCache, _, _ := sfGroup.Do(cacheKey, func() (interface{}, error) {

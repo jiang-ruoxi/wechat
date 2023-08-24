@@ -5,13 +5,25 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
+const (
+	//这里是发起http请求时候的缓存的时长，1秒--作用是获取到http的body内容中间过渡，设置为正常使用的缓存中
+	GIN_CACHE_TEMP = 1
+	//这个参数是发起http get请求的中间操作，就是根据是否存在这个参数，判断是否不进行缓存操作
+	GIN_CACHE_EXT = "no_cache_ext"
+	//这个就是正常的api的基础路径
+	GIN_BASE_URL = "http://127.0.0.1:8089"
+)
+
 //redisCacheForcedRefresh redis中的路由缓存key强制更新
-func redisCacheForcedRefresh(cacheKey string,cfg *Config, cacheDuration time.Duration, cacheStore persist.CacheStore, respCache *ResponseCache) {
-	//log.Printf("%+v \n", "进入的协程")
-	url := "http://localhost:8089" + cacheKey + "&no_cache_ext=" + strconv.FormatInt(time.Now().Unix(), 10)
+func redisCacheForcedRefresh(cacheKey string, cfg *Config, cacheDuration time.Duration, cacheStore persist.CacheStore, respCache *ResponseCache) {
+	// 组装完整的url路径
+	url := makeHttpUrlPath(cacheKey)
+
+	// 发起临时的http请求，获取新的数据信息
 	httpGetContent, httpCode := sendHttpGet(url)
 	//log.Printf("url:%+v  code: %+v httpGet:%+v\n", url, httpCode, httpGetContent)
 	//log.Printf("url:%+v\n", url)
@@ -19,6 +31,7 @@ func redisCacheForcedRefresh(cacheKey string,cfg *Config, cacheDuration time.Dur
 	//log.Printf("httpGetContent:%+v\n", httpGetContent)
 	//log.Printf("len(httpGetContent):%+v\n", len(httpGetContent))
 	//log.Printf("code:%+v \n", httpCode)
+
 	// only cache 2xx response and httpGetContent length gt 0
 	if httpCode == http.StatusOK && len(httpGetContent) > 0 {
 		var respCacheNew = respCache
@@ -29,6 +42,18 @@ func redisCacheForcedRefresh(cacheKey string,cfg *Config, cacheDuration time.Dur
 	}
 }
 
+//makeHttpUrlPath 组装完整的url路径
+func makeHttpUrlPath(cacheKey string) (url string) {
+	cacheUrlPath := cacheKey
+	if isHave := strings.HasPrefix(cacheKey, "/"); !isHave {
+		cacheUrlPath = "/" + cacheKey
+	}
+
+	url = GIN_BASE_URL + cacheUrlPath + "&=" + GIN_CACHE_EXT + "=" + strconv.FormatInt(time.Now().Unix(), 10)
+	return
+}
+
+// sendHttpGet 发起http get请求
 func sendHttpGet(url string) (bodyContent []byte, httpStatusCode int) {
 	// 发起GET请求
 	response, err := http.Get(url)
