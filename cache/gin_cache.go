@@ -84,7 +84,7 @@ func cache(
 			err := cacheStore.Get(cacheKey, &respCache)
 			if err == nil {
 				//当命中缓存路由时候判断，当前路由key的有效期是否小于300秒
-				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < 250 {
+				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < GIN_LESS_VALUE {
 					log.Printf("缓存即将失效，但是还有返回现在的缓存数据，并请求新的数据进行缓存，下次请求为新数据")
 					//cfg.hitCacheCallback(c)
 					//replyWithCacheNext(c, cfg, respCache)

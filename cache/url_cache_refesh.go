@@ -14,8 +14,10 @@ const (
 	GIN_CACHE_TEMP = 1
 	//这个参数是发起http get请求的中间操作，就是根据是否存在这个参数，判断是否不进行缓存操作
 	GIN_CACHE_EXT = "no_cache_ext"
+	//这个是当缓存小于这个值的时候，进行新数据的请求，并进行缓存进行下次使用, 默认10秒
+	GIN_LESS_VALUE = 10
 	//这个就是正常的api的基础路径
-	GIN_BASE_URL = "http://127.0.0.1:8089"
+	GIN_BASE_URL = "https://api.58haha.com"
 )
 
 //redisCacheForcedRefresh redis中的路由缓存key强制更新

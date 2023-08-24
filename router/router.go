@@ -16,6 +16,7 @@ func InitRouter() *gin.Engine {
 		//首页demo
 		api.GET("/index", app.ApiIndex)
 		api.GET("/index/cache",routerCache(300), app.ApiIndex)
+		api.GET("/index/cache1",routerCache(600), app.ApiIndex)
 
 		//古诗词成语
 		//小学
