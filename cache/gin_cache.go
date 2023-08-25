@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/gob"
-	"log"
+	"encoding/json"
 	"net/http"
 	"net/url"
 	"sort"
@@ -26,6 +26,10 @@ type Strategy struct {
 
 	// CacheDuration
 	CacheDuration time.Duration
+}
+
+type WechatResponse struct {
+	Code int `json:"code"`
 }
 
 // GetCacheStrategyByRequest User can this function to design custom cache strategy by request.
@@ -85,12 +89,8 @@ func cache(
 			if err == nil {
 				//当命中缓存路由时候判断，当前路由key的有效期是否小于300秒
 				if global.GVA_REDIS.TTL(context.Background(), cacheKey).Val().Seconds() < GIN_LESS_VALUE {
-					log.Printf("缓存即将失效，但是还有返回现在的缓存数据，并请求新的数据进行缓存，下次请求为新数据")
-					//cfg.hitCacheCallback(c)
-					//replyWithCacheNext(c, cfg, respCache)
 					go redisCacheForcedRefresh(cacheKey, cfg, cacheDuration, cacheStore, respCache)
 				}
-				log.Println("在缓存中获取")
 				replyWithCache(c, cfg, respCache)
 				cfg.hitCacheCallback(c)
 				return
@@ -109,10 +109,8 @@ func cache(
 			ResponseWriter: c.Writer,
 		}
 		c.Writer = cacheWriter
-		log.Printf("cacheKey：%+v \n", cacheKey)
 		contains := strings.Contains(cacheKey, GIN_CACHE_EXT)
 		if contains {
-			log.Printf("contains：%+v \n", contains)
 			cacheDuration = time.Duration(GIN_CACHE_TEMP) * time.Second
 		}
 		inFlight := false
@@ -131,8 +129,9 @@ func cache(
 			respCache := &ResponseCache{}
 			respCache.fillWithCacheWriter(cacheWriter, cfg.withoutHeader)
 			// only cache 2xx response
-			log.Printf("cacheDuration：%+v \n", cacheDuration)
-			if !c.IsAborted() && cacheWriter.Status() < 300 && cacheWriter.Status() >= 200 {
+			var m WechatResponse
+			json.Unmarshal(respCache.Data, &m)
+			if !c.IsAborted() && cacheWriter.Status() < 300 && cacheWriter.Status() >= 200 && m.Code == global.SUCCESS {
 				if err := cacheStore.Set(cacheKey, respCache, cacheDuration); err != nil {
 					cfg.logger.Errorf("set cache key error: %s, cache key: %s", err, cacheKey)
 				}

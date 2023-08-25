@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"wechat/app"
 	"wechat/global"
+	"wechat/middleware"
 )
 
 func InitRouter() *gin.Engine {
@@ -53,6 +54,43 @@ func InitRouter() *gin.Engine {
 		//下载图片
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
 		api.GET("/http/post", app.ApiHttpPost)
+	}
+
+	//路由组v1
+	apiV2 := router.Group("v2")
+	apiV2.Use(middleware.CheckWechatMiddleware())
+	{
+		//古诗词成语
+		//小学
+		apiV2.GET("/poetry/school/getList", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryList)
+		apiV2.GET("/poetry/school/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryInfo)
+		apiV2.GET("/poetry/school/getOpenId", app.ApiSchoolOpenId)
+		apiV2.GET("/poetry/school/getPoetryLog", app.ApiPoetryLog)
+		apiV2.POST("/poetry/school/uploadMp3", app.ApiUploadPoetryMp3)
+		apiV2.POST("/poetry/school/addVideoLog", app.ApiAddPoetryVideoLog)
+		//初高中
+		apiV2.GET("/poetry/junior/getList", routerCache(global.RedisURL_CACHE), app.ApiJuniorPoetryList)
+		apiV2.GET("/poetry/junior/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiJuniorPoetryInfo)
+		//成语
+		apiV2.GET("/poetry/cheng/getList", routerCache(global.RedisURL_CACHE), app.ApiChengPoetryList)
+		apiV2.GET("/poetry/cheng/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiChengPoetryInfo)
+
+		//中文绘本
+		apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
+		apiV2.GET("/chinese/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookInfo)
+
+		//古诗绘本
+		apiV2.GET("/poetry/book/getList", routerCache(global.RedisURL_CACHE), app.ApiPoetryBookList)
+		apiV2.GET("/poetry/book/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiPoetryBookInfo)
+
+		//英文绘本
+		apiV2.GET("/english/getList", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookList)
+		apiV2.GET("/english/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookInfo)
+		apiV2.GET("/english/getOpenId", app.ApiOpenId)
+
+		//百科知识
+		apiV2.GET("/baike/getCategoryCount", routerCache(global.RedisURL_CACHE), app.ApiCategoryCount)
+		apiV2.GET("/baike/getQuestion", app.ApiQuestion)
 	}
 	return router
 }

@@ -27,12 +27,6 @@ func redisCacheForcedRefresh(cacheKey string, cfg *Config, cacheDuration time.Du
 
 	// 发起临时的http请求，获取新的数据信息
 	httpGetContent, httpCode := sendHttpGet(url)
-	//log.Printf("url:%+v  code: %+v httpGet:%+v\n", url, httpCode, httpGetContent)
-	//log.Printf("url:%+v\n", url)
-	//log.Printf("code:%+v\n", httpCode)
-	//log.Printf("httpGetContent:%+v\n", httpGetContent)
-	//log.Printf("len(httpGetContent):%+v\n", len(httpGetContent))
-	//log.Printf("code:%+v \n", httpCode)
 
 	// only cache 2xx response and httpGetContent length gt 0
 	if httpCode == http.StatusOK && len(httpGetContent) > 0 {
