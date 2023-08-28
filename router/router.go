@@ -23,8 +23,6 @@ func InitRouter() *gin.Engine {
 		//小学
 		api.GET("/poetry/school/getList", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryList)
 		api.GET("/poetry/school/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryInfo)
-		api.GET("/poetry/school/getOpenId", app.ApiSchoolOpenId)
-		api.GET("/poetry/school/getPoetryLog", app.ApiPoetryLog)
 		api.POST("/poetry/school/uploadMp3", app.ApiUploadPoetryMp3)
 		api.POST("/poetry/school/addVideoLog", app.ApiAddPoetryVideoLog)
 
@@ -33,7 +31,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/http/post", app.ApiHttpPost)
 	}
 
-	//路由组v1
+	//路由组v2 校验是否微信或者小程序请求访问
 	apiV2 := router.Group("v2")
 	apiV2.Use(middleware.CheckWechatMiddleware())
 	{
