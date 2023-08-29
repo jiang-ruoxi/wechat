@@ -1,12 +1,12 @@
 package response
 
 type ResponseChineseBook struct {
-	Id        int    `json:"id"`
+	Id        int    `json:"-"`
 	BookId    string `json:"book_id"`
 	Title     string `json:"title"`
 	Icon      string `json:"icon"`
-	Level      uint8  `json:"level"`
-	Position  uint8  `json:"position"`
+	Level      uint8  `json:"-"`
+	Position  uint8  `json:"-"`
 	BookCount string `json:"book_count"`
 }
 
