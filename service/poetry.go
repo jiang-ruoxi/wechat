@@ -21,7 +21,7 @@ func (ps *PoetryService) GetSchoolPoetryList(page int) (poetryList []response.Re
 	offset := size * (page - 1)
 	db := global.GVA_DB.Model(&model.Poetry{}).Debug()
 	db.Count(&total)
-	db.Raw("SELECT id,poetry_id,title,grade_id,grade,grade_level,author,dynasty FROM s_poetry limit ? offset ?", size, offset).Scan(&poetryList)
+	db.Raw("SELECT id,poetry_id,title,grade_id,grade,grade_level,author,dynasty FROM s_school_poetry limit ? offset ?", size, offset).Scan(&poetryList)
 	return
 }
 
