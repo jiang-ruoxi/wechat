@@ -23,8 +23,16 @@ func InitRouter() *gin.Engine {
 		//小学
 		api.GET("/poetry/school/getList", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryList)
 		api.GET("/poetry/school/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryInfo)
+		api.GET("/poetry/school/getOpenId", app.ApiSchoolOpenId)
+		api.GET("/poetry/school/getPoetryLog", app.ApiPoetryLog)
 		api.POST("/poetry/school/uploadMp3", app.ApiUploadPoetryMp3)
 		api.POST("/poetry/school/addVideoLog", app.ApiAddPoetryVideoLog)
+		//初高中
+		api.GET("/poetry/junior/getList", routerCache(global.RedisURL_CACHE), app.ApiJuniorPoetryList)
+		api.GET("/poetry/junior/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiJuniorPoetryInfo)
+		//成语
+		api.GET("/poetry/cheng/getList", routerCache(global.RedisURL_CACHE), app.ApiChengPoetryList)
+		api.GET("/poetry/cheng/getPoetryInfo", routerCache(global.RedisURL_CACHE), app.ApiChengPoetryInfo)
 
 		//下载图片
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
