@@ -10,5 +10,5 @@ import (
 
 func routerCache(sec int64) (res gin.HandlerFunc) {
 	fmt.Printf("sec:%v", sec)
-	return cache.CacheByRequestURI(global.GVA_HTTP_CACHE, time.Duration(sec)*time.Second)
+	return cache.CacheByRequestURI(global.GVA_HTTP_CACHE, time.Duration(sec)*time.Hour)
 }
