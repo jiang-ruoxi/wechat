@@ -11,6 +11,15 @@ import (
 
 //该文件为中文国学绘本的api
 
+//ApiChineseNavList 国学绘本Nav列表
+func ApiChineseNavList(c *gin.Context) {
+	var service service.ChineseService
+	list := service.ApiChineseNavList()
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list": list,
+	}, global.SUCCESS_MSG, c)
+}
+
 //ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)

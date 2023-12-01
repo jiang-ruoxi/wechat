@@ -10,6 +10,14 @@ import (
 type ChineseService struct {
 }
 
+//ApiChineseNavList 获取国学绘本的列表信息
+func (cs *ChineseService) ApiChineseNavList() (navList []model.ChineseBookName) {
+	bookDB := global.GVA_DB.Model(&model.ChineseBookName{}).Debug()
+	bookDB = bookDB.Order("s_sort desc").Order("id asc")
+	bookDB.Find(&navList)
+	return navList
+}
+
 //GetChineseBookList 获取国学绘本的列表信息
 func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList []response.ResponseChineseBook, total int64) {
 	size := global.DEFAULT_PAGE_SIZE
@@ -59,7 +67,6 @@ func (cs *ChineseService) GetChineseBookInfo(bookId string) (bookInfoItems []mod
 	db = db.Where("book_id = ?", bookId).Order("id asc").Find(&bookInfoItems)
 	return
 }
-
 
 //GetPoetryBookList 获取古诗绘本的列表信息
 func (cs *ChineseService) GetPoetryBookList(typeId, page int) (bookList []model.PoetryPicture, total int64) {

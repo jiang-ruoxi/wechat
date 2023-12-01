@@ -1,5 +1,18 @@
 package model
 
+// ChineseBookName 中文国学绘本对应的书籍
+type ChineseBookName struct {
+	Id         int    `json:"-"`
+	CategoryId int    `json:"category_id"`
+	Name       string `json:"name"`
+	SSort      int    `json:"s_sort"`
+}
+
+// TableName ChineseBookName 表名
+func (ChineseBookName) TableName() string {
+	return "s_chinese_name"
+}
+
 // ChineseBook 中文国学绘本对应的书籍
 type ChineseBook struct {
 	Id       int    `json:"-"`
