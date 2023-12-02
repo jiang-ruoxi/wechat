@@ -37,6 +37,8 @@ func ApiChineseBookList(c *gin.Context) {
 		Position  uint8  `json:"-"`
 		BookCount string `json:"book_count"`
 	}
+	total := 1
+	page:=1
 	var m dd
 	m.BookId = "6c2665d7c3ed1e5bfd8ba600f026eb55"
 	m.BookCount = "16"
@@ -46,9 +48,9 @@ func ApiChineseBookList(c *gin.Context) {
 	dds = append(dds, m)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list": dds,
-		//"total":      total,
-		//"page":       page,
-		//"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 
