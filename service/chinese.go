@@ -13,7 +13,7 @@ type ChineseService struct {
 //ApiChineseNavList 获取国学绘本的列表信息
 func (cs *ChineseService) ApiChineseNavList() (navList []model.ChineseBookName) {
 	bookDB := global.GVA_DB.Model(&model.ChineseBookName{}).Debug()
-	bookDB = bookDB.Order("s_sort desc").Order("id asc")
+	bookDB = bookDB.Where("status", 1).Order("s_sort desc").Order("id asc")
 	bookDB.Find(&navList)
 	return navList
 }
