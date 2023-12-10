@@ -64,7 +64,7 @@ func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList [
 //GetChineseBookInfo 获取国学绘本的详情信息
 func (cs *ChineseService) GetChineseBookInfo(bookId string) (bookInfoItems []model.ChineseBookInfo) {
 	db := global.GVA_DB.Model(&model.ChineseBookInfo{}).Debug()
-	db = db.Where("book_id = ?", bookId).Order("id asc").Find(&bookInfoItems)
+	db = db.Where("book_id = ?", bookId).Order("position asc").Find(&bookInfoItems)
 	return
 }
 
