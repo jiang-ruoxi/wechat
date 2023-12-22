@@ -44,8 +44,8 @@ func (ChineseBookAlbum) TableName() string {
 
 // ChineseBook 中文国学绘本对应的书籍具体的详情
 type ChineseBookInfo struct {
-	Id       int    `json:"-"`
-	BookId   string `json:"-"`
+	Id       int    `json:"id"`
+	BookId   string `json:"book_id"`
 	Mp3      string `json:"mp3"`
 	Pic      string `json:"pic"`
 	Position uint8  `json:"position"`
@@ -58,8 +58,8 @@ func (ChineseBookInfo) TableName() string {
 
 // ChineseAlbumInfo 中文国学绘本对应的书籍具体的详情
 type ChineseAlbumInfo struct {
-	Id       int    `json:"-"`
-	BookId   string `json:"-"`
+	Id       int    `json:"id"`
+	BookId   string `json:"book_id"`
 	Mp3      string `json:"mp3"`
 	Pic      string `json:"pic"`
 	Position uint8  `json:"position"`
