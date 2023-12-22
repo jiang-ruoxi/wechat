@@ -28,6 +28,20 @@ func (ChineseBook) TableName() string {
 	return "s_chinese_picture"
 }
 
+// ChineseBookAlbum 中文国学绘本专辑对应的书籍
+type ChineseBookAlbum struct {
+	Id       int    `json:"-"`
+	BookId   string `json:"book_id"`
+	Title    string `json:"title"`
+	Icon     string `json:"icon"`
+	Position uint8  `json:"position"`
+}
+
+// TableName ChineseBookAlbum 表名
+func (ChineseBookAlbum) TableName() string {
+	return "s_chinese_picture_album"
+}
+
 // ChineseBook 中文国学绘本对应的书籍具体的详情
 type ChineseBookInfo struct {
 	Id       int    `json:"-"`
@@ -40,6 +54,23 @@ type ChineseBookInfo struct {
 // TableName ChineseBookInfo 表名
 func (ChineseBookInfo) TableName() string {
 	return "s_chinese_picture_info"
+}
+
+// ChineseAlbumInfo 中文国学绘本对应的书籍具体的详情
+type ChineseAlbumInfo struct {
+	Id       int    `json:"-"`
+	BookId   string `json:"-"`
+	Mp3      string `json:"mp3"`
+	Pic      string `json:"pic"`
+	Position uint8  `json:"position"`
+	Title    string `json:"title"`
+	Desc     string `json:"desc"`
+	Duration string `json:"duration"`
+}
+
+// TableName ChineseBookInfo 表名
+func (ChineseAlbumInfo) TableName() string {
+	return "s_chinese_picture_album_info"
 }
 
 //PoetryPicture 古诗绘本

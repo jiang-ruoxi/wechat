@@ -61,10 +61,39 @@ func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList [
 	return
 }
 
+//GetChineseBookAlbumLList 获取国学绘本专辑的列表信息
+func (cs *ChineseService) GetChineseBookAlbumLList(page int) (chineseBookAlbumList []model.ChineseBookAlbum, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+	bookDB := global.GVA_DB.Model(&model.ChineseBookAlbum{}).Debug()
+	bookDB = bookDB.Count(&total)
+	bookDB = bookDB.Order("position desc").Limit(size).Offset(offset)
+	bookDB.Find(&chineseBookAlbumList)
+
+	return
+}
+
+//GetChineseBookAlbumListInfo 获取国学绘本专辑对应列表信息
+func (cs *ChineseService) GetChineseBookAlbumListInfo(bookId string) (chineseAlbumInfoList []model.ChineseAlbumInfo, total int64) {
+	bookDB := global.GVA_DB.Model(&model.ChineseAlbumInfo{}).Debug()
+	bookDB = bookDB.Where("book_id = ?", bookId).Count(&total)
+	bookDB = bookDB.Order("position desc")
+	bookDB.Find(&chineseAlbumInfoList)
+
+	return
+}
+
 //GetChineseBookInfo 获取国学绘本的详情信息
 func (cs *ChineseService) GetChineseBookInfo(bookId string) (bookInfoItems []model.ChineseBookInfo) {
 	db := global.GVA_DB.Model(&model.ChineseBookInfo{}).Debug()
 	db = db.Where("book_id = ?", bookId).Order("position asc").Find(&bookInfoItems)
+	return
+}
+
+//GetChineseBookAlbumInfo 获取国学绘本专辑的详情信息
+func (cs *ChineseService) GetChineseBookAlbumInfo(id int) (bookInfoItem model.ChineseAlbumInfo) {
+	db := global.GVA_DB.Model(&model.ChineseAlbumInfo{}).Debug()
+	db = db.Where("id = ?", id).First(&bookInfoItem)
 	return
 }
 
