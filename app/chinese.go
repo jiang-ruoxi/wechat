@@ -22,32 +22,13 @@ func ApiChineseNavList(c *gin.Context) {
 
 //ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
-	//page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	//level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
-	//
-	//var service service.ChineseService
-	//list, total := service.GetChineseBookList(level, page)
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
-	type dd struct {
-		Id        int    `json:"-"`
-		BookId    string `json:"book_id"`
-		Title     string `json:"title"`
-		Icon      string `json:"icon"`
-		Level     uint8  `json:"-"`
-		Position  uint8  `json:"-"`
-		BookCount string `json:"book_count"`
-	}
-	total:=1
-	page:=1
-	var m dd
-	m.BookId = "6c2665d7c3ed1e5bfd8ba600f026eb55"
-	m.BookCount = "16"
-	m.Icon = "https://static.58haha.com/chinese_book/cover/2021113086116408542418619.jpg"
-	m.Title = "幸福的霸王龙·尊老爱幼"
-	dds := make([]dd, 0)
-	dds = append(dds, m)
+	var service service.ChineseService
+	list, total := service.GetChineseBookList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"list": dds,
+		"list": list,
 		"total":      total,
 		"page":       page,
 		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
