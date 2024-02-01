@@ -24,7 +24,7 @@ func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList [
 	offset := size * (page - 1)
 	var bookList []model.ChineseBook
 	bookDB := global.GVA_DB.Model(&model.ChineseBook{}).Debug()
-	bookDB = bookDB.Where("type = ?", level).Count(&total)
+	bookDB = bookDB.Where("type = ? and status = 1", level).Count(&total)
 	bookDB = bookDB.Order("position desc").Limit(size).Offset(offset)
 	bookDB.Find(&bookList)
 
