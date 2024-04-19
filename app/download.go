@@ -32,7 +32,7 @@ func ApiUploadFileData(c *gin.Context) {
 	extension := filepath.Ext(fileName)
 
 	// 生成文件名（使用时间戳）
-	fName := time.Now().Format("20060102150405") + extension
+	fName := time.Now().UnixNano() + extension
 
 	path := "/data/static/pdf-img/"
 	utils.ExistDir(path)
