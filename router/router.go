@@ -41,7 +41,7 @@ func InitRouter() *gin.Engine {
 
 		//下载图片
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
-		api.GET("/upload/pic", app.ApiUploadFileData)
+		api.POST("/upload/pic", app.ApiUploadFileData)
 		api.GET("/http/post", app.ApiHttpPost)
 	}
 
