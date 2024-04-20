@@ -62,6 +62,9 @@ func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
 		return "", err
 	}
 
+	for _, file := range imageFiles {
+		os.Remove(file)
+	}
 	fmt.Println("PDF文件已生成")
 	return pdfFileName, nil
 }
