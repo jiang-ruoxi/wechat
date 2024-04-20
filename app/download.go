@@ -23,6 +23,8 @@ func ApiDownLoadPic(c *gin.Context) {
 
 //ApiUploadFileData 上传图片
 func ApiUploadFileData(c *gin.Context) {
+	//获取其他的参数
+	index := c.PostForm("index")
 	// 获取上传的文件
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -46,7 +48,8 @@ func ApiUploadFileData(c *gin.Context) {
 	dst := "https://oss.58haha.com/pdf-img/" + fName
 
 	c.JSON(200, gin.H{
-		"dst": dst,
+		"dst":   dst,
+		"index": index,
 	})
 }
 
