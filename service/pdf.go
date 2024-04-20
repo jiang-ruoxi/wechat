@@ -5,7 +5,6 @@ import (
 	"github.com/jung-kurt/gofpdf"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 	"wechat/common/request"
 	"wechat/utils"
@@ -16,7 +15,8 @@ type PDF struct {
 
 //ApiMakePDF 生成PDF
 func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, err error) {
-	imgList := strings.Split(req.ImgList, ",")
+	fmt.Printf("%#v \n", req.ImgList)
+	imgList := req.ImgList
 	imgPathList := make([]string, 0)
 	for _, item := range imgList {
 		var imgPath string
