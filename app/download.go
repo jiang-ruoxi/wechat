@@ -2,10 +2,12 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"path/filepath"
 	"strconv"
 	"time"
 	"wechat/common"
+	"wechat/common/request"
 	"wechat/global"
 	"wechat/service"
 	"wechat/utils"
@@ -46,4 +48,23 @@ func ApiUploadFileData(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"dst": dst,
 	})
+}
+
+//ApiMakePdf 生成Pdf
+func ApiMakePdf(c *gin.Context) {
+	var json request.MakePDF
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var service service.PDF
+	data, err := service.ApiMakePDF(json)
+	msg := "success"
+	if err != nil {
+		msg = "fail"
+	}
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"data": data,
+		"msg":  msg,
+	}, global.SUCCESS_MSG, c)
 }

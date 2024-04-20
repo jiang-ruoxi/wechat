@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/fs"
 	"os"
+	"regexp"
 	"strconv"
 	"wechat/global"
 )
@@ -28,4 +29,12 @@ func ExistDir(path string)  {
 			fmt.Println(err)
 		}
 	}
+}
+
+func ReplaceURLPart(originalURL, oldPart, newPart string) string {
+	// 使用正则表达式匹配URL中的某个部分
+	reg := regexp.MustCompile(regexp.QuoteMeta(oldPart))
+
+	// 替换匹配到的部分
+	return reg.ReplaceAllString(originalURL, newPart)
 }

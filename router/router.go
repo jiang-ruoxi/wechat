@@ -16,8 +16,8 @@ func InitRouter() *gin.Engine {
 	{
 		//首页demo
 		api.GET("/index", app.ApiIndex)
-		api.GET("/index/cache",routerCache(300), app.ApiIndex)
-		api.GET("/index/cache1",routerCache(600), app.ApiIndex)
+		api.GET("/index/cache", routerCache(300), app.ApiIndex)
+		api.GET("/index/cache1", routerCache(600), app.ApiIndex)
 
 		//古诗词成语
 		//小学
@@ -42,6 +42,7 @@ func InitRouter() *gin.Engine {
 		//下载图片
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
 		api.POST("/upload/pic", app.ApiUploadFileData)
+		api.POST("/make/pdf", app.ApiMakePdf)
 		api.GET("/http/post", app.ApiHttpPost)
 	}
 
