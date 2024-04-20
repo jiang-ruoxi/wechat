@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/chenyahui/gin-cache v1.8.1
+	github.com/dustin/go-humanize v1.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.7.1

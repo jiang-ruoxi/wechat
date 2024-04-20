@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/jung-kurt/gofpdf"
+	"github.com/dustin/go-humanize"
 	"os"
 	"strconv"
 	"time"
@@ -33,8 +34,9 @@ func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, name string, total
 	oPath := "/data/static/pdf-img/" + pdf
 	fileInfo, _ := os.Stat(oPath)
 	fileSize := fileInfo.Size()
+	size := humanize.Bytes(fileSize)
 
-	return pdfFile, pdf, len(imgPathList), fileSize, nil
+	return pdfFile, pdf, len(imgPathList), size, nil
 }
 
 func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
