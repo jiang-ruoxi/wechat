@@ -53,7 +53,9 @@ func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
 	}
 
 	// 保存PDF文件
-	pdfFile := "/data/static/pdf-img" + strconv.FormatInt(time.Now().UnixNano(), 10) + ".pdf"
+	pdfPath := "/data/static/pdf-img/"
+	pdfFileName := strconv.FormatInt(time.Now().UnixNano(), 10) + ".pdf"
+	pdfFile := pdfPath + pdfFileName
 	err := pdf.OutputFileAndClose(pdfFile)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -61,5 +63,5 @@ func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
 	}
 
 	fmt.Println("PDF文件已生成")
-	return pdfFile, nil
+	return pdfFileName, nil
 }
