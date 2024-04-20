@@ -58,13 +58,16 @@ func ApiMakePdf(c *gin.Context) {
 		return
 	}
 	var service service.PDF
-	data, err := service.ApiMakePDF(json)
+	pdf, name, total, size, err := service.ApiMakePDF(json)
 	msg := "success"
 	if err != nil {
 		msg = "fail"
 	}
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"data": data,
-		"msg":  msg,
+		"url":   pdf,
+		"name":  name,
+		"total": total,
+		"size":  size,
+		"msg":   msg,
 	}, global.SUCCESS_MSG, c)
 }
