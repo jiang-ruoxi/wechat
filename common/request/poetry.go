@@ -7,6 +7,10 @@ type PoetryVideoReq struct {
 }
 
 type MakePDF struct {
-	ImgList []string `json:"img_list"`
-	Size    int    `json:"size"`
+	ImgList []ImgListIndex `json:"img_list"`
+}
+
+type ImgListIndex struct {
+	Index string `json:"index"`
+	Img   string `json:"img"`
 }

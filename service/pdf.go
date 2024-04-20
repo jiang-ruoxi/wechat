@@ -2,9 +2,10 @@ package service
 
 import (
 	"fmt"
-	"github.com/jung-kurt/gofpdf"
 	"github.com/dustin/go-humanize"
+	"github.com/jung-kurt/gofpdf"
 	"os"
+	"sort"
 	"strconv"
 	"time"
 	"wechat/common/request"
@@ -16,12 +17,21 @@ type PDF struct {
 
 //ApiMakePDF 生成PDF
 func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, name string, total int, size string, err error) {
-	fmt.Printf("%#v \n", req.ImgList)
+
 	imgList := req.ImgList
+	fmt.Printf("%#v \n", imgList)
+
+	// 定义排序函数
+	sortByIndex := func(i, j int) bool {
+		return imgList[i].Index < imgList[j].Index
+	}
+	// 使用sort.Slice进行排序
+	sort.Slice(imgList, sortByIndex)
+
 	imgPathList := make([]string, 0)
 	for _, item := range imgList {
 		var imgPath string
-		imgPath = utils.ReplaceURLPart(item, "https://oss.58haha.com", "/data/static")
+		imgPath = utils.ReplaceURLPart(item.Img, "https://oss.58haha.com", "/data/static")
 		imgPathList = append(imgPathList, imgPath)
 	}
 	fmt.Printf("%#v \n", imgPathList)
