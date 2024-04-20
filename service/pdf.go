@@ -15,7 +15,7 @@ type PDF struct {
 }
 
 //ApiMakePDF 生成PDF
-func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, name string, total int, size int64, err error) {
+func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, name string, total int, size string, err error) {
 	fmt.Printf("%#v \n", req.ImgList)
 	imgList := req.ImgList
 	imgPathList := make([]string, 0)
@@ -34,7 +34,7 @@ func (p *PDF) ApiMakePDF(req request.MakePDF) (result string, name string, total
 	oPath := "/data/static/pdf-img/" + pdf
 	fileInfo, _ := os.Stat(oPath)
 	fileSize := fileInfo.Size()
-	size := humanize.Bytes(fileSize)
+	size = humanize.Bytes(uint64(fileSize))
 
 	return pdfFile, pdf, len(imgPathList), size, nil
 }
