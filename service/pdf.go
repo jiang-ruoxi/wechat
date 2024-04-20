@@ -52,8 +52,8 @@ func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
 		}
 		// 添加新的页面
 		pdf.AddPage()
-		width, imgHeight := pdf.GetPageSize()
-		imgWidth := width - 20
+		imgWidth, imgHeight := pdf.GetPageSize()
+		//imgWidth := width - 20
 		//imgHeight := imgWidth * float64(img.Bounds().Dy()) / float64(img.Bounds().Dy())
 		// 添加图片到页面
 		pdf.Image(file, 0, 0, imgWidth, imgHeight, false, "", 0, "")
