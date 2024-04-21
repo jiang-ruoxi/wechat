@@ -43,6 +43,7 @@ func InitRouter() *gin.Engine {
 		api.GET("/downLoad/pic", app.ApiDownLoadPic)
 		api.POST("/upload/pic", app.ApiUploadFileData)
 		api.POST("/make/pdf", app.ApiMakePdf)
+		api.POST("/compress/picture", app.ApiCompressPicture)
 		api.GET("/http/post", app.ApiHttpPost)
 	}
 

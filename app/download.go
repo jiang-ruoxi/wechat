@@ -74,3 +74,22 @@ func ApiMakePdf(c *gin.Context) {
 		"msg":   msg,
 	}, global.SUCCESS_MSG, c)
 }
+
+//ApiCompressPicture 压缩图片
+func ApiCompressPicture(c *gin.Context) {
+	var json request.CompressPicture
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var service service.PDF
+	imgList, err := service.CompressPicture(json)
+	msg := "success"
+	if err != nil {
+		msg = "fail"
+	}
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"img_list": imgList,
+		"msg":      msg,
+	}, global.SUCCESS_MSG, c)
+}

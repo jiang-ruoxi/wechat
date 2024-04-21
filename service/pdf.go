@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"github.com/jung-kurt/gofpdf"
+	"image"
+	"image/jpeg"
+	"image/png"
+	"net/http"
 	"os"
 	"sort"
 	"strconv"
@@ -84,4 +88,87 @@ func (p *PDF) doMakePDF(imageFiles []string) (string, error) {
 	}
 	fmt.Println("PDF文件已生成")
 	return pdfFileName, nil
+}
+
+func (p *PDF) CompressPicture(req request.CompressPicture) (imgRList []request.ImgListIndex, err error) {
+	imgList := req.ImgList
+	fmt.Printf("%#v \n", imgList)
+
+	// 定义排序函数
+	sortByIndex := func(i, j int) bool {
+		return imgList[i].Index < imgList[j].Index
+	}
+	// 使用sort.Slice进行排序
+	sort.Slice(imgList, sortByIndex)
+
+	imgPathList := make([]string, 0)
+	for _, item := range imgList {
+		var imgPath string
+		imgPath = utils.ReplaceURLPart(item.Img, "https://oss.58haha.com", "/data/static")
+		imgPathList = append(imgPathList, imgPath)
+	}
+	fmt.Printf("%#v \n", imgPathList)
+	err = p.doCompressPicture(imgPathList)
+	if err != nil {
+		return
+	}
+	return imgList, nil
+}
+func (p *PDF) doCompressPicture(imagePathList []string) (err error) {
+	for _, imagePath := range imagePathList {
+		file, err := os.Open(imagePath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		// 读取文件的前512个字节
+		buffer := make([]byte, 512)
+		_, err = file.Read(buffer)
+		if err != nil {
+			return err
+		}
+		file.Seek(0, 0)
+
+		// 根据MIME类型检查
+		contentType := http.DetectContentType(buffer)
+
+		var img image.Image
+		var format string
+		switch contentType {
+		case "image/jpeg":
+			img, err = jpeg.Decode(file)
+			format = "jpeg"
+		case "image/png":
+			img, err = png.Decode(file)
+			format = "png"
+		default:
+			return nil
+		}
+
+		if err != nil {
+			return err
+		}
+
+		// 关闭并重新打开文件进行压缩
+		file.Close()
+		file, err = os.OpenFile(imagePath, os.O_WRONLY|os.O_TRUNC, 0644)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		var opt jpeg.Options
+		opt.Quality = 75 // 设置压缩质量为75
+
+		switch format {
+		case "jpeg":
+			err = jpeg.Encode(file, img, &opt)
+		case "png":
+			encoder := png.Encoder{CompressionLevel: png.BestCompression}
+			err = encoder.Encode(file, img)
+		}
+	}
+
+	return err
 }
