@@ -38,6 +38,7 @@ func (cs *LexiconService) ApiLexiconList(lexiconType int, page int, size int) (s
 		showQuestionList = append(showQuestionList, lexiconRespList[idx].Annotation)
 	}
 
+	cs.shuffleStrings(showQuestionList)
 	return showQuestionList, wordMap, AnnotationMap
 }
 
