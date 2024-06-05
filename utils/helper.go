@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"wechat/global"
 )
 
@@ -18,8 +19,8 @@ func GetIntParamItem(param string, defaultInt int, c *gin.Context) (paramInt int
 	return
 }
 
-//ExistDir 创建目录
-func ExistDir(path string)  {
+// ExistDir 创建目录
+func ExistDir(path string) {
 	// 判断路径是否存在
 	_, err := os.ReadDir(path)
 	if err != nil {
@@ -37,4 +38,16 @@ func ReplaceURLPart(originalURL, oldPart, newPart string) string {
 
 	// 替换匹配到的部分
 	return reg.ReplaceAllString(originalURL, newPart)
+}
+
+func RemoveLettersAndAmpersands(s string) string {
+	reg := regexp.MustCompile("[a-zA-Z&]")
+	return reg.ReplaceAllString(s, "")
+}
+
+func RemoveHashIfNeeded(s string) string {
+	if strings.HasPrefix(s, ".") {
+		return strings.TrimPrefix(s, ".")
+	}
+	return s
 }

@@ -45,6 +45,9 @@ func InitRouter() *gin.Engine {
 		api.POST("/make/pdf", app.ApiMakePdf)
 		api.POST("/compress/picture", app.ApiCompressPicture)
 		api.GET("/http/post", app.ApiHttpPost)
+
+		//英语单词
+		api.GET("/lexicon/list", app.ApiLexiconList)
 	}
 
 	//路由组v2 校验是否微信或者小程序请求访问

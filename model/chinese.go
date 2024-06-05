@@ -73,7 +73,7 @@ func (ChineseAlbumInfo) TableName() string {
 	return "s_chinese_picture_album_info"
 }
 
-//PoetryPicture 古诗绘本
+// PoetryPicture 古诗绘本
 type PoetryPicture struct {
 	Id     int    `json:"-"`
 	BookId int    `json:"book_id"`
@@ -88,7 +88,7 @@ func (PoetryPicture) TableName() string {
 	return "s_poetry_picture"
 }
 
-//PoetryPictureInfo 古诗绘本详情
+// PoetryPictureInfo 古诗绘本详情
 type PoetryPictureInfo struct {
 	Id       int    `json:"-"`
 	BookId   int    `json:"book_id"`
@@ -101,4 +101,20 @@ type PoetryPictureInfo struct {
 // TableName PoetryPictureInfo 表名
 func (PoetryPictureInfo) TableName() string {
 	return "s_poetry_picture_info"
+}
+
+// Lexicon 英语单词
+type Lexicon struct {
+	Id         int    `json:"id"`
+	Word       string `json:"word"`
+	Mark       string `json:"mark"`
+	Annotation string `json:"annotation"`
+	Explain    string `json:"explain"`
+	Type       int    `json:"-"`
+	Status     int    `json:"-"`
+}
+
+// TableName Lexicon 表名
+func (Lexicon) TableName() string {
+	return "s_lexicon"
 }
