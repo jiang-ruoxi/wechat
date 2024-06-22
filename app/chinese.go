@@ -40,9 +40,9 @@ func ApiChineseBookList(c *gin.Context) {
 	//list, total := service.GetChineseBookList(level, page)
 	var data response.ResponseChineseBook
 	var list []response.ResponseChineseBook
-	data.BookId = "301c8eb1f76e106ec1bcf7a70ad25ffd"
-	data.Title = "过大年"
-	data.Icon = "https://oss.58haha.com/chinese_book/cover/26.png"
+	data.BookId = "784ff39684c7a23cfa09e77719256e20"
+	data.Title = "侏罗纪的伙伴"
+	data.Icon = "https://oss.58haha.com/chinese_book/cover/108.jpg"
 	data.BookCount = "1"
 	list = append(list, data)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
