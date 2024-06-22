@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"math"
 	"wechat/common"
+	"wechat/common/response"
 	"wechat/global"
 	"wechat/service"
 	"wechat/utils"
@@ -32,16 +33,23 @@ func ApiChineseNavList(c *gin.Context) {
 
 // ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
-	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
-
-	var service service.ChineseService
-	list, total := service.GetChineseBookList(level, page)
+	//page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	//level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
+	//
+	//var service service.ChineseService
+	//list, total := service.GetChineseBookList(level, page)
+	var data response.ResponseChineseBook
+	var list []response.ResponseChineseBook
+	data.BookId = "301c8eb1f76e106ec1bcf7a70ad25ffd"
+	data.Title = "过大年"
+	data.Icon = "https://oss.58haha.com/chinese_book/cover/26.png"
+	data.BookCount = "1"
+	list = append(list, data)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"list":       list,
-		"total":      total,
-		"page":       page,
-		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+		"total":      1,
+		"page":       1,
+		"total_page": math.Ceil(float64(1) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 
