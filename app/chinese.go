@@ -13,7 +13,7 @@ import (
 
 // ApiBookNavList 国学绘本Nav列表
 func ApiBookNavList(c *gin.Context) {
-	typeId := c.Query("type")
+	typeId := utils.GetIntParamItem("type", global.DEFAULT_PAGE, c)
 	var service service.ChineseService
 	list := service.ApiBookNavList(typeId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
