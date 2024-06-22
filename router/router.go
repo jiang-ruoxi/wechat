@@ -54,6 +54,8 @@ func InitRouter() *gin.Engine {
 	apiV2 := router.Group("v2")
 	apiV2.Use(middleware.CheckWechatMiddleware())
 	{
+		//获取栏目展示
+		apiV2.GET("/getBookListNav", app.ApiBookNavList)
 		//古诗词成语
 		//小学
 		apiV2.GET("/poetry/school/getList", routerCache(global.RedisURL_CACHE), app.ApiSchoolPoetryList)
