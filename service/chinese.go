@@ -73,7 +73,7 @@ func (cs *ChineseService) GetChineseBookList(level, page int) (chineseBookList [
 func (cs *ChineseService) GetChineseBookAlbumLList(page int) (chineseBookAlbumList []model.ChineseBookAlbum, total int64) {
 	size := global.DEFAULT_PAGE_SIZE
 	offset := size * (page - 1)
-	bookDB := global.GVA_DB.Model(&model.ChineseBookAlbum{}).Debug()
+	bookDB := global.GVA_DB.Model(&model.ChineseBookAlbum{}).Debug().Where("status=1")
 	bookDB = bookDB.Count(&total)
 	bookDB = bookDB.Order("position desc").Limit(size).Offset(offset)
 	bookDB.Find(&chineseBookAlbumList)
