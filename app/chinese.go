@@ -41,7 +41,7 @@ func ApiChineseBookList(c *gin.Context) {
 		"list":       list,
 		"total":      total,
 		"page":       page,
-		"total_page": math.Ceil(float64(1) / float64(global.DEFAULT_PAGE_SIZE)),
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 
