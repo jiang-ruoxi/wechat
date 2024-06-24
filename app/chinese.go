@@ -9,9 +9,6 @@ import (
 	"wechat/utils"
 )
 
-//该文件为中文国学绘本的api
-
-// ApiBookNavList 国学绘本Nav列表
 func ApiBookNavList(c *gin.Context) {
 	typeId := utils.GetIntParamItem("type", global.DEFAULT_PAGE, c)
 	var service service.ChineseService
@@ -21,7 +18,6 @@ func ApiBookNavList(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
 	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
@@ -36,7 +32,6 @@ func ApiChineseBookList(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseBookInfo 国学绘本详细信息
 func ApiChineseBookInfo(c *gin.Context) {
 	bookId := c.Query("book_id")
 	var service service.ChineseService
@@ -46,7 +41,6 @@ func ApiChineseBookInfo(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseBookAlbumList 国学绘本专辑列表信息
 func ApiChineseBookAlbumList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
 
@@ -60,7 +54,6 @@ func ApiChineseBookAlbumList(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseBookAlbumListInfo 国学绘本专辑列表信息
 func ApiChineseBookAlbumListInfo(c *gin.Context) {
 	bookId := c.Query("book_id")
 	var service service.ChineseService
@@ -73,7 +66,6 @@ func ApiChineseBookAlbumListInfo(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseBookAlbumInfo 国学绘本专辑详细信息
 func ApiChineseBookAlbumInfo(c *gin.Context) {
 	id := utils.GetIntParamItem("id", global.DEFAULT_PAGE, c)
 	var service service.ChineseService
