@@ -21,15 +21,6 @@ func ApiBookNavList(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
-// ApiChineseNavList 国学绘本Nav列表
-func ApiChineseNavList(c *gin.Context) {
-	var service service.ChineseService
-	list := service.ApiChineseNavList()
-	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"list": list,
-	}, global.SUCCESS_MSG, c)
-}
-
 // ApiChineseBookList 国学绘本列表信息
 func ApiChineseBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
@@ -87,31 +78,6 @@ func ApiChineseBookAlbumInfo(c *gin.Context) {
 	id := utils.GetIntParamItem("id", global.DEFAULT_PAGE, c)
 	var service service.ChineseService
 	bookInfo := service.GetChineseBookAlbumInfo(id)
-	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"info": bookInfo,
-	}, global.SUCCESS_MSG, c)
-}
-
-// ApiPoetryBookList 古诗绘本列表信息
-func ApiPoetryBookList(c *gin.Context) {
-	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
-
-	var service service.ChineseService
-	list, total := service.GetPoetryBookList(level, page)
-	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"list":       list,
-		"total":      total,
-		"page":       page,
-		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
-	}, global.SUCCESS_MSG, c)
-}
-
-// ApiPoetryBookInfo 古诗绘本详细信息
-func ApiPoetryBookInfo(c *gin.Context) {
-	bookId := c.Query("book_id")
-	var service service.ChineseService
-	bookInfo := service.GetPoetryBookInfo(bookId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
 		"info": bookInfo,
 	}, global.SUCCESS_MSG, c)
