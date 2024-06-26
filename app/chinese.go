@@ -11,7 +11,7 @@ import (
 
 func ApiShowPlay(c *gin.Context) {
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"data": 1,
+		"data": 0,
 	}, global.SUCCESS_MSG, c)
 }
 
