@@ -20,8 +20,9 @@ func ApiBookNavList(c *gin.Context) {
 
 func ApiChineseBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
-	level := utils.GetIntParamItem("level", 11, c)
+	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
+	level = 11
 	var service service.ChineseService
 	list, total := service.GetChineseBookList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
