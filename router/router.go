@@ -25,7 +25,7 @@ func InitRouter() *gin.Engine {
 
 		//古诗绘本
 		apiV2.GET("/poetry/getList", app.ApiPoetryBookList1)
-		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo)
+		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo1)
 
 		//英语绘本
 		apiV2.GET("/english/getList", app.ApiEnglishBookList1)
