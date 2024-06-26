@@ -11,6 +11,7 @@ import (
 
 func ApiBookNavList(c *gin.Context) {
 	typeId := utils.GetIntParamItem("type", global.DEFAULT_PAGE, c)
+	typeId = 11
 	var service service.ChineseService
 	list := service.ApiBookNavList(typeId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
