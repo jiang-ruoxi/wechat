@@ -3,7 +3,6 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"wechat/app"
-	"wechat/global"
 	"wechat/middleware"
 )
 
@@ -17,12 +16,20 @@ func InitRouter() *gin.Engine {
 		//获取栏目展示
 		apiV2.GET("/getBookListNav", app.ApiBookNavList)
 		//中文绘本
-		apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
-		apiV2.GET("/chinese/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookInfo)
+		apiV2.GET("/chinese/getList", app.ApiChineseBookList)
+		apiV2.GET("/chinese/getBookInfo", app.ApiChineseBookInfo)
 		//中文绘本专辑
-		apiV2.GET("/chinese/getAlbumList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumList)
-		apiV2.GET("/chinese/getAlbumListInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumListInfo)
-		apiV2.GET("/chinese/getAlbumInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumInfo)
+		apiV2.GET("/chinese/getAlbumList", app.ApiChineseBookAlbumList)
+		apiV2.GET("/chinese/getAlbumListInfo", app.ApiChineseBookAlbumListInfo)
+		apiV2.GET("/chinese/getAlbumInfo", app.ApiChineseBookAlbumInfo)
+
+		////中文绘本
+		//apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
+		//apiV2.GET("/chinese/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookInfo)
+		////中文绘本专辑
+		//apiV2.GET("/chinese/getAlbumList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumList)
+		//apiV2.GET("/chinese/getAlbumListInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumListInfo)
+		//apiV2.GET("/chinese/getAlbumInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumInfo)
 	}
 	return router
 }
