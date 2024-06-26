@@ -987,9 +987,656 @@ func ApiEnglishBookList1(c *gin.Context) {
 	}, global.SUCCESS_MSG, c)
 }
 
+type AutoGeneInfo struct {
+	Ent struct {
+		Items []struct {
+			Bookid  int64 `json:"bookid"`
+			Pageid  int64 `json:"pageid"`
+			Index   int   `json:"index"`
+			Picture struct {
+				Tiny   string `json:"tiny"`
+				Origin string `json:"origin"`
+				W      int    `json:"w"`
+				H      int    `json:"h"`
+			} `json:"picture"`
+			Ct               int         `json:"ct"`
+			Ut               int         `json:"ut"`
+			State            int         `json:"state"`
+			Text             string      `json:"text"`
+			Picturev2        interface{} `json:"picturev2"`
+			Flag             int         `json:"flag"`
+			Topicstate       int         `json:"topicstate"`
+			Ext              string      `json:"ext"`
+			Recordtext       string      `json:"recordtext"`
+			Translation      string      `json:"translation"`
+			Hasteach         bool        `json:"hasteach"`
+			Hasrecord        bool        `json:"hasrecord"`
+			TextPinyin       string      `json:"textPinyin"`
+			RecordtextPinyin string      `json:"recordtextPinyin"`
+			IsOpenLp         bool        `json:"is_open_lp"`
+			IsOpenRp         bool        `json:"is_open_rp"`
+			BgPicture        string      `json:"bg_picture"`
+			Scoretext        string      `json:"scoretext"`
+		} `json:"items"`
+		Offset         int  `json:"offset"`
+		More           bool `json:"more"`
+		Readpagecn     int  `json:"readpagecn"`
+		Isshowvipguide bool `json:"isshowvipguide"`
+	} `json:"ent"`
+	Ext struct {
+		Adpic    string `json:"adpic"`
+		Adrouter string `json:"adrouter"`
+		Bookinfo struct {
+			Bookid int64  `json:"bookid"`
+			Level  int    `json:"level"`
+			Title  string `json:"title"`
+			Cover  struct {
+				Tiny   string `json:"tiny"`
+				Origin string `json:"origin"`
+				W      int    `json:"w"`
+				H      int    `json:"h"`
+			} `json:"cover"`
+			Ct                int         `json:"ct"`
+			Ut                int         `json:"ut"`
+			State             int         `json:"state"`
+			Domain            string      `json:"domain"`
+			Downloads         int         `json:"downloads"`
+			Resid             int         `json:"resid"`
+			Screen            int         `json:"screen"`
+			Top               int         `json:"top"`
+			Flag              int         `json:"flag"`
+			Playcount         int         `json:"playcount"`
+			Pagecount         int         `json:"pagecount"`
+			Score             int         `json:"score"`
+			Version           int         `json:"version"`
+			Lock              int         `json:"lock"`
+			Recordstate       int         `json:"recordstate"`
+			Topicstate        int         `json:"topicstate"`
+			Vocabulary        int         `json:"vocabulary"`
+			Difficulty        int         `json:"difficulty"`
+			Isvip             bool        `json:"isvip"`
+			Isstoproll        bool        `json:"isstoproll"`
+			Topicid           int64       `json:"topicid"`
+			Topicbookindex    int         `json:"topicbookindex"`
+			Vipbubble         bool        `json:"vipbubble"`
+			Newbubble         bool        `json:"newbubble"`
+			Recordbubble      bool        `json:"recordbubble"`
+			Onlinetime        int         `json:"onlinetime"`
+			Readbubble        bool        `json:"readbubble"`
+			Themeinfos        interface{} `json:"themeinfos"`
+			Notinpicgallery   bool        `json:"notinpicgallery"`
+			Tags              []string    `json:"tags"`
+			Words             []string    `json:"words"`
+			Introduction      string      `json:"introduction"`
+			Voicetype         int         `json:"voicetype"`
+			Pressid           int         `json:"pressid"`
+			Booktype          int         `json:"booktype"`
+			Illustrator       string      `json:"illustrator"`
+			Translator        string      `json:"translator"`
+			Writer            string      `json:"writer"`
+			Bgm               string      `json:"bgm"`
+			Firstclassifyid   int         `json:"firstclassifyid"`
+			Secondclassifyid  int         `json:"secondclassifyid"`
+			Paytype           int         `json:"paytype"`
+			Sort              int         `json:"sort"`
+			Levellist         interface{} `json:"levellist"`
+			Createrid         int         `json:"createrid"`
+			Lastupdateid      int         `json:"lastupdateid"`
+			Avescore          int         `json:"avescore"`
+			Learnlink         []int       `json:"learnlink"`
+			Reprice           int         `json:"reprice"`
+			Bookprice         string      `json:"bookprice"`
+			Difficultyname    string      `json:"difficultyname"`
+			Explainvideo      string      `json:"explainvideo"`
+			Listenvideo       string      `json:"listenvideo"`
+			Explainvideostate int         `json:"explainvideostate"`
+			Listenvideostate  int         `json:"listenvideostate"`
+			BgPicture         string      `json:"bg_picture"`
+		} `json:"bookinfo"`
+		Cwrouter    string `json:"cwrouter"`
+		Endtext     string `json:"endtext"`
+		Evaluations []struct {
+			Recordid   int64 `json:"recordid"`
+			Totalscore struct {
+				Content string `json:"content"`
+				Score   int    `json:"score"`
+				Rank    int    `json:"rank"`
+				Index   int    `json:"index"`
+				Startts int    `json:"startts"`
+				Endts   int    `json:"endts"`
+			} `json:"totalscore"`
+			Wordscore []struct {
+				Content string `json:"content"`
+				Score   int    `json:"score"`
+				Rank    int    `json:"rank"`
+				Index   int    `json:"index"`
+				Startts int    `json:"startts"`
+				Endts   int    `json:"endts"`
+			} `json:"wordscore"`
+			Productid int64 `json:"productid"`
+			Ut        int   `json:"ut"`
+		} `json:"evaluations"`
+		Isconfirm      bool `json:"isconfirm"`
+		Isshowvipguide bool `json:"isshowvipguide"`
+		Productinfo    struct {
+			Productid   int64 `json:"productid"`
+			Bookid      int64 `json:"bookid"`
+			UID         int   `json:"uid"`
+			State       int   `json:"state"`
+			Ct          int   `json:"ct"`
+			Ut          int   `json:"ut"`
+			Playcount   int   `json:"playcount"`
+			Likecount   int   `json:"likecount"`
+			Islike      bool  `json:"islike"`
+			Publishtime int   `json:"publishtime"`
+			Producttype int   `json:"producttype"`
+			Score       int   `json:"score"`
+			Rank        int   `json:"rank"`
+			Iscollect   bool  `json:"iscollect"`
+			Dt          int   `json:"dt"`
+			Scene       int   `json:"scene"`
+		} `json:"productinfo"`
+		Readpagecn int `json:"readpagecn"`
+		Records    []struct {
+			Recordid  int64  `json:"recordid"`
+			Productid int64  `json:"productid"`
+			URL       string `json:"url"`
+			Ct        int    `json:"ct"`
+			Ut        int    `json:"ut"`
+			Pageid    int64  `json:"pageid"`
+			Duration  int    `json:"duration"`
+			Bookid    int64  `json:"bookid"`
+			Rawurl    string `json:"rawurl"`
+		} `json:"records"`
+		Route        string `json:"route"`
+		Sharecontent string `json:"sharecontent"`
+		Users        []struct {
+			ID          int    `json:"id"`
+			Name        string `json:"name"`
+			Avatar      string `json:"avatar"`
+			Gender      int    `json:"gender"`
+			Sign        string `json:"sign"`
+			Regtype     int    `json:"regtype"`
+			Cate        int    `json:"cate"`
+			Birthday    int    `json:"birthday"`
+			Origavatar  string `json:"origavatar"`
+			Audiobrief  string `json:"audiobrief"`
+			Audiolength int    `json:"audiolength"`
+			Ct          int    `json:"ct"`
+			Rt          int    `json:"rt"`
+			Country     string `json:"country"`
+			Govold      int    `json:"govold"`
+			Rmk         string `json:"rmk"`
+			Gov         int    `json:"gov"`
+			Title       string `json:"title"`
+			Source      int    `json:"source"`
+			Juniortitle string `json:"juniortitle"`
+			Enname      string `json:"enname"`
+			Iseligible  bool   `json:"iseligible"`
+			State       int    `json:"state"`
+			Fullname    struct {
+				Firstname  string `json:"firstname"`
+				Familyname string `json:"familyname"`
+				Middlename string `json:"middlename"`
+				Status     int    `json:"status"`
+			} `json:"fullname"`
+			Puid     string `json:"puid"`
+			Agelevel string `json:"agelevel"`
+		} `json:"users"`
+	} `json:"ext"`
+}
+
+func infoJson() AutoGeneInfo {
+	info := `{
+            "ent": {
+                "items": [
+                    {
+                        "bookid": 1,
+                        "pageid": 357116961990692,
+                        "index": 2,
+                        "picture": {
+                            "tiny": "https://oss.58haha.com/temp/ext/4.png",
+                            "origin": "https://oss.58haha.com/temp/ext/4.png",
+                            "w": 720,
+                            "h": 720
+                        },
+                        "ct": 1589173516,
+                        "ut": 1618803706,
+                        "state": 0,
+                        "text": "Cat",
+                        "picturev2": null,
+                        "flag": 0,
+                        "topicstate": 0,
+                        "ext": "",
+                        "recordtext": "",
+                        "translation": "",
+                        "hasteach": false,
+                        "hasrecord": false,
+                        "textPinyin": "",
+                        "recordtextPinyin": "",
+                        "is_open_lp": false,
+                        "is_open_rp": false,
+                        "bg_picture": "",
+                        "scoretext": ""
+                    }
+                ],
+                "offset": 7,
+                "more": false,
+                "readpagecn": 3,
+                "isshowvipguide": true
+            },
+            "ext": {
+                "adpic": "http://qnyb00.cdn.ipalfish.com/0/img/b4/75/68b84cf742fe8bd0419bc13f2323",
+                "adrouter": "/utils/commondialog?dialogbg=http%3A%2F%2Fqnyb00.cdn.ipalfish.com%2F0%2Fimg%2F93%2F75%2Fb53424bcc26136314b94ddd8c855&content=%3Cfont%20color%3D%22%23ff6600%22%3E%E5%8D%87%E7%BA%A7VIP%EF%BC%8C%E4%BA%AB%E7%BB%98%E6%9C%AC%E7%82%B9%E8%AF%BB%E7%89%B9%E6%9D%83%3C%2Ffont%3E%3Cbr%3E%E8%BF%98%E6%9C%8911%E9%A1%B9%E7%89%B9%E6%9D%83%E7%AD%89%E4%BD%A0%E9%A2%86%E5%8F%96&rightbtnstr=%E7%AB%8B%E5%8D%B3%E5%8D%87%E7%BA%A7VIP&router=%2Fweb%3Furl%3Dhttps%253A%252F%252Fwww.ipalfish.com%252Fpicturebook%252Fpay%252Fzhongshen.html%253Fchannel%253D659%2526needblurbackground%253D0",
+                "bookinfo": {
+                    "bookid": 357116938620964,
+                    "level": 1,
+                    "title": "Cat",
+                    "cover": {
+                        "tiny": "https://qnyb17.cdn.ipalfish.com/17/picturebook/7e/23/30cedc641d5757d5e21663d56dba",
+                        "origin": "https://qnyb17.cdn.ipalfish.com/17/picturebook/3c/0e/11d658d115f0ce4d48a9a4e63d48",
+                        "w": 600,
+                        "h": 706
+                    },
+                    "ct": 1589173525,
+                    "ut": 1630583891,
+                    "state": 2,
+                    "domain": "",
+                    "downloads": 0,
+                    "resid": 0,
+                    "screen": 0,
+                    "top": 1589434362,
+                    "flag": 0,
+                    "playcount": 2166915,
+                    "pagecount": 0,
+                    "score": 1,
+                    "version": 1,
+                    "lock": 0,
+                    "recordstate": 20,
+                    "topicstate": 1,
+                    "vocabulary": 9,
+                    "difficulty": 1,
+                    "isvip": false,
+                    "isstoproll": false,
+                    "topicid": 276975692752910,
+                    "topicbookindex": 0,
+                    "vipbubble": false,
+                    "newbubble": false,
+                    "recordbubble": false,
+                    "onlinetime": 0,
+                    "readbubble": false,
+                    "themeinfos": null,
+                    "notinpicgallery": false,
+                    "tags": [
+                        "自然拼读",
+                        "字母组合",
+                        "动物"
+                    ],
+                    "words": [
+                        "cat",
+                        "hat",
+                        "mat"
+                    ],
+                    "introduction": "通过小猫玩耍的故事，介绍字母组合at的发音。",
+                    "voicetype": 2,
+                    "pressid": 1004,
+                    "booktype": 0,
+                    "illustrator": "",
+                    "translator": "",
+                    "writer": "",
+                    "bgm": "",
+                    "firstclassifyid": 0,
+                    "secondclassifyid": 0,
+                    "paytype": 1,
+                    "sort": 0,
+                    "levellist": null,
+                    "createrid": 0,
+                    "lastupdateid": 0,
+                    "avescore": 93,
+                    "learnlink": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "reprice": 0,
+                    "bookprice": "",
+                    "difficultyname": "A",
+                    "explainvideo": "",
+                    "listenvideo": "",
+                    "explainvideostate": 0,
+                    "listenvideostate": 0,
+                    "bg_picture": ""
+                },
+                "cwrouter": "/picturebook/click_read/357116938620964?url=palfishoffline%3a%2f%2fmwt%2fmwt%2findex.html",
+                "endtext": "别走开，马上进入读绘本环节",
+                "evaluations": [
+                    {
+                        "recordid": 357650427342884,
+                        "totalscore": {
+                            "content": "Cat",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Cat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 36,
+                                "endts": 102
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534671
+                    },
+                    {
+                        "recordid": 357650446882852,
+                        "totalscore": {
+                            "content": "Cat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Cat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 33,
+                                "endts": 99
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534671
+                    },
+                    {
+                        "recordid": 357650467921956,
+                        "totalscore": {
+                            "content": "Hat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Hat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 24,
+                                "endts": 102
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534671
+                    },
+                    {
+                        "recordid": 357650500100132,
+                        "totalscore": {
+                            "content": "Cat sat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Cat",
+                                "score": 95,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 51,
+                                "endts": 108
+                            },
+                            {
+                                "content": "sat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 1,
+                                "startts": 114,
+                                "endts": 183
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534670
+                    },
+                    {
+                        "recordid": 357650523557924,
+                        "totalscore": {
+                            "content": "Cat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Cat",
+                                "score": 95,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 36,
+                                "endts": 117
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534670
+                    },
+                    {
+                        "recordid": 357650544625700,
+                        "totalscore": {
+                            "content": "Mat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Mat",
+                                "score": 95,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 30,
+                                "endts": 99
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534670
+                    },
+                    {
+                        "recordid": 357650588168228,
+                        "totalscore": {
+                            "content": "Cat sat.",
+                            "score": 100,
+                            "rank": 3,
+                            "index": 0,
+                            "startts": 0,
+                            "endts": 0
+                        },
+                        "wordscore": [
+                            {
+                                "content": "Cat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 0,
+                                "startts": 45,
+                                "endts": 96
+                            },
+                            {
+                                "content": "sat",
+                                "score": 96,
+                                "rank": 3,
+                                "index": 1,
+                                "startts": 99,
+                                "endts": 171
+                            }
+                        ],
+                        "productid": 357650343829535,
+                        "ut": 1596534670
+                    }
+                ],
+                "isconfirm": false,
+                "isshowvipguide": false,
+                "productinfo": {
+                    "productid": 357650343829535,
+                    "bookid": 357116938620964,
+                    "uid": 602244,
+                    "state": 0,
+                    "ct": 1589433956,
+                    "ut": 1719411146,
+                    "playcount": 1487008,
+                    "likecount": 43,
+                    "islike": false,
+                    "publishtime": 1589433956,
+                    "producttype": 1,
+                    "score": 0,
+                    "rank": 0,
+                    "iscollect": false,
+                    "dt": 0,
+                    "scene": 0
+                },
+                "readpagecn": -1,
+                "records": [
+                    {
+                        "recordid": 357650427342884,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/f2/44/e3915f7df126c750ef9ab316dff6",
+                        "ct": 1589433997,
+                        "ut": 1589433997,
+                        "pageid": 357116961990692,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650446882852,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/aa/ca/602600eec01acf1ec737c47e8178",
+                        "ct": 1589434007,
+                        "ut": 1589434007,
+                        "pageid": 357116963985444,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650467921956,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/46/a6/d27331513c5657c110f507f8dfbf",
+                        "ct": 1589434017,
+                        "ut": 1589434017,
+                        "pageid": 357116966049828,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650500100132,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/2d/eb/06bc1ff77a8674a8e5014d3c88f1",
+                        "ct": 1589434033,
+                        "ut": 1589434033,
+                        "pageid": 357116968134692,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650523557924,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/71/a2/101d0d49af1b017dcdb9863a711f",
+                        "ct": 1589434044,
+                        "ut": 1589434044,
+                        "pageid": 357116969922596,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650544625700,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/24/1d/1d31a3f9ccc91e1d1d34ca37b493",
+                        "ct": 1589434054,
+                        "ut": 1589434301,
+                        "pageid": 357116971659300,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    },
+                    {
+                        "recordid": 357650588168228,
+                        "productid": 357650343829535,
+                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/75/3c/4bfb231e7421a57b6c3671b89ba0",
+                        "ct": 1589434076,
+                        "ut": 1589434076,
+                        "pageid": 357116973502500,
+                        "duration": 0,
+                        "bookid": 357116938620964,
+                        "rawurl": ""
+                    }
+                ],
+                "route": "/web?url=https%3A%2F%2Fwww.ipalfish.com%2Fipalfish-gods-pen%2Fview%2F250026",
+                "sharecontent": "【拜托帮我助力一下~我家宝贝想0元学VIP绘本！谢谢~】\nhttps://i2mi.com/MjE4YTA1\n复制整条信息，打开【伴鱼绘本】，帮我助力你家宝贝也能0元学~\n丨S6J3YFY1va丨",
+                "users": [
+                    {
+                        "id": 602244,
+                        "name": "绘本小鱼鱼仔",
+                        "avatar": "https://qnyb00.cdn.ipalfish.com/0/img/c2/14/fe09cde968b2388d3817e39c4d2b",
+                        "gender": 2,
+                        "sign": "BARKING IN PALFISH",
+                        "regtype": 1,
+                        "cate": 1,
+                        "birthday": 1451606400,
+                        "origavatar": "https://qnyb00.cdn.ipalfish.com/0/img/01/99/82c7e1e003b15f44aa3ea01c3be8",
+                        "audiobrief": "https://qnyb00.cdn.ipalfish.com/0/aud/b6/36/54e46230982002adce05c97595ab",
+                        "audiolength": 1,
+                        "ct": 1469018389,
+                        "rt": 1469018484,
+                        "country": "",
+                        "govold": 0,
+                        "rmk": "",
+                        "gov": 0,
+                        "title": "",
+                        "source": 0,
+                        "juniortitle": "",
+                        "enname": "1234b",
+                        "iseligible": false,
+                        "state": 0,
+                        "fullname": {
+                            "firstname": "",
+                            "familyname": "",
+                            "middlename": "",
+                            "status": 0
+                        },
+                        "puid": "376170167448",
+                        "agelevel": ""
+                    }
+                ]
+            }
+}`
+	var listR AutoGeneInfo
+	byteSlice := []byte(info)
+	if err := json.Unmarshal(byteSlice, &listR); err != nil {
+
+	}
+	return listR
+}
 func ApiEnglishBookInfo1(c *gin.Context) {
 
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"info": "",
+		"data": infoJson(),
 	}, global.SUCCESS_MSG, c)
 }
