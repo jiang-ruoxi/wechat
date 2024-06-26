@@ -9,6 +9,12 @@ import (
 	"wechat/utils"
 )
 
+func ApiShowPlay(c *gin.Context) {
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"data": 0,
+	}, global.SUCCESS_MSG, c)
+}
+
 func ApiBookNavList(c *gin.Context) {
 	typeId := utils.GetIntParamItem("type", global.DEFAULT_PAGE, c)
 	var service service.ChineseService
