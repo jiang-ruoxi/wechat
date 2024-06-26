@@ -11,7 +11,6 @@ import (
 
 func ApiBookNavList(c *gin.Context) {
 	typeId := utils.GetIntParamItem("type", global.DEFAULT_PAGE, c)
-	typeId = 1
 	var service service.ChineseService
 	list := service.ApiBookNavList(typeId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
@@ -23,7 +22,6 @@ func ApiChineseBookList(c *gin.Context) {
 	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
 	level := utils.GetIntParamItem("level", global.DEFAULT_LEVEL, c)
 
-	level = 1
 	var service service.ChineseService
 	list, total := service.GetChineseBookList(level, page)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
