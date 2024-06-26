@@ -28,8 +28,8 @@ func InitRouter() *gin.Engine {
 		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo)
 
 		//英语绘本
-		apiV2.GET("/english/getList", app.ApiEnglishBookList)
-		apiV2.GET("/english/getBookInfo", app.ApiEnglishBookInfo)
+		apiV2.GET("/english/getList", app.ApiEnglishBookList1)
+		apiV2.GET("/english/getBookInfo", app.ApiEnglishBookInfo1)
 
 		////中文绘本
 		//apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
