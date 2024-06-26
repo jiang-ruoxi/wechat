@@ -23,6 +23,10 @@ func InitRouter() *gin.Engine {
 		apiV2.GET("/chinese/getAlbumListInfo", app.ApiChineseBookAlbumListInfo)
 		apiV2.GET("/chinese/getAlbumInfo", app.ApiChineseBookAlbumInfo)
 
+		//古诗绘本
+		apiV2.GET("/poetry/getList", app.ApiPoetryBookList)
+		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo)
+
 		////中文绘本
 		//apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
 		//apiV2.GET("/chinese/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookInfo)
