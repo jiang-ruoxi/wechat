@@ -1513,7 +1513,7 @@ func infoJson() AutoGeneInfo {
                     {
                         "recordid": 357650427342884,
                         "productid": 357650343829535,
-                        "url": "https://cn-picturebook.cdn.ipalfish.com/picturebook/general/app/f2/44/e3915f7df126c750ef9ab316dff6",
+                        "url": "",
                         "ct": 1589433997,
                         "ut": 1589433997,
                         "pageid": 357116961990692,
