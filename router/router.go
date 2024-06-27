@@ -24,12 +24,12 @@ func InitRouter() *gin.Engine {
 		apiV2.GET("/chinese/getAlbumInfo", app.ApiChineseBookAlbumInfo)
 
 		//古诗绘本
-		apiV2.GET("/poetry/getList", app.ApiPoetryBookList1)
-		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo1)
+		apiV2.GET("/poetry/getList", app.ApiPoetryBookList)
+		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo)
 
 		//英语绘本
-		apiV2.GET("/english/getList", app.ApiEnglishBookList1)
-		apiV2.GET("/english/getBookInfo", app.ApiEnglishBookInfo1)
+		apiV2.GET("/english/getList", app.ApiEnglishBookList)
+		apiV2.GET("/english/getBookInfo", app.ApiEnglishBookInfo)
 
 		//展示播放按钮
 		apiV2.GET("/show/play", app.ApiShowPlay)
