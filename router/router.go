@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"wechat/app"
+	"wechat/global"
 	"wechat/middleware"
 )
 
@@ -14,25 +15,25 @@ func InitRouter() *gin.Engine {
 	apiV2.Use(middleware.CheckWechatMiddleware())
 	{
 		//获取栏目展示
-		apiV2.GET("/getBookListNav", app.ApiBookNavList)
+		apiV2.GET("/getBookListNav", routerCache(global.RedisURL_CACHE), app.ApiBookNavList)
 		//中文绘本
-		apiV2.GET("/chinese/getList", app.ApiChineseBookList)
-		apiV2.GET("/chinese/getBookInfo", app.ApiChineseBookInfo)
+		apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
+		apiV2.GET("/chinese/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookInfo)
 		//中文绘本专辑
-		apiV2.GET("/chinese/getAlbumList", app.ApiChineseBookAlbumList)
-		apiV2.GET("/chinese/getAlbumListInfo", app.ApiChineseBookAlbumListInfo)
-		apiV2.GET("/chinese/getAlbumInfo", app.ApiChineseBookAlbumInfo)
+		apiV2.GET("/chinese/getAlbumList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumList)
+		apiV2.GET("/chinese/getAlbumListInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumListInfo)
+		apiV2.GET("/chinese/getAlbumInfo", routerCache(global.RedisURL_CACHE), app.ApiChineseBookAlbumInfo)
 
 		//古诗绘本
-		apiV2.GET("/poetry/getList", app.ApiPoetryBookList)
-		apiV2.GET("/poetry/getBookInfo", app.ApiPoetryBookInfo)
+		apiV2.GET("/poetry/getList", routerCache(global.RedisURL_CACHE), app.ApiPoetryBookList)
+		apiV2.GET("/poetry/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiPoetryBookInfo)
 
 		//英语绘本
-		apiV2.GET("/english/getList", app.ApiEnglishBookList)
-		apiV2.GET("/english/getBookInfo", app.ApiEnglishBookInfo)
+		apiV2.GET("/english/getList", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookList)
+		apiV2.GET("/english/getBookInfo", routerCache(global.RedisURL_CACHE), app.ApiEnglishBookInfo)
 
 		//展示播放按钮
-		apiV2.GET("/show/play", app.ApiShowPlay)
+		apiV2.GET("/show/play", routerCache(global.RedisURL_CACHE), app.ApiShowPlay)
 
 		////中文绘本
 		//apiV2.GET("/chinese/getList", routerCache(global.RedisURL_CACHE), app.ApiChineseBookList)
