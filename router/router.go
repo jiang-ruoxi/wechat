@@ -55,6 +55,9 @@ func InitRouter() *gin.Engine {
 
 		//指定类别的集合
 		apiV2.GET("/poem/collection/list", app.ApiCollectionList)
+
+		//指定集合的作品列表
+		apiV2.GET("/poem/collection/work/list", app.ApiCollectionWorkList)
 	}
 	return router
 }

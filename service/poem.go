@@ -115,3 +115,44 @@ func (ps *PoemService) ApiCollectionList(kindId int) (collectionList []Collectio
 	}
 	return
 }
+
+type CollectionWorkResponse struct {
+	CollectionWorkId int    `json:"collection_work_id"`
+	WorkId           int    `json:"work_id"`
+	CollectionId     int    `json:"collection_id"`
+	WorkTitle        string `json:"work_title"`
+	WorkAuthor       string `json:"work_author"`
+	WorkDynasty      string `json:"work_dynasty"`
+	WorkContent      string `json:"work_content"`
+	WorkKind         string `json:"work_kind"`
+	Collection       string `json:"collection"`
+}
+
+// ApiCollectionWorkList 指定集合的作品列表
+func (ps *PoemService) ApiCollectionWorkList(collectionId, page int) (collectionWorkList []CollectionWorkResponse, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+
+	var collectionWorkModelList []model.RXCollectionWorks
+	db := global.GVA_DB.Model(&model.RXCollectionWorks{}).Debug().Where("collection_id = ?", collectionId)
+	db = db.Order("sort asc")
+	db = db.Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&collectionWorkModelList)
+
+	var collectionWorkTemp CollectionWorkResponse
+	for idx, _ := range collectionWorkModelList {
+		collectionWorkTemp.CollectionWorkId = collectionWorkModelList[idx].CollectionId
+		collectionWorkTemp.WorkId = collectionWorkModelList[idx].WorkId
+		collectionWorkTemp.CollectionId = collectionWorkModelList[idx].CollectionId
+		collectionWorkTemp.WorkTitle = collectionWorkModelList[idx].WorkTitle
+		collectionWorkTemp.WorkAuthor = collectionWorkModelList[idx].WorkAuthor
+		collectionWorkTemp.WorkDynasty = collectionWorkModelList[idx].WorkDynasty
+		collectionWorkTemp.WorkContent = collectionWorkModelList[idx].WorkContent
+		collectionWorkTemp.WorkKind = collectionWorkModelList[idx].WorkKind
+		collectionWorkTemp.Collection = collectionWorkModelList[idx].Collection
+		collectionWorkList = append(collectionWorkList, collectionWorkTemp)
+	}
+
+	return
+}

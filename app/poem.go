@@ -51,3 +51,17 @@ func ApiCollectionList(c *gin.Context) {
 		"list": list,
 	}, global.SUCCESS_MSG, c)
 }
+
+// ApiCollectionWorkList 指定集合的作品列表
+func ApiCollectionWorkList(c *gin.Context) {
+	collectionId := utils.GetIntParamItem("collection_id", 1, c)
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	var service service.PoemService
+	list, total := service.ApiCollectionWorkList(collectionId, page)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+	}, global.SUCCESS_MSG, c)
+}
