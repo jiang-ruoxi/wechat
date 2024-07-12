@@ -230,6 +230,7 @@ type RXWorks struct {
 	KindCn           string `json:"kind_cn"`
 	Wiki             string `json:"wiki"`
 	Content          string `json:"content"`
+	ShortContent     string `gorm:"-" json:"short_content"`
 	Intro            string `json:"intro"`
 	Annotation       string `json:"annotation"`
 	Translation      string `json:"translation"`

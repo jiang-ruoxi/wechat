@@ -65,3 +65,84 @@ func ApiCollectionWorkList(c *gin.Context) {
 		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
+
+// ApiPoemSearch 古诗词搜索
+func ApiPoemSearch(c *gin.Context) {
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	tType := utils.GetIntParamItem("type", 1, c)
+	value := c.Query("value")
+	var service service.PoemService
+	list, total := service.ApiPoemSearch(tType, page, value)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+	}, global.SUCCESS_MSG, c)
+}
+
+// ApiPoemSearchList 古诗词搜索,多条件
+func ApiPoemSearchList(c *gin.Context) {
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	title := c.Query("title")
+	author := c.Query("author")
+	dynasty := c.Query("dynasty")
+	kindCn := c.Query("kind_cn")
+	var service service.PoemService
+	list, total := service.ApiPoemSearchList(title, author, dynasty, kindCn, page)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+	}, global.SUCCESS_MSG, c)
+}
+
+// ApiPoemInfo 获取古诗词详情
+func ApiPoemInfo(c *gin.Context) {
+	workId := utils.GetIntParamItem("work_id", 0, c)
+	var service service.PoemService
+	info := service.ApiPoemInfo(workId)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"info": info,
+	}, global.SUCCESS_MSG, c)
+}
+
+// ApiAuthorInfo 获取作者详情
+func ApiAuthorInfo(c *gin.Context) {
+	authorId := utils.GetIntParamItem("author_id", 0, c)
+	var service service.PoemService
+	info := service.ApiAuthorInfo(authorId)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"info": info,
+	}, global.SUCCESS_MSG, c)
+}
+
+// ApiAuthorList 获取作者列表
+func ApiAuthorList(c *gin.Context) {
+	dynasty := c.Query("dynasty")
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	var service service.PoemService
+	list, total := service.ApiAuthorList(dynasty, page)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+	}, global.SUCCESS_MSG, c)
+}
+
+// ApiSayingList 名言警句
+func ApiSayingList(c *gin.Context) {
+	dynasty := c.Query("dynasty")
+	author := c.Query("author")
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	var service service.PoemService
+	list, total := service.ApiSayingList(dynasty, author, page)
+	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
+	}, global.SUCCESS_MSG, c)
+}

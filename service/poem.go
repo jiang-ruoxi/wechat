@@ -1,8 +1,10 @@
 package service
 
 import (
+	"strings"
 	"wechat/global"
 	"wechat/model"
+	"wechat/utils"
 )
 
 type PoemService struct {
@@ -154,5 +156,175 @@ func (ps *PoemService) ApiCollectionWorkList(collectionId, page int) (collection
 		collectionWorkList = append(collectionWorkList, collectionWorkTemp)
 	}
 
+	return
+}
+
+// ApiPoemSearch 古诗词搜索
+func (ps *PoemService) ApiPoemSearch(tType, page int, value string) (workList []model.RXWorks, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+	db := global.GVA_DB.Model(&model.RXWorks{}).Debug()
+	switch tType {
+	case 1:
+		//古诗词标题
+		db = db.Where("title like ?", "%"+value+"%")
+	case 2:
+		//古诗作者
+		db = db.Where("author like ?", "%"+value+"%")
+	case 3:
+		//古诗朝代
+		db = db.Where("dynasty = ?", value)
+	case 4:
+		//古诗类型
+		db = db.Where("kind_cn = ?", value)
+	default:
+		//古诗词标题
+		db = db.Where("title like ?", "%"+value+"%")
+	}
+	db = db.Order("id asc")
+	db = db.Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&workList)
+	for idx, _ := range workList {
+		// 找到子串substr在str中的位置
+		index := strings.Index(workList[idx].Content, "。")
+		if index != -1 {
+			// 使用切片操作截取字符串直到substr的结束位置
+			workList[idx].ShortContent = workList[idx].Content[:index+len("。")]
+		} else {
+			workList[idx].ShortContent = workList[idx].Content
+		}
+	}
+	return
+}
+
+// ApiPoemSearchList 古诗词搜索-多条件
+func (ps *PoemService) ApiPoemSearchList(title, author, dynasty, kindCn string, page int) (workList []model.RXWorks, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+	db := global.GVA_DB.Model(&model.RXWorks{}).Debug()
+
+	if title != "" {
+		db = db.Where("title like ?", "%"+title+"%")
+	}
+	if author != "" {
+		db = db.Where("author like ?", "%"+author+"%")
+	}
+	if kindCn != "" {
+		db = db.Where("kind_cn like ?", "%"+kindCn+"%")
+	}
+	if dynasty != "" {
+		db = db.Where("dynasty = ?", "%"+dynasty+"%")
+	}
+	db = db.Order("id asc")
+	db = db.Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&workList)
+
+	for idx, _ := range workList {
+		// 找到子串substr在str中的位置
+		index := strings.Index(workList[idx].Content, "。")
+		if index != -1 {
+			// 使用切片操作截取字符串直到substr的结束位置
+			workList[idx].ShortContent = workList[idx].Content[:index+len("。")]
+		} else {
+			workList[idx].ShortContent = workList[idx].Content
+		}
+	}
+	return
+}
+
+// ApiPoemInfo 获取古诗词详情
+func (ps *PoemService) ApiPoemInfo(workId int) (data model.RXWorks) {
+	db := global.GVA_DB.Model(&model.RXWorks{}).Debug().Where("work_id = ?", workId)
+	db.First(&data)
+	return
+}
+
+// ApiAuthorList 获取作者列表
+func (ps *PoemService) ApiAuthorList(dynasty string, page int) (authorList []model.RXAuthors, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+
+	db := global.GVA_DB.Model(&model.RXAuthors{}).Debug().Where("dynasty = ?", dynasty)
+	db = db.Order("id asc").Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&authorList)
+
+	return
+}
+
+// ApiAuthorInfo 获取作者详情
+func (ps *PoemService) ApiAuthorInfo(authorId int) (data model.RXAuthors) {
+	db := global.GVA_DB.Model(&model.RXAuthors{}).Debug().Where("author_id = ?", authorId)
+	db.First(&data)
+	return
+}
+
+type SayingResponse struct {
+	QuoteId     int    `json:"quote_id"`
+	Quote       string `json:"quote"`
+	QuoteAuthor string `json:"quote_author"`
+	QuoteWork   string `json:"quote_work"`
+	QuoteWorkId int    `json:"quote_work_id"`
+	Collection  string `json:"collection"`
+	Dynasty     string `json:"dynasty"`
+	Kind        string `json:"kind"`
+}
+
+// ApiSayingList 名言警句
+func (ps *PoemService) ApiSayingList(dynasty, author string, page int) (sayingList []SayingResponse, total int64) {
+	size := global.DEFAULT_PAGE_SIZE
+	offset := size * (page - 1)
+
+	var RXCollectionQuoteList []model.RXCollectionQuotes
+	db := global.GVA_DB.Model(&model.RXCollectionQuotes{}).Debug()
+	if dynasty != "" && author != "" {
+		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.dynasty = ? AND rx_quotes.author = ?", dynasty, author)
+	}
+	if dynasty != "" {
+		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.dynasty = ?", dynasty)
+	}
+	if author != "" {
+		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.author = ?", author)
+	}
+
+	db = db.Order("id asc").Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&RXCollectionQuoteList)
+
+	var quoteIds, collectionIds []any
+	for idx, _ := range RXCollectionQuoteList {
+		quoteIds = append(quoteIds, RXCollectionQuoteList[idx].QuoteId)
+		collectionIds = append(collectionIds, RXCollectionQuoteList[idx].CollectionId)
+	}
+	var RXQuotesList []model.RXQuotes
+	global.GVA_DB.Model(&model.RXQuotes{}).Debug().Where("quote_id in(?)", utils.SliceUnique(quoteIds)).Find(&RXQuotesList)
+
+	var RXCollectionList []model.RXCollections
+	global.GVA_DB.Model(&model.RXCollections{}).Debug().Where("collection_id in(?)", utils.SliceUnique(collectionIds)).Find(&RXCollectionList)
+
+	var sayingTemp SayingResponse
+	for idx, _ := range RXCollectionQuoteList {
+		sayingTemp.QuoteId = RXCollectionQuoteList[idx].QuoteId
+		sayingTemp.Quote = RXCollectionQuoteList[idx].Quote
+		sayingTemp.QuoteAuthor = RXCollectionQuoteList[idx].QuoteAuthor
+		sayingTemp.QuoteWork = RXCollectionQuoteList[idx].QuoteWork
+		sayingTemp.QuoteWorkId = RXCollectionQuoteList[idx].QuoteWorkId
+
+		for idIndex, _ := range RXQuotesList {
+			if RXQuotesList[idIndex].QuoteId == RXCollectionQuoteList[idx].QuoteId {
+				sayingTemp.Dynasty = RXQuotesList[idIndex].Dynasty
+			}
+		}
+
+		for idIndex, _ := range RXCollectionList {
+			if RXCollectionList[idIndex].CollectionId == RXCollectionQuoteList[idx].CollectionId {
+				sayingTemp.Collection = RXCollectionList[idIndex].Name
+			}
+		}
+
+		sayingList = append(sayingList, sayingTemp)
+	}
 	return
 }

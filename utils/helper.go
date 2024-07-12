@@ -51,3 +51,17 @@ func RemoveHashIfNeeded(s string) string {
 	}
 	return s
 }
+
+func SliceUnique(s []any) []any {
+	m := make(map[any]bool)
+	for _, v := range s {
+		if !m[v] {
+			m[v] = true
+		}
+	}
+	result := make([]any, 0, len(m))
+	for k := range m {
+		result = append(result, k)
+	}
+	return result
+}
