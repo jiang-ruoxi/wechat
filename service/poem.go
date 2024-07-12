@@ -269,7 +269,6 @@ type SayingResponse struct {
 	QuoteWorkId int    `json:"quote_work_id"`
 	Collection  string `json:"collection"`
 	Dynasty     string `json:"dynasty"`
-	Kind        string `json:"kind"`
 }
 
 // ApiSayingList 名言警句
