@@ -9,6 +9,7 @@ const DEFAULT_PAGE = 1
 const DEFAULT_LEVEL = 1
 const DEFAULT_Type = 4
 const DEFAULT_PAGE_SIZE = 20
+const DEFAULT_PAGE_SIZE_MAX = 1000
 const DEFAULT_Lexicon_PAGE_SIZE = 10
 const QUEUE_LEN = 3
 const DEFAULT_QUEUE = "queue_list_question"

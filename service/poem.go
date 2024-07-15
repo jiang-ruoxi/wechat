@@ -72,20 +72,33 @@ func (ps *PoemService) ApiQuotesList(dynasty, kind string, page int) (quoteList 
 }
 
 type KindResponse struct {
+	Id     int    `json:"id"`
 	KindId int    `json:"kind_id"`
 	Kind   string `json:"kind"`
+	Name   string `json:"name"`
 }
 
 // ApiKindList 古诗词集合类别列表
-func (ps *PoemService) ApiKindList() (KindList []KindResponse) {
+func (ps *PoemService) ApiKindList(page, kindId int) (KindList []KindResponse, total int64) {
+	size := global.DEFAULT_PAGE_SIZE_MAX
+	offset := size * (page - 1)
 	var collectionModelList []model.RXCollections
 	db := global.GVA_DB.Model(&model.RXCollections{}).Debug()
-	db = db.Order("sort desc")
-	db.Group("kind_id").Find(&collectionModelList)
+	if kindId > 0 {
+		db = db.Where("kind_id = ?", kindId)
+	}
+	db = db.Select("id,`name`,kind,kind_id")
+	db = db.Order("id ASC")
+	db.Group("kind_id,`name`,id")
+	db = db.Count(&total)
+	db = db.Limit(size).Offset(offset)
+	db.Find(&collectionModelList)
 	var kindTemp KindResponse
 	for idx, _ := range collectionModelList {
+		kindTemp.Id = collectionModelList[idx].Id
 		kindTemp.KindId = collectionModelList[idx].KindId
 		kindTemp.Kind = collectionModelList[idx].Kind
+		kindTemp.Name = collectionModelList[idx].Name
 		KindList = append(KindList, kindTemp)
 	}
 	return

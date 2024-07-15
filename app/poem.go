@@ -36,9 +36,14 @@ func ApiQuotesList(c *gin.Context) {
 // ApiKindList 古诗词集合类别列表
 func ApiKindList(c *gin.Context) {
 	var service service.PoemService
-	list := service.ApiKindList()
+	page := utils.GetIntParamItem("page", global.DEFAULT_PAGE, c)
+	kindId := utils.GetIntParamItem("kind_id", 0, c)
+	list, total := service.ApiKindList(page, kindId)
 	common.ReturnResponse(global.SUCCESS, map[string]interface{}{
-		"list": list,
+		"list":       list,
+		"total":      total,
+		"page":       page,
+		"total_page": math.Ceil(float64(total) / float64(global.DEFAULT_PAGE_SIZE)),
 	}, global.SUCCESS_MSG, c)
 }
 

@@ -45,26 +45,26 @@ func InitRouter() *gin.Engine {
 
 		//古诗相关
 		//获取朝代列表
-		apiV2.GET("/poem/dynasty/list", routerCache(global.RedisURL_CACHE), app.ApiDynastyList)
+		apiV2.GET("/poem/dynasty/list", app.ApiDynastyList)
 		//引文列表
-		apiV2.GET("/poem/quotes/list", routerCache(global.RedisURL_CACHE), app.ApiQuotesList)
+		apiV2.GET("/poem/quotes/list", app.ApiQuotesList)
 		//集合类别
-		apiV2.GET("/poem/kind/list", routerCache(global.RedisURL_CACHE), app.ApiKindList)
+		apiV2.GET("/poem/kind/list", app.ApiKindList)
 		//指定类别的集合
-		apiV2.GET("/poem/collection/list", routerCache(global.RedisURL_CACHE), app.ApiCollectionList)
+		apiV2.GET("/poem/collection/list", app.ApiCollectionList)
 		//指定集合的作品列表
-		apiV2.GET("/poem/collection/work/list", routerCache(global.RedisURL_CACHE), app.ApiCollectionWorkList)
+		apiV2.GET("/poem/collection/work/list", app.ApiCollectionWorkList)
 		//获取古诗词详情
-		apiV2.GET("/poem/info", routerCache(global.RedisURL_CACHE), app.ApiPoemInfo)
+		apiV2.GET("/poem/info", app.ApiPoemInfo)
 		//搜索古诗
-		apiV2.GET("/poem/search", routerCache(global.RedisURL_CACHE), app.ApiPoemSearch)
-		apiV2.GET("/poem/search/list", routerCache(global.RedisURL_CACHE), app.ApiPoemSearchList)
+		apiV2.GET("/poem/search", app.ApiPoemSearch)
+		apiV2.GET("/poem/search/list", app.ApiPoemSearchList)
 		//获取作者列表-朝代
-		apiV2.GET("/poem/author/list", routerCache(global.RedisURL_CACHE), app.ApiAuthorList)
+		apiV2.GET("/poem/author/list", app.ApiAuthorList)
 		//获取作者详情
-		apiV2.GET("/poem/author/info", routerCache(global.RedisURL_CACHE), app.ApiAuthorInfo)
+		apiV2.GET("/poem/author/info", app.ApiAuthorInfo)
 		//名言警句
-		apiV2.GET("/poem/saying/list", routerCache(global.RedisURL_CACHE), app.ApiSayingList)
+		apiV2.GET("/poem/saying/list", app.ApiSayingList)
 	}
 	return router
 }
