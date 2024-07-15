@@ -72,10 +72,11 @@ func (ps *PoemService) ApiQuotesList(dynasty, kind string, page int) (quoteList 
 }
 
 type KindResponse struct {
-	Id     int    `json:"id"`
-	KindId int    `json:"kind_id"`
-	Kind   string `json:"kind"`
-	Name   string `json:"name"`
+	Id           int    `json:"id"`
+	CollectionId int    `json:"collection_id"`
+	KindId       int    `json:"kind_id"`
+	Kind         string `json:"kind"`
+	Name         string `json:"name"`
 }
 
 // ApiKindList 古诗词集合类别列表
@@ -87,7 +88,7 @@ func (ps *PoemService) ApiKindList(page, kindId int) (KindList []KindResponse, t
 	if kindId > 0 {
 		db = db.Where("kind_id = ?", kindId)
 	}
-	db = db.Select("id,`name`,kind,kind_id")
+	db = db.Select("id,collection_id,`name`,kind,kind_id")
 	db = db.Order("id ASC")
 	db.Group("kind_id,`name`,id")
 	db = db.Count(&total)
@@ -96,6 +97,7 @@ func (ps *PoemService) ApiKindList(page, kindId int) (KindList []KindResponse, t
 	var kindTemp KindResponse
 	for idx, _ := range collectionModelList {
 		kindTemp.Id = collectionModelList[idx].Id
+		kindTemp.CollectionId = collectionModelList[idx].CollectionId
 		kindTemp.KindId = collectionModelList[idx].KindId
 		kindTemp.Kind = collectionModelList[idx].Kind
 		kindTemp.Name = collectionModelList[idx].Name
