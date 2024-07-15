@@ -293,14 +293,8 @@ func (ps *PoemService) ApiSayingList(dynasty, author string, page int) (sayingLi
 
 	var RXCollectionQuoteList []model.RXCollectionQuotes
 	db := global.GVA_DB.Model(&model.RXCollectionQuotes{}).Debug()
-	if dynasty != "" && author != "" {
-		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.dynasty = ? AND rx_quotes.author = ?", dynasty, author)
-	}
-	if dynasty != "" {
-		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.dynasty = ?", dynasty)
-	}
 	if author != "" {
-		db.Joins("LEFT JOIN rx_quotes ON rx_collection_quotes.quote_id = rx_quotes.quote_id AND rx_quotes.author = ?", author)
+		db = db.Where("quote_author = ?", author)
 	}
 
 	db = db.Order("id asc").Count(&total)
