@@ -11,19 +11,17 @@ type PoemService struct {
 }
 
 type DynastyResponse struct {
-	DynastyId   int    `json:"dynasty_id"`
 	DynastyName string `json:"dynasty_name"`
 }
 
 // ApiDynastyList 古诗词朝代列表
 func (ps *PoemService) ApiDynastyList() (dynastyList []DynastyResponse) {
 	var dynastyModelList []model.RXDynasty
-	bookDB := global.GVA_DB.Model(&model.RXDynasty{}).Debug()
+	bookDB := global.GVA_DB.Model(&model.RXDynasty{}).Debug().Where("status = 1")
 	bookDB = bookDB.Order("s_sort desc").Order("id asc")
 	bookDB.Find(&dynastyModelList)
 	var dynastyTemp DynastyResponse
 	for idx, _ := range dynastyModelList {
-		dynastyTemp.DynastyId = dynastyModelList[idx].DynastyId
 		dynastyTemp.DynastyName = dynastyModelList[idx].Name
 		dynastyList = append(dynastyList, dynastyTemp)
 	}
